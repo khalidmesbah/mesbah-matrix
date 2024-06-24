@@ -1,5 +1,12 @@
+"use client";
+
+import { Button } from "@/components/ui/button";
+
 export default function QuranPage() {
   return (
-    <h1>Quran</h1>
+    <div>
+      <h1>Quran</h1>
+      <Button></Button>
+    </div>
   );
 }
