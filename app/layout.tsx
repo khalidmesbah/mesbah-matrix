@@ -29,9 +29,9 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Providers>
-            <main className="flex min-h-screen gap-2">
+            <main className="flex min-h-screen gap-2 overflow-hidden">
               <Navbar session={session} />
-              <div className="w-full min-h-[inherit] p-1 container overflow-hidden">
+              <div className="w-full min-h-[inherit] max-h-[100vh] p-1 container overflow-auto">
                 {children}
               </div>
             </main>

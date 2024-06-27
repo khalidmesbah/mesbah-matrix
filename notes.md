@@ -9,7 +9,22 @@
 - [ ] add next js (signin/settings) popover component
 - [ ] add loading to handle
 - [ ] add notes page (sticky notes)
-- [ ]
+- [ ] learn next.js and react, firebase and apply any thing immediately to learn
+        even if it is useless
+- [ ] add a habit tracker
+- [ ] remove framer motion package
+- [ ] add AI chatbot in the app
+- [ ] use AI in the app
+- [ ] add sounds in the APP
+        - e.g. on check toggle
+- [ ] add notes and exalidraw tabs
+- [ ] add about tabs
+- [ ] add news tabs
+- [ ] add analytics tab
+- [ ] add home tab and replace it with the matrix
+- [ ] add Explore More Apps tab
+- [ ] add a toaster/sonner containing the number of azkar read on leaving the azkar page
+- [ ] add a way to contact with me if something is wrong in the website (in the about tab)
 
 ## integration
 

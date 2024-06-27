@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Button } from "@/components/ui/button";
 import { signOutWithGoogle } from "@/lib/firebase/auth";
@@ -7,18 +7,20 @@ import useAuthStore from "@/lib/stores/auth-store";
 
 // why runs two times (check that with console.log(user))
 export default function AccountPage() {
-  const user = useAuthStore(state => state.user)
+  const user = useAuthStore((state) => state.user);
 
   const handleSignOut = async () => {
     await signOutWithGoogle();
     await removeSession();
   };
 
-  if (!user) return <>
-    <h1>No user</h1>
-  </>
+  if (!user)
+    return (
+      <>
+        <h1>No user</h1>
+      </>
+    );
   const { email, displayName } = user;
-
 
   return (
     <div>

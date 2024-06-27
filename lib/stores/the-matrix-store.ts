@@ -77,12 +77,11 @@ let initialMatrix: MatrixType = {
 interface MatrixStore {
   matrix: MatrixType;
   setMatrix: (matrix: MatrixType) => void;
-  // addTask: (text: string) => Promise<void>;
 }
 
 const useMatrixStore = create<MatrixStore>()((set) => ({
   matrix: initialMatrix,
-  setMatrix: async (newMatrix: MatrixType) => {
+  setMatrix: (newMatrix: MatrixType) => {
     // NOTE: i'm using optimistic updates cuz i trust google
     _setMatrix(newMatrix);
 

@@ -24,6 +24,7 @@ import {
   BookHeart,
   CircleCheckBig,
   CircleUser,
+  Feather,
   Grid2X2,
   LogIn,
   Quote,
@@ -84,9 +85,9 @@ export default function Navbar({ session }: { session: string | null }) {
 
 const icons = [
   { name: "The Matrix", link: "/", icon: <Grid2X2 /> },
-  { name: "Daily Tasks", link: "/daily-tasks", icon: <CircleCheckBig /> },
   { name: "Daily Reminders", link: "/daily-reminders", icon: <BellRing /> },
   { name: "Quote", link: "/quote", icon: <Quote /> },
+  { name: "Azkar", link: "/azkar", icon: <Feather /> },
   { name: "Quran", link: "/quran", icon: <BookHeart /> },
   { name: "Settings", link: "/settings", icon: <Bolt /> },
 ];

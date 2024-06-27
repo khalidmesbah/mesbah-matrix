@@ -1,11 +1,6 @@
 "use client";
-import ButtonIcon from "@/components/button-icon";
+
 import { Button, buttonVariants } from "@/components/ui/button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { _getMatrix } from "@/lib/server-actions/the-matrix-actions";
 import useMatrixStore, {
   ColumnType,
@@ -38,24 +33,8 @@ import {
   Badge,
   BadgeCheck,
   BadgePlus,
-  Bolt,
   Grip,
   Settings,
-  Trash2,
-  Cloud,
-  CreditCard,
-  Github,
-  Keyboard,
-  LifeBuoy,
-  LogOut,
-  Mail,
-  MessageSquare,
-  Plus,
-  PlusCircle,
-  User,
-  UserPlus,
-  Users,
-  Delete,
   Pencil,
   BadgeX,
   BadgeInfo,
@@ -510,7 +489,6 @@ function EditTask({ task }: { task: TaskType }) {
             <Button
               onClick={() => {
                 editTask(task.id, form.getValues().text);
-                form.reset();
               }}
             >
               Edit

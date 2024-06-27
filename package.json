@@ -27,6 +27,7 @@
     "@types/uuid": "^10.0.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "embla-carousel-react": "^8.1.5",
     "firebase": "^10.12.2",
     "firebase-admin": "^12.2.0",
     "firebaseui": "^6.1.0",
