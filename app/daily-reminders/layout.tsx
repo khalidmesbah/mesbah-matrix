@@ -15,7 +15,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,7 +23,6 @@ import { z } from "zod";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { v4 as uuidV4 } from "uuid";
 import useDailyRemindersStore from "@/lib/stores/daily-reminders-store";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -86,7 +84,7 @@ export default function DailyRemindersLayout({
 
   return (
     <section>
-      <div className="p-1 border-b border-b-foreground flex gap-1 justify-between items-center">
+      <div className="p-1 border-b border-b-border flex gap-1 justify-between items-center">
         <H2 text="Daily Reminder" className="mr-auto" />
 
         <Dialog>
@@ -152,8 +150,7 @@ export default function DailyRemindersLayout({
           </Link>
         )}
       </div>
-
-      {children}
+      <div className="p-2">{children}</div>
     </section>
   );
 }

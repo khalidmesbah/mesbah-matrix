@@ -1,24 +1,18 @@
-import { create } from "zustand";
+"use client";
 
-export interface TaskType {
-  id: string;
-  text: string;
-  done: boolean;
-}
+import {
+  DefinedUseQueryResult,
+  useMutation,
+  useQuery,
+  useQueryClient,
+  UseQueryResult,
+} from "@tanstack/react-query";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/lib/firebase/init";
+import { MatrixType } from "@/lib/stores/the-matrix-store";
+import { _getMatrix, _setMatrix } from "../server-actions/the-matrix-actions";
 
-export interface ColumnType {
-  id: string;
-  title: string;
-  taskIds: string[];
-}
-
-export interface MatrixType {
-  tasks: { [key: string]: TaskType };
-  columns: { [key: string]: ColumnType };
-  columnOrder: string[];
-}
-
-let initialMatrix: MatrixType = {
+export const initialMatrix: MatrixType = {
   tasks: {
     "task-1": {
       id: "task-1",
@@ -125,18 +119,27 @@ let initialMatrix: MatrixType = {
   columnOrder: ["column-1", "column-2", "column-3", "column-4"],
 };
 
-interface MatrixStore {
-  matrix: MatrixType;
-  setMatrix: (matrix: MatrixType) => void;
-}
+const useMatrixQuery = (
+  userId: string | undefined,
+): UseQueryResult<MatrixType, Error> =>
+  useQuery({
+    queryKey: ["the-matrix", userId],
+    queryFn: (): Promise<MatrixType> => _getMatrix(),
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
 
-const useMatrixStore = create<MatrixStore>()((set) => ({
-  matrix: initialMatrix,
-  setMatrix: (newMatrix: MatrixType) => {
-    return set((state) => {
-      return { ...state, matrix: newMatrix };
-    });
-  },
-}));
+const useMatrixMutaion = (userId: string | undefined) => {
+  const queryClient = useQueryClient();
 
-export default useMatrixStore;
+  return useMutation({
+    mutationFn: _setMatrix,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["the-matrix", userId] });
+      console.log("mutation success");
+    },
+  });
+};
+
+export { useMatrixQuery, useMatrixMutaion };

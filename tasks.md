@@ -1,0 +1,27 @@
+# Tasks
+
+- [ ] <https://nextjs.org/docs/app/api-reference/file-conventions/metadata/app-icons>
+- [ ] read this <https://nextjs.org/docs/getting-started/project-structure>
+- [ ] add share buttons <https://youtu.be/n6jg_dM0uy0?si=hM5r8BiUWRVTIO2E>
+- [ ] fix navbar scrollbar
+- [ ] support reordering for navbar items
+- [ ] <https://nextjs.org/docs/app/building-your-application/optimizing/metadata>
+- [ ] add a banner that says "please login to save your data."
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]

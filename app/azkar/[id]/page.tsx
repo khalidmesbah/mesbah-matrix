@@ -1,5 +1,7 @@
-import { List } from "@/components/typography";
+import Zekr from "@/components/zekr";
+import { ZekrType } from "@/types";
 import { promises as fs } from "fs";
+
 export default async function CategoryPage({
   params: { id },
 }: {
@@ -7,15 +9,24 @@ export default async function CategoryPage({
 }) {
   const azkarRes = await fs.readFile(process.cwd() + "/azkar.json", "utf8");
   const azkar = JSON.parse(azkarRes);
+  const categoriesRes = await fs.readFile(
+    process.cwd() + "/categories.json",
+    "utf8",
+  );
+  const categories = JSON.parse(categoriesRes);
   return (
-    <div className="flex flex-col gap-1">
-      {azkar[id].map((zer: any) => {
-        return (
-          <p dir="rtl" key={zer.zekr} className="p-1 border border-white">
-            {zer.zekr}
-          </p>
-        );
-      })}
+    <div>
+      <h2
+        className="croll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0"
+        dir="rtl"
+      >
+        {categories[id].ar}
+      </h2>
+      <div className="flex flex-col gap-1">
+        {azkar[id].map((zekr: ZekrType) => {
+          return <Zekr zekr={zekr} key={zekr.id} />;
+        })}
+      </div>
     </div>
   );
 }

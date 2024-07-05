@@ -27,6 +27,7 @@ export default function DailyRemindersPage() {
   const order = dailyReminders.order.filter(
     (id) => dailyReminders.reminders[id].done === false,
   );
+
   console.log(`order: `, order);
 
   return (
@@ -53,7 +54,7 @@ export default function DailyRemindersPage() {
                   <CardContent className="flex h-[80vh] items-center justify-center overflow-auto">
                     <P
                       text={reminder.text}
-                      className="text-4xl font-semibold break-all"
+                      className="text-4xl font-semibold break-all select-none"
                     />
                   </CardContent>
                   <CardFooter>

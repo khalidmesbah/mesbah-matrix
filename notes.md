@@ -25,8 +25,30 @@
 - [ ] add Explore More Apps tab
 - [ ] add a toaster/sonner containing the number of azkar read on leaving the azkar page
 - [ ] add a way to contact with me if something is wrong in the website (in the about tab)
+- [ ] add security rules (only loged-in users could read/delete/update their own data)
+- [ ] add sign-in with temp email (for guests)
+- [ ] add security rules
+- [ ] fix authentication
+- Be sure to add Metadata to every page
+
+## Tabs
+
+## Explore tab
+
+list different applications
+
+### Focus
+>
+> Select a task from the matrix to work on (optional)
+> A pomodoro app
 
 ## integration
 
 - exalidraw
 - ticktick
+- <https://www.islambook.com/>
+- <https://www.brainyquote.com/>
+
+## insipiration
+
+- <https://youtu.be/0fsbAl4FuIw?si=XYuTRf7FQbLis9GV>

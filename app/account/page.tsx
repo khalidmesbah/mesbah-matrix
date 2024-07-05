@@ -1,35 +1,20 @@
-"use client";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 
-import { Button } from "@/components/ui/button";
-import { signOutWithGoogle } from "@/lib/firebase/auth";
-import { removeSession } from "@/lib/server-actions/auth-actions";
-import useAuthStore from "@/lib/stores/auth-store";
+export default async function AccountPage() {
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
 
-// why runs two times (check that with console.log(user))
-export default function AccountPage() {
-  const user = useAuthStore((state) => state.user);
-
-  const handleSignOut = async () => {
-    await signOutWithGoogle();
-    await removeSession();
-  };
-
-  if (!user)
-    return (
-      <>
-        <h1>No user</h1>
-      </>
-    );
-  const { email, displayName } = user;
+  if (!user) return <h1>No user</h1>;
 
   return (
     <div>
-      <h1>Account</h1>
+      <h1>{user.id}</h1>
       <h2>Name</h2>
-      <p>{displayName}</p>
+      <p>{user.given_name}</p>
       <h2>Email</h2>
-      <p>{email}</p>
-      <Button onClick={handleSignOut}>Sign out</Button>
+      <p>{user.email}</p>
+      <LogoutLink postLogoutRedirectURL="/focus">Log out</LogoutLink>
     </div>
   );
 }
