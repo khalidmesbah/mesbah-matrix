@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { _setMatrix } from "../server-actions/the-matrix-actions";
 
 export interface TaskType {
   id: string;
@@ -133,6 +134,7 @@ interface MatrixStore {
 const useMatrixStore = create<MatrixStore>()((set) => ({
   matrix: initialMatrix,
   setMatrix: (newMatrix: MatrixType) => {
+    _setMatrix(newMatrix);
     return set((state) => {
       return { ...state, matrix: newMatrix };
     });

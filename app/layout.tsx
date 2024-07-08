@@ -19,10 +19,10 @@ export default async function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={GeistMono.className}>
         <Providers>
-          <TopBarAlert />
-          <main className="flex min-h-screen gap-2">
+          {/*<TopBarAlert />*/}
+          <main className="flex gap-1">
             <Navbar />
-            <div className="w-full min-h-[inherit] max-h-[100vh] p-1 container">
+            <div className="container max-h-screen overflow-auto p-1">
               {children}
             </div>
           </main>

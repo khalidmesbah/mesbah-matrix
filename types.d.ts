@@ -23,3 +23,19 @@ export interface QuoteType {
   length: number;
   tags: string[];
 }
+
+export interface QuotesType {
+  favourite: QuoteType[];
+  qotd: QuoteType;
+}
+
+export interface SharedType {
+  theme: string;
+  mode: string;
+  today: number;
+}
+
+export interface GlobalsType {
+  qotd: QuoteType;
+  today: number;
+}

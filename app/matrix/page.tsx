@@ -35,7 +35,6 @@ import {
   BadgeX,
   BadgeInfo,
 } from "lucide-react";
-// TODO replace column with quadrant
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -69,13 +68,14 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import { useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import {
-  initialMatrix,
-  useMatrixMutaion,
-  useMatrixQuery,
-} from "@/lib/hooks/use-matrix-query";
-import { UseQueryResult } from "@tanstack/react-query";
-import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+  _getMatrix,
+  _setMatrix,
+} from "@/lib/server-actions/the-matrix-actions";
+// TODO replace column with quadrant
+// FIX: fix the onsubmit function to add user feedback to the project
 
 const FormSchema = z.object({
   text: z.string().min(2, {
@@ -83,17 +83,31 @@ const FormSchema = z.object({
   }),
 });
 
-export default function AuthenticatedMatrix() {
-  const { isLoading: isUserLoading, user } = useKindeBrowserClient();
-  const {
-    isLoading: isGetMatrixLoading,
-    data: matrix,
-  }: UseQueryResult<MatrixType, Error> = useMatrixQuery(user?.id);
-  const {
-    mutateAsync: setMatrix,
-    variables,
-    isPending,
-  } = useMatrixMutaion(user?.id);
+export default function MatrixPage() {
+  const { isLoading, data } = useQuery({
+    queryKey: ["the-matrix"],
+    queryFn: (): Promise<MatrixType> => _getMatrix(),
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
+    retry: false,
+    refetchOnMount: true,
+  });
+  const { matrix, setMatrix: _setMatrix } = useMatrixStore();
+  const queryClient = useQueryClient();
+
+  const setMatrix = (newMatrix: MatrixType) => {
+    _setMatrix(newMatrix);
+    queryClient.invalidateQueries({ queryKey: ["the-matrix"] });
+  };
+
+  useEffect(() => {
+    console.log(`data: `, data?.columns["column-1"].taskIds);
+    console.log(`matrix: `, matrix.columns["column-1"].taskIds);
+    if (!isLoading && data) {
+      setMatrix(data);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoading]);
 
   const onDragEnd = async (result: DropResult) => {
     const { draggableId, destination, source } = result;
@@ -151,42 +165,38 @@ export default function AuthenticatedMatrix() {
     setMatrix(newState);
   };
 
-  if (isUserLoading || isGetMatrixLoading) return <h1>Loading</h1>;
+  if (isLoading) return <h1>Loading</h1>;
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div className="grid grid-cols-1 sm:grid-cols-2 sm:grid-rows-2 h-full gap-1 bg-background">
-        {isPending
-          ? variables.columnOrder.map((columnId) => {
-              const column = variables.columns[columnId];
-              const tasks = column.taskIds.map(
-                (taskId) => variables.tasks[taskId],
-              );
-              return <Column key={column.id} column={column} tasks={tasks} />;
-            })
-          : matrix.columnOrder.map((columnId) => {
-              const column = matrix.columns[columnId];
-              const tasks = column.taskIds.map(
-                (taskId) => matrix.tasks[taskId],
-              );
-              return <Column key={column.id} column={column} tasks={tasks} />;
-            })}
+      <div className="grid grid-cols-1 sm:grid-cols-2 sm:grid-rows-2 gap-1 h-[calc(100vh_-_8px)]">
+        {matrix.columnOrder.map((columnId) => {
+          const column = matrix.columns[columnId];
+          const tasks = column.taskIds.map((taskId) => matrix.tasks[taskId]);
+          return (
+            <Column
+              key={column.id}
+              column={column}
+              tasks={tasks}
+              setMatrix={setMatrix}
+            />
+          );
+        })}
       </div>
     </DragDropContext>
   );
 }
 
-function Column({ column, tasks }: { column: ColumnType; tasks: TaskType[] }) {
-  const { isLoading: isUserLoading, user } = useKindeBrowserClient();
-  const {
-    isLoading: isGetMatrixLoading,
-    data: matrix,
-  }: UseQueryResult<MatrixType, Error> = useMatrixQuery(user?.id);
-  const {
-    mutateAsync: setMatrix,
-    variables,
-    isPending,
-  } = useMatrixMutaion(user?.id);
+function Column({
+  column,
+  tasks,
+  setMatrix,
+}: {
+  column: ColumnType;
+  tasks: TaskType[];
+  setMatrix: (newMatrix: MatrixType) => void;
+}) {
+  const { matrix } = useMatrixStore();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -215,12 +225,14 @@ function Column({ column, tasks }: { column: ColumnType; tasks: TaskType[] }) {
 
   return (
     <div
-      className={`flex flex-col sm:flex-row gap-1 ${column.title === "do" ? "bg-[#34a853]" : column.title === "schedule" ? "bg-[#4285f4]" : column.title === "delegate" ? "bg-[#fbbc05]" : "bg-[#ea4335]"} border-1 border-foreground`}
+      className={`flex flex-col sm:flex-row rounded-md border-2 ${column.title === "do" ? "border-[#34a853]" : column.title === "schedule" ? "border-[#4285f4]" : column.title === "delegate" ? "border-[#fbbc05]" : "border-[#ea4335]"}`}
     >
-      <div className="flex sm:flex-col gap-1 sm:border-r-2 sm:border-white">
+      <div
+        className={`flex sm:flex-col gap-1 ${column.title === "do" ? "bg-[#34a853]" : column.title === "schedule" ? "bg-[#4285f4]" : column.title === "delegate" ? "bg-[#fbbc05]" : "bg-[#ea4335]"}`}
+      >
         <Dialog>
           <DialogTrigger asChild>
-            <Button size={"icon"} variant={"link"} className="!rounded-none">
+            <Button size={"icon"} variant={"link"} className="text-foreground">
               <BadgePlus />
             </Button>
           </DialogTrigger>
@@ -275,7 +287,7 @@ function Column({ column, tasks }: { column: ColumnType; tasks: TaskType[] }) {
           </DialogContent>
         </Dialog>
 
-        <h2 className="flex-1 uppercase flex justify-center items-center sm:scale-[-1] sm:[writing-mode:vertical-lr]">
+        <h2 className="flex-1 font-extrabold uppercase flex justify-center items-center sm:scale-[-1] sm:[writing-mode:vertical-lr]">
           {column.title}
         </h2>
 
@@ -303,7 +315,7 @@ function Column({ column, tasks }: { column: ColumnType; tasks: TaskType[] }) {
           <div
             ref={provided.innerRef}
             {...provided.droppableProps}
-            className="overflow-y-auto overflow-x-hidden w-full p-[2px]"
+            className="overflow-y-auto overflow-x-hidden w-full p-[2px] rounded-md"
           >
             {tasks.length ? (
               tasks.map((task, index) => (
@@ -312,6 +324,7 @@ function Column({ column, tasks }: { column: ColumnType; tasks: TaskType[] }) {
                   task={task}
                   index={index}
                   columnId={column.id}
+                  setMatrix={setMatrix}
                 />
               ))
             ) : (
@@ -329,17 +342,14 @@ function Task({
   task,
   index,
   columnId,
+  setMatrix,
 }: {
   task: TaskType;
   index: number;
   columnId: string;
+  setMatrix: (newMatrix: MatrixType) => void;
 }) {
-  const { isLoading: isUserLoading, user } = useKindeBrowserClient();
-  const {
-    isLoading: isGetMatrixLoading,
-    data: matrix,
-  }: UseQueryResult<MatrixType, Error> = useMatrixQuery(user?.id);
-  const { mutateAsync: setMatrix } = useMatrixMutaion(user?.id);
+  const { matrix } = useMatrixStore();
 
   const toggleCheck = (id: string) => {
     matrix.tasks[id].done = !matrix.tasks[id].done;
@@ -354,24 +364,35 @@ function Task({
           {...provided.draggableProps}
           ref={provided.innerRef}
         >
-          <div className="bg-card/40 flex items-stretch">
-            <Button
-              variant={"ghost"}
-              size="sm"
-              className="rounded-none h-full"
-              onClick={() => toggleCheck(task.id)}
-            >
-              {task.done ? (
-                <Icon icon={<BadgeCheck size={20} />} />
-              ) : (
-                <Icon icon={<Badge size={20} />} />
-              )}
-            </Button>
+          <div className="bg-secondary flex items-stretch rounded-md">
+            <div className="relative w-6 px-3">
+              <Button
+                variant={"link"}
+                size="sm"
+                className="rounded-none h-full w-full absolute inset-0"
+                onClick={() => toggleCheck(task.id)}
+              >
+                {task.done ? (
+                  <Icon icon={<BadgeCheck size={20} />} />
+                ) : (
+                  <Icon icon={<Badge size={20} />} />
+                )}
+              </Button>
+            </div>
+
             <p className="p-1 w-full line-clamp-1 flex items-center">
               {task.text}
             </p>
-            <TaskSettings task={task} columnId={columnId} />
-            <Icon icon={<Grip size={20} />} {...provided.dragHandleProps} />
+            <div className="relative">
+              <TaskSettings
+                task={task}
+                columnId={columnId}
+                setMatrix={setMatrix}
+              />
+            </div>
+            <div className="relative">
+              <Icon icon={<Grip size={20} />} {...provided.dragHandleProps} />
+            </div>
           </div>
         </div>
       )}
@@ -382,27 +403,41 @@ function Task({
 function TaskSettings({
   task,
   columnId,
+  setMatrix,
 }: {
   task: TaskType;
   columnId: string;
+  setMatrix: (newMatrix: MatrixType) => void;
 }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="link" className={`rounded-none !p-1 !w-6 !bg-none`}>
+        <Button
+          variant="link"
+          className={`rounded-none h-full !p-1 !w-6 !bg-none`}
+        >
           <Icon icon={<Settings size={20} />} />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <EditTask task={task} />
-        <DeleteTask task={task} columnId={columnId} />
+        <EditTask task={task} setMatrix={setMatrix} />
+        <DeleteTask task={task} columnId={columnId} setMatrix={setMatrix} />
       </DropdownMenuContent>
     </DropdownMenu>
   );
 }
 
-function DeleteTask({ task, columnId }: { task: TaskType; columnId: string }) {
-  const { matrix, setMatrix } = useMatrixStore();
+function DeleteTask({
+  task,
+  columnId,
+  setMatrix,
+}: {
+  task: TaskType;
+  columnId: string;
+
+  setMatrix: (newMatrix: MatrixType) => void;
+}) {
+  const { matrix } = useMatrixStore();
 
   const deleteTask = (id: string) => {
     delete matrix.tasks[id];
@@ -447,8 +482,14 @@ function DeleteTask({ task, columnId }: { task: TaskType; columnId: string }) {
   );
 }
 
-function EditTask({ task }: { task: TaskType }) {
-  const { matrix, setMatrix } = useMatrixStore();
+function EditTask({
+  task,
+  setMatrix,
+}: {
+  task: TaskType;
+  setMatrix: (newMatrix: MatrixType) => void;
+}) {
+  const { matrix } = useMatrixStore();
 
   const editTask = (id: string, text: string) => {
     matrix.tasks[id].text = text;

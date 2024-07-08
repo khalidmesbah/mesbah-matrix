@@ -1,37 +1,36 @@
 "use client";
 
 import Link from "next/link";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Separator } from "./ui/separator";
-import { ReactNode, Suspense, useEffect, useState } from "react";
+import { Separator } from "@/components/ui/separator";
+import { ReactNode } from "react";
 import {
   BellRing,
   Bolt,
   BookHeart,
   Feather,
   Grid2X2,
+  Home,
   LogIn,
   Quote,
   ScanEye,
   SquareKanban,
   SquareUser,
 } from "lucide-react";
-import { ScrollArea } from "@radix-ui/react-scroll-area";
-import {
-  RegisterLink,
-  LoginLink,
-} from "@kinde-oss/kinde-auth-nextjs/components";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { LoginLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import { usePathname } from "next/navigation";
 
 const routes = [
-  { name: "The Matrix", link: "/", icon: <Grid2X2 /> },
+  { name: "Home", link: "/", icon: <Home /> },
+  { name: "The Matrix", link: "/matrix", icon: <Grid2X2 /> },
   { name: "Focus", link: "/focus", icon: <ScanEye /> },
   { name: "Daily Reminders", link: "/daily-reminders", icon: <BellRing /> },
   { name: "Quotes", link: "/quotes", icon: <Quote /> },
@@ -43,43 +42,48 @@ const routes = [
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { user } = useKindeBrowserClient();
+  const { isAuthenticated } = useKindeBrowserClient();
 
   return (
-    <div className="w-[56px] min-w-[56px] max-h-[100vh] min-h-[100vh] flex flex-col items-center gap-2 bg-background p-1 border border-r-1 border-r-white">
+    <div className="w-[56px] min-w-[56px] h-screen flex flex-col items-center p-2 border-r border-r-1 border-r-primary">
       <Icon name={routes[0].name} icon={routes[0].icon} link={routes[0].link} />
 
-      <Separator />
+      <Separator className="mt-2" />
 
-      <ScrollArea className="flex flex-col items-center gap-2 rounded-md border bg-red-500 flex-1 flex-shrink h-20">
-        {routes.slice(1, routes.length - 1).map(({ name, icon, link }) => {
-          return <Icon key={name} name={name} icon={icon} link={link} />;
-        })}
+      <ScrollArea className="">
+        <div className="flex flex-col gap-2 p-2">
+          {routes.slice(1, routes.length - 1).map(({ name, icon, link }, i) => {
+            return <Icon key={i} name={name} icon={icon} link={link} />;
+          })}
+        </div>
       </ScrollArea>
 
-      <Separator className="mt-auto" />
+      <Separator className="mt-auto mb-2" />
 
-      <Icon name={"Account"} link={"account"} icon={<SquareUser />} />
-
-      <TooltipProvider>
-        <Tooltip delayDuration={300}>
-          <TooltipTrigger>
-            <div
-              className={buttonVariants({
-                variant: "outline",
-                size: "icon",
-              })}
-            >
-              <LoginLink postLoginRedirectURL={pathname}>
-                <LogIn />
-              </LoginLink>
-            </div>
-          </TooltipTrigger>
-          <TooltipContent side="right">
-            <p>Sign In</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <div className="mb-2">
+        {isAuthenticated ? (
+          <Icon name={"Account"} link={"/account"} icon={<SquareUser />} />
+        ) : (
+          <TooltipProvider>
+            <Tooltip delayDuration={300}>
+              <TooltipTrigger tabIndex={-1}>
+                <LoginLink
+                  postLoginRedirectURL={pathname}
+                  className={buttonVariants({
+                    variant: "outline",
+                    size: "icon",
+                  })}
+                >
+                  <LogIn />
+                </LoginLink>
+              </TooltipTrigger>
+              <TooltipContent side="right">
+                <p>Sign In</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        )}
+      </div>
 
       <Icon
         name={routes[routes.length - 1].name}
@@ -100,7 +104,7 @@ function Icon({ link, name, icon }: IconProps) {
   return (
     <TooltipProvider>
       <Tooltip delayDuration={300}>
-        <TooltipTrigger>
+        <TooltipTrigger asChild>
           <Link
             className={buttonVariants({ variant: "outline", size: "icon" })}
             href={link}

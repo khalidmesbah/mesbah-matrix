@@ -1,10 +1,10 @@
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import AuthenticatedMatrix from "@/components/authenticated-matrix";
-import UnAuthenticatedMatrix from "@/components/unauthenticated-matrix";
-
 export default async function Home() {
-  const { isAuthenticated: getAuthenticationState } = getKindeServerSession();
-  const isAuthenticated = await getAuthenticationState();
-
-  return isAuthenticated ? <AuthenticatedMatrix /> : <UnAuthenticatedMatrix />;
+  return (
+    <>
+      <div className="p-4">
+        <h4 className="mb-4 text-sm font-medium leading-none">Tags</h4>
+        hi
+      </div>
+    </>
+  );
 }
