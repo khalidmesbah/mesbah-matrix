@@ -169,7 +169,7 @@ export default function MatrixPage() {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div className="grid grid-cols-1 sm:grid-cols-2 sm:grid-rows-2 gap-1 h-[calc(100vh_-_8px)]">
+      <div className="grid grid-cols-1 sm:grid-cols-2 sm:grid-rows-2 gap-1 h-[calc(100dvh_-_16px)]">
         {matrix.columnOrder.map((columnId) => {
           const column = matrix.columns[columnId];
           const tasks = column.taskIds.map((taskId) => matrix.tasks[taskId]);

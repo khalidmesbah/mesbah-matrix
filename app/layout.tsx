@@ -3,7 +3,9 @@ import "./globals.css";
 import Navbar from "@/components/navbar";
 import { GeistMono } from "geist/font/mono";
 import Providers from "@/components/providers";
-import TopBarAlert from "@/components/top-bar";
+import { Suspense } from "react";
+import TopBarAuthWrapper from "@/components/top-bar-auth-wrapper";
+import TopBarSkeleton from "@/components/skeletons/top-bar";
 
 export const metadata: Metadata = {
   title: "Mesbah Matrix",
@@ -19,10 +21,12 @@ export default async function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={GeistMono.className}>
         <Providers>
-          {/*<TopBarAlert />*/}
-          <main className="flex gap-1">
+          <main className="flex">
             <Navbar />
-            <div className="container max-h-screen overflow-auto p-1">
+            <div className="container max-h-dvh overflow-auto p-2 flex flex-col gap-2">
+              <Suspense fallback={<TopBarSkeleton />}>
+                <TopBarAuthWrapper />
+              </Suspense>
               {children}
             </div>
           </main>

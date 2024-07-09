@@ -12,46 +12,12 @@ import {
   QuotesType,
 } from "@/types";
 import { QueryKey } from "@tanstack/react-query";
-
-const initialFavouriteQuotes = [
-  {
-    _id: "quo0uRjP__",
-    author: "Abraham Lincoln",
-    content:
-      "Sir, my concern is not whether God is on our side; my greatest concern is to be on God's side, for God is always right.",
-    tags: ["Spirituality", "History"],
-    authorSlug: "abraham-lincoln",
-    length: 119,
-    dateAdded: "2022-03-12",
-    dateModified: "2023-04-14",
-  },
-  {
-    _id: "2r5oVsxF_c",
-    content: "A friend may well be reckoned the masterpiece of nature.",
-    author: "Ralph Waldo Emerson",
-    tags: ["Friendship", "Famous Quotes"],
-    authorSlug: "ralph-waldo-emerson",
-    length: 56,
-    dateAdded: "2020-04-14",
-    dateModified: "2023-04-14",
-  },
-  {
-    _id: "qx0gYyFteZUo",
-    content:
-      "If you are going to achieve excellence in big things, you develop the habit in little matters. Excellence is not an exception; it is a prevailing attitude.",
-    author: "Colin Powell",
-    tags: ["Famous Quotes"],
-    authorSlug: "colin-powell",
-    length: 155,
-    dateAdded: "2019-04-05",
-    dateModified: "2023-04-14",
-  },
-];
+import { wait } from "../utils";
 
 const getRandomQuotes = async (): Promise<QuoteType[]> => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_QUOTES_API}/quotes/random?limit=3`,
+      `${process.env.NEXT_PUBLIC_QUOTES_API}/quotes/random?limit=6`,
     );
 
     if (!res.ok) {

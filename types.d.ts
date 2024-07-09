@@ -17,11 +17,13 @@ export interface ZekrType {
 
 export interface QuoteType {
   _id: string;
-  content: string;
   author: string;
+  content: string;
+  tags: string[];
   authorSlug: string;
   length: number;
-  tags: string[];
+  dateAdded: string;
+  dateModified: string;
 }
 
 export interface QuotesType {

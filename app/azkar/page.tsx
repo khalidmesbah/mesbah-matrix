@@ -7,12 +7,14 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { wait } from "@/lib/utils";
 
 export default async function AzkarPage() {
   const categoriesRes = await fs.readFile(
     process.cwd() + "/categories.json",
     "utf8",
   );
+  await wait(2000);
   const categories = JSON.parse(categoriesRes);
   return (
     <Accordion type="multiple" defaultValue={["daily", "misc"]}>
