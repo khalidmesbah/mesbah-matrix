@@ -1,47 +1,49 @@
 "use client";
 
-import { Card } from "@/components/ui/card";
 import { Button, buttonVariants } from "@/components/ui/button";
-import {
-  RefreshCcwIcon,
-  Star,
-  StarHalf,
-  TriangleAlertIcon,
-} from "lucide-react";
-import { QuoteType } from "@/types";
+import { RefreshCcwIcon } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
-import { useRandomQuotesQuery } from "@/lib/hooks/use-quotes-query";
-import useQuotesStore from "@/lib/stores/quotes-store";
-import { Badge } from "../ui/badge";
-import QuoteSkeleton from "../skeletons/quote";
-import { Masonry } from "../masonary";
-import Quote, {
-  FavouriteButton,
-  NoFavouriteQuotes,
-  NoFetchedQuotes,
-} from "./quote";
+import {
+  useQuotesQuery,
+  useRandomQuotesQuery,
+} from "@/lib/hooks/use-quotes-query";
+import { Badge } from "@/components/ui/badge";
+import FavouriteQuoteSkeleton from "@/components/quotes/favourite-quote-skeleton";
+import { NoQuoteOfTheDay } from "@/components/quotes/no-quote-of-the-day";
+import NoFavouriteQuotes from "@/components/quotes/no-favourite-quotes";
+import QuoteSkeleton from "@/components/quotes/quote-skeleton";
+import NoFetchedQuotes from "@/components/quotes/no-fetched-quotes";
+import Quote from "@/components/quotes/user/quote";
+import FavouriteButton from "./favourite-button";
+import QuotesMasonary from "../quotes-masonary";
+import { Masonry } from "react-plock";
 
-// TODO: add share button
-// TODO: add copy button
-// TODO: add quote component
-// TODO: user select none
-// TODO: create a custom quote
-// TODO: add masonary layout
-
-export default function AnonQuotesPage() {
+export default function UserQuotesPage() {
   const {
     isLoading: isRandomQuotesLoading,
     data: randomQuotes,
     isFetching: isRandomQuotesFetching,
     isError: isErrorOnRandomQuotes,
+    isRefetching: isRandomQuotesRefetching,
+    isPending: isRandomQuotesPending,
   } = useRandomQuotesQuery();
-  const { quotes } = useQuotesStore();
+
+  const {
+    isLoading: isQuotesLoading,
+    data: quotes,
+    isError: isErrorOnQuotes,
+  } = useQuotesQuery();
+
   const queryClient = useQueryClient();
 
   return (
     <div className="flex flex-col gap-6">
-      {quotes.qotd && (
+      {isQuotesLoading ? (
+        <FavouriteQuoteSkeleton />
+      ) : isErrorOnQuotes || !quotes || !quotes?.qotd ? (
+        <NoQuoteOfTheDay />
+      ) : (
         <section className="flex flex-col items-center text-center gap-4">
           <Badge>Quote of the Day</Badge>
 
@@ -69,7 +71,14 @@ export default function AnonQuotesPage() {
             </Link>
           </div>
         </h2>
-        {quotes.favourite.length ? (
+        {isQuotesLoading ? (
+          <QuotesMasonary />
+        ) : isErrorOnQuotes ||
+          !quotes ||
+          !quotes.favourite ||
+          quotes.favourite.length === 0 ? (
+          <NoFavouriteQuotes />
+        ) : (
           <Masonry
             items={quotes.favourite.slice(0, 6)}
             config={{
@@ -79,8 +88,6 @@ export default function AnonQuotesPage() {
             }}
             render={(quote) => <Quote quote={quote} key={quote._id} />}
           />
-        ) : (
-          <NoFavouriteQuotes />
         )}
       </section>
       <section>
@@ -105,7 +112,10 @@ export default function AnonQuotesPage() {
             </Button>
           </div>
         </h2>
-        {isRandomQuotesFetching || isRandomQuotesLoading ? (
+        {isRandomQuotesLoading ||
+        isRandomQuotesFetching ||
+        isRandomQuotesPending ||
+        isRandomQuotesRefetching ? (
           <Masonry
             items={Array.from({ length: 7 }).map((_, i) => i)}
             config={{

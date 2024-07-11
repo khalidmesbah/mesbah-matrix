@@ -1,15 +1,16 @@
 "use client";
 
 import useQuotesStore from "@/lib/stores/quotes-store";
-import { Masonry } from "../masonary";
-import Quote, { NoFavouriteQuotes } from "./quote";
+import { Masonry } from "react-plock";
+import NoFavouriteQuotes from "@/components/quotes/no-favourite-quotes";
+import Quote from "@/components/quotes/anon/quote";
 
 export default function AnonFavouriteQuotesPage() {
-  const { quotes } = useQuotesStore();
+  const { favouriteQuotes } = useQuotesStore();
 
-  return quotes.favourite.length ? (
+  return favouriteQuotes.length ? (
     <Masonry
-      items={quotes.favourite}
+      items={favouriteQuotes}
       config={{
         columns: [1, 2, 3],
         gap: [8, 8, 8],

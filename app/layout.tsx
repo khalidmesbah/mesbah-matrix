@@ -23,7 +23,7 @@ export default async function RootLayout({
         <Providers>
           <main className="flex">
             <Navbar />
-            <div className="container max-h-dvh overflow-auto p-2 flex flex-col gap-2">
+            <div className="container max-h-dvh h-dvh overflow-auto p-2 flex flex-col gap-2">
               <Suspense fallback={<TopBarSkeleton />}>
                 <TopBarAuthWrapper />
               </Suspense>

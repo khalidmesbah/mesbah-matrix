@@ -1,18 +1,9 @@
 "use server";
 
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { MatrixType } from "@/lib/stores/the-matrix-store";
 import { db } from "../firebase/init";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import {
-  ActionResponse,
-  SharedType,
-  QuoteType,
-  GlobalsType,
-  QuotesType,
-} from "@/types";
-import { QueryKey } from "@tanstack/react-query";
-import { wait } from "../utils";
+import { SharedType, QuoteType, GlobalsType, QuotesType } from "@/types";
 
 const getRandomQuotes = async (): Promise<QuoteType[]> => {
   try {
@@ -30,20 +21,47 @@ const getRandomQuotes = async (): Promise<QuoteType[]> => {
   }
 };
 
+const getQotd = async (): Promise<QuoteType> => {
+  const randomQuotes = await getRandomQuotes();
+  if (randomQuotes === undefined)
+    throw new Error("error fetching random quotes");
+  const [newQotd] = randomQuotes;
+
+  const today = new Date().getDay();
+
+  const resGlobal = await getDoc(doc(db, "globals", "data"));
+  const globals = resGlobal.data() as GlobalsType;
+
+  if (!globals || today !== globals.today) {
+    await setDoc(
+      doc(db, "globals", "data"),
+      {
+        qotd: newQotd,
+        today,
+      },
+      { merge: true },
+    );
+    return newQotd;
+  }
+  return globals.qotd;
+};
+
 const getQuotes = async (): Promise<QuotesType | undefined> => {
   try {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
-    if (!user) throw new Error("there's no user");
 
     const randomQuotes = await getRandomQuotes();
     if (randomQuotes === undefined)
       throw new Error("error fetching random quotes");
     const [newQotd] = randomQuotes;
 
+    const today = new Date().getDay();
+
+    if (!user) throw new Error("there's no user");
+
     const resQuotes = await getDoc(doc(db, "users", user.id, "data", "quotes"));
     let quotes = resQuotes.data() as QuotesType;
-    const today = new Date().getDay();
 
     if (!quotes) {
       quotes = { favourite: [], qotd: newQotd };
@@ -81,28 +99,8 @@ const getQuotes = async (): Promise<QuotesType | undefined> => {
   }
 };
 
-// } else {
-//   const today = new Date().getDay();
-//
-//   const resGlobal = await getDoc(doc(db, "globals", "data"));
-//   const globals = resGlobal.data() as GlobalsType;
-//
-//   if (!globals || today !== globals.today) {
-//     await setDoc(
-//       doc(db, "globals", "data"),
-//       {
-//         qotd: newQotd,
-//         today,
-//       },
-//       { merge: true },
-//     );
-//     return { favourite: initialFavouriteQuotes, qotd: newQotd };
-//   }
-//   return { favourite: initialFavouriteQuotes, qotd: globals.qotd };
-// }
-const toggleFavouriteState = async (quote: QuoteType, isFavourite: boolean) => {
+const toggleFavouriteState = async (quote: QuoteType) => {
   console.log("-----------------------");
-  console.log(quote, isFavourite);
   try {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
@@ -114,13 +112,13 @@ const toggleFavouriteState = async (quote: QuoteType, isFavourite: boolean) => {
     if (!favourite) favourite = [];
 
     console.log(`before`, favourite);
+    const isFavourite = favourite.map((q) => q._id).includes(quote._id);
 
     if (isFavourite) {
       favourite = favourite.filter((q) => q._id !== quote._id);
     } else {
       favourite.push(quote);
     }
-
     console.log(`after`, favourite);
 
     await setDoc(
@@ -133,4 +131,4 @@ const toggleFavouriteState = async (quote: QuoteType, isFavourite: boolean) => {
   }
 };
 
-export { getRandomQuotes, getQuotes, toggleFavouriteState };
+export { getRandomQuotes, getQuotes, toggleFavouriteState, getQotd };

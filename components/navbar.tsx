@@ -45,7 +45,7 @@ export default function Navbar() {
   const { isAuthenticated } = useKindeBrowserClient();
 
   return (
-    <div className="w-[56px] min-w-[56px] h-screen flex flex-col items-center p-2 border-r border-r-1 border-r-primary">
+    <div className="w-[56px] min-w-[56px] h-dvh flex flex-col items-center p-2 border-r border-r-1 border-r-primary">
       <Icon name={routes[0].name} icon={routes[0].icon} link={routes[0].link} />
 
       <Separator className="mt-2" />

@@ -7,10 +7,13 @@ export default async function CategoryPage({
 }: {
   params: { id: string };
 }) {
-  const azkarRes = await fs.readFile(process.cwd() + "/azkar.json", "utf8");
+  const azkarRes = await fs.readFile(
+    process.cwd() + "/public/data/azkar.json",
+    "utf8",
+  );
   const azkar = JSON.parse(azkarRes);
   const categoriesRes = await fs.readFile(
-    process.cwd() + "/categories.json",
+    process.cwd() + "/public/data/categories.json",
     "utf8",
   );
   const categories = JSON.parse(categoriesRes);

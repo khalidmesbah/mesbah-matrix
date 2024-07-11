@@ -1,5 +1,5 @@
-import AnonFavouriteQuotesPage from "@/components/anon/favourite-quotes-page";
-import UserFavouriteQuotesPage from "@/components/user/favourite-quotes-page";
+import AnonFavouriteQuotesPage from "@/components/quotes/anon/favourite-quotes-page";
+import UserFavouriteQuotesPage from "@/components/quotes/user/favourite-quotes-page";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 export default async function FavouriteQuotesPage() {

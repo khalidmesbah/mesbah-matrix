@@ -11,7 +11,7 @@ import { wait } from "@/lib/utils";
 
 export default async function AzkarPage() {
   const categoriesRes = await fs.readFile(
-    process.cwd() + "/categories.json",
+    process.cwd() + "/public/data/categories.json",
     "utf8",
   );
   await wait(2000);
@@ -23,12 +23,12 @@ export default async function AzkarPage() {
         <AccordionContent className="flex gap-1 flex-col justify-start">
           {Object.keys(categories)
             .slice(0, 3)
-            .map((k) => {
+            .map((k, i) => {
               return (
                 <Link
                   className={buttonVariants({ variant: "default" })}
                   href={`/azkar/${k}`}
-                  key={k}
+                  key={i}
                 >
                   {categories[k].ar}
                 </Link>
@@ -41,12 +41,12 @@ export default async function AzkarPage() {
         <AccordionContent className="flex gap-1 flex-wrap justify-end">
           {Object.keys(categories)
             .slice(3)
-            .map((k) => {
+            .map((k, i) => {
               return (
                 <Link
                   className={buttonVariants({ variant: "default" })}
                   href={`/azkar/${k}`}
-                  key={k}
+                  key={i}
                 >
                   {categories[k].ar}
                 </Link>

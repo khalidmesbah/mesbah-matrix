@@ -27,8 +27,8 @@ export interface QuoteType {
 }
 
 export interface QuotesType {
-  favourite: QuoteType[];
-  qotd: QuoteType;
+  favourite?: QuoteType[];
+  qotd?: QuoteType;
 }
 
 export interface SharedType {
