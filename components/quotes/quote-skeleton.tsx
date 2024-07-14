@@ -1,19 +1,15 @@
-import { Skeleton } from "@/components/ui/skeleton";
-import { Card } from "@/components/ui/card";
-import { randomString } from "@/lib/utils";
+import { Card } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+import { randomString } from '@/lib/utils';
 
 export default function QuoteSkeleton() {
   const quote = randomString(125, 200);
   const author = randomString(7, 15);
   return (
-    <Card className="p-2 rounded-md shadow-md select-none text-transparent">
-      <Skeleton className="text-xl font-medium break-words">
-        &quot;{quote}&quot;
-      </Skeleton>
-      <div className="flex items-center gap-2 justify-between mt-4">
-        <Skeleton className="text-sm font-medium text-transparent">
-          - {author}
-        </Skeleton>
+    <Card className="select-none rounded-md p-2 text-transparent shadow-md">
+      <Skeleton className="break-words text-xl font-medium">&quot;{quote}&quot;</Skeleton>
+      <div className="mt-4 flex items-center justify-between gap-2">
+        <Skeleton className="text-sm font-medium text-transparent">- {author}</Skeleton>
         <Skeleton className="size-10" />
       </div>
     </Card>

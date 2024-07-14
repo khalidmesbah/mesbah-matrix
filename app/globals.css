@@ -85,7 +85,7 @@
 .loader-slice::after {
   --uib-a: calc(var(--uib-speed) / -2);
   --uib-b: calc(var(--uib-speed) / -6);
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: calc(50% - var(--uib-size) / 12);

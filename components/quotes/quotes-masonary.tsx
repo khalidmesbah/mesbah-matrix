@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import QuoteSkeleton from "./quote-skeleton";
-import { Masonry } from "react-plock";
+import { Masonry } from 'react-plock';
+import QuoteSkeleton from './quote-skeleton';
 
 export default function QuotesMasonary() {
   return (
@@ -19,7 +19,7 @@ export default function QuotesMasonary() {
 
 export const ContentCardSkeletonList = () => {
   return (
-    <div className="w-full columns-1 md:columns-2 lg:columns-3 2xl:columns-4 bg-green-500">
+    <div className="w-full columns-1 bg-green-500 md:columns-2 lg:columns-3 2xl:columns-4">
       {Array.from({ length: 8 }).map((_, i) => (
         <QuoteSkeleton key={i} />
       ))}

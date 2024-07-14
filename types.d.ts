@@ -41,3 +41,16 @@ export interface GlobalsType {
   qotd: QuoteType;
   today: number;
 }
+
+export interface KanbanType {
+  boards: {
+    [boardId: string]: CardType[];
+  };
+  selectedBoard: string;
+}
+
+export interface CardType {
+  id: string;
+  title: string;
+  column: string;
+}

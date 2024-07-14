@@ -1,23 +1,20 @@
-"use client";
+'use client';
 
-import { Button, buttonVariants } from "@/components/ui/button";
-import { RefreshCcwIcon } from "lucide-react";
-import { useQueryClient } from "@tanstack/react-query";
-import Link from "next/link";
-import {
-  useQotdQuotesQuery,
-  useRandomQuotesQuery,
-} from "@/lib/hooks/use-quotes-query";
-import useQuotesStore from "@/lib/stores/quotes-store";
-import { Badge } from "@/components/ui/badge";
-import { Masonry } from "react-plock";
-import FavouriteQuoteSkeleton from "@/components/quotes/favourite-quote-skeleton";
-import { NoQuoteOfTheDay } from "@/components/quotes/no-quote-of-the-day";
-import FavouriteButton from "@/components/quotes/anon/favourite-button";
-import NoFavouriteQuotes from "@/components/quotes/no-favourite-quotes";
-import QuoteSkeleton from "@/components/quotes/quote-skeleton";
-import NoFetchedQuotes from "@/components/quotes/no-fetched-quotes";
-import Quote from "@/components/quotes/anon/quote";
+import FavouriteButton from '@/components/quotes/anon/favourite-button';
+import Quote from '@/components/quotes/anon/quote';
+import FavouriteQuoteSkeleton from '@/components/quotes/favourite-quote-skeleton';
+import NoFavouriteQuotes from '@/components/quotes/no-favourite-quotes';
+import NoFetchedQuotes from '@/components/quotes/no-fetched-quotes';
+import { NoQuoteOfTheDay } from '@/components/quotes/no-quote-of-the-day';
+import QuoteSkeleton from '@/components/quotes/quote-skeleton';
+import { Badge } from '@/components/ui/badge';
+import { Button, buttonVariants } from '@/components/ui/button';
+import { useQotdQuotesQuery, useRandomQuotesQuery } from '@/lib/hooks/use-quotes-query';
+import useQuotesStore from '@/lib/stores/quotes-store';
+import { useQueryClient } from '@tanstack/react-query';
+import { RefreshCcwIcon } from 'lucide-react';
+import Link from 'next/link';
+import { Masonry } from 'react-plock';
 
 export default function AnonQuotesPage() {
   const {
@@ -28,11 +25,7 @@ export default function AnonQuotesPage() {
     isRefetching: isRandomQuotesRefetching,
     isPending: isRandomQuotesPending,
   } = useRandomQuotesQuery();
-  const {
-    data: qotd,
-    isLoading: isQotdLoading,
-    isError: isErrorOnQotd,
-  } = useQotdQuotesQuery();
+  const { data: qotd, isLoading: isQotdLoading, isError: isErrorOnQotd } = useQotdQuotesQuery();
   const { favouriteQuotes } = useQuotesStore();
 
   const queryClient = useQueryClient();
@@ -44,28 +37,26 @@ export default function AnonQuotesPage() {
       ) : !qotd || isErrorOnQotd ? (
         <NoQuoteOfTheDay />
       ) : (
-        <section className="flex flex-col items-center text-center gap-4">
+        <section className="flex flex-col items-center gap-4 text-center">
           <Badge>Quote of the Day</Badge>
 
-          <blockquote className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold max-w-3xl">
+          <blockquote className="max-w-3xl text-2xl font-semibold sm:text-3xl md:text-4xl lg:text-5xl">
             &quot;{qotd.content}&quot;
           </blockquote>
 
-          <div className="flex items-center gap-2 justify-between">
-            <cite className="text-muted-foreground text-sm font-medium">
-              - {qotd.author}
-            </cite>
+          <div className="flex items-center justify-between gap-2">
+            <cite className="text-sm font-medium text-muted-foreground">- {qotd.author}</cite>
             <FavouriteButton quote={qotd} />
           </div>
         </section>
       )}
       <section>
-        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold mb-3 flex items-center justify-start gap-2 flex-wrap">
+        <h2 className="mb-3 flex flex-wrap items-center justify-start gap-2 text-xl font-semibold sm:text-2xl md:text-3xl lg:text-4xl">
           Favourite Quotes
-          <div className="flex-1 flex justify-end">
+          <div className="flex flex-1 justify-end">
             <Link
-              className={`${buttonVariants({ variant: "outline", size: "sm" })}`}
-              href={"/quotes/favourite"}
+              className={`${buttonVariants({ variant: 'outline', size: 'sm' })}`}
+              href={'/quotes/favourite'}
             >
               Show All
             </Link>
@@ -86,22 +77,22 @@ export default function AnonQuotesPage() {
         )}
       </section>
       <section>
-        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold mb-3 flex items-center justify-start gap-2 flex-wrap">
+        <h2 className="mb-3 flex flex-wrap items-center justify-start gap-2 text-xl font-semibold sm:text-2xl md:text-3xl lg:text-4xl">
           Random Quotes
-          <div className="flex-1 flex justify-end">
+          <div className="flex flex-1 justify-end">
             <Button
               variant="outline"
-              size={"sm"}
+              size={'sm'}
               disabled={isRandomQuotesFetching}
-              className="rounded-md flex gap-2 items-center justify-center px-2"
+              className="flex items-center justify-center gap-2 rounded-md px-2"
               onClick={() => {
                 queryClient.invalidateQueries({
-                  queryKey: ["random-quotes"],
+                  queryKey: ['random-quotes'],
                 });
               }}
             >
               <RefreshCcwIcon
-                className={`w-5 h-5 text-muted-foreground ${isRandomQuotesFetching && "animate-spin"}`}
+                className={`h-5 w-5 text-muted-foreground ${isRandomQuotesFetching && 'animate-spin'}`}
               />
               <span>Fetch New Quotes</span>
             </Button>

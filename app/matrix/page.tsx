@@ -1,46 +1,5 @@
-"use client";
+'use client';
 
-import { Button, buttonVariants } from "@/components/ui/button";
-import useMatrixStore, {
-  ColumnType,
-  MatrixType,
-  TaskType,
-} from "@/lib/stores/the-matrix-store";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { toast } from "@/components/ui/use-toast";
-import {
-  DragDropContext,
-  Droppable,
-  Draggable,
-  DropResult,
-} from "@hello-pangea/dnd";
-import { ReactNode, useEffect } from "react";
-import { v4 as uuidV4 } from "uuid";
-import {
-  Badge,
-  BadgeCheck,
-  BadgePlus,
-  Grip,
-  Settings,
-  Pencil,
-  BadgeX,
-  BadgeInfo,
-} from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -51,7 +10,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+} from '@/components/ui/alert-dialog';
+import { Button, buttonVariants } from '@/components/ui/button';
 import {
   Dialog,
   DialogClose,
@@ -61,31 +21,48 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
+} from '@/components/ui/dialog';
 import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
-import { useQueryClient } from "@tanstack/react-query";
-import { useQuery } from "@tanstack/react-query";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
+import { Input } from '@/components/ui/input';
+import { toast } from '@/components/ui/use-toast';
+import { _getMatrix } from '@/lib/server-actions/the-matrix-actions';
+import useMatrixStore, { ColumnType, MatrixType, TaskType } from '@/lib/stores/the-matrix-store';
+import { DragDropContext, Draggable, DropResult, Droppable } from '@hello-pangea/dnd';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import {
-  _getMatrix,
-  _setMatrix,
-} from "@/lib/server-actions/the-matrix-actions";
+  Badge,
+  BadgeCheck,
+  BadgeInfo,
+  BadgePlus,
+  BadgeX,
+  Grip,
+  Pencil,
+  Settings,
+} from 'lucide-react';
+import { ReactNode, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { v4 as uuidV4 } from 'uuid';
+import { z } from 'zod';
 // TODO replace column with quadrant
 // FIX: fix the onsubmit function to add user feedback to the project
 
 const FormSchema = z.object({
   text: z.string().min(2, {
-    message: "The task must be at least 2 characters.",
+    message: 'The task must be at least 2 characters.',
   }),
 });
 
 export default function MatrixPage() {
   const { isLoading, data } = useQuery({
-    queryKey: ["the-matrix"],
+    queryKey: ['the-matrix'],
     queryFn: (): Promise<MatrixType> => _getMatrix(),
     staleTime: Infinity,
     refetchOnWindowFocus: false,
@@ -97,12 +74,12 @@ export default function MatrixPage() {
 
   const setMatrix = (newMatrix: MatrixType) => {
     _setMatrix(newMatrix);
-    queryClient.invalidateQueries({ queryKey: ["the-matrix"] });
+    queryClient.invalidateQueries({ queryKey: ['the-matrix'] });
   };
 
   useEffect(() => {
-    console.log(`data: `, data?.columns["column-1"].taskIds);
-    console.log(`matrix: `, matrix.columns["column-1"].taskIds);
+    console.log(`data: `, data?.columns['column-1'].taskIds);
+    console.log(`matrix: `, matrix.columns['column-1'].taskIds);
     if (!isLoading && data) {
       setMatrix(data);
     }
@@ -113,10 +90,7 @@ export default function MatrixPage() {
     const { draggableId, destination, source } = result;
 
     if (!destination) return;
-    if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    )
+    if (destination.droppableId === source.droppableId && destination.index === source.index)
       return;
 
     const start = matrix.columns[source.droppableId];
@@ -169,18 +143,11 @@ export default function MatrixPage() {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div className="grid grid-cols-1 sm:grid-cols-2 sm:grid-rows-2 gap-1 h-[calc(100dvh_-_16px)]">
+      <div className="grid h-[calc(100dvh_-_16px)] grid-cols-1 gap-1 sm:grid-cols-2 sm:grid-rows-2">
         {matrix.columnOrder.map((columnId) => {
           const column = matrix.columns[columnId];
           const tasks = column.taskIds.map((taskId) => matrix.tasks[taskId]);
-          return (
-            <Column
-              key={column.id}
-              column={column}
-              tasks={tasks}
-              setMatrix={setMatrix}
-            />
-          );
+          return <Column key={column.id} column={column} tasks={tasks} setMatrix={setMatrix} />;
         })}
       </div>
     </DragDropContext>
@@ -201,13 +168,13 @@ function Column({
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      text: "",
+      text: '',
     },
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     toast({
-      title: "You submitted the following values:",
+      title: 'You submitted the following values:',
       description: (
         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
           <code className="text-white">{JSON.stringify(data, null, 2)}</code>
@@ -225,39 +192,36 @@ function Column({
 
   return (
     <div
-      className={`flex flex-col sm:flex-row rounded-md border-2 ${column.title === "do" ? "border-[#34a853]" : column.title === "schedule" ? "border-[#4285f4]" : column.title === "delegate" ? "border-[#fbbc05]" : "border-[#ea4335]"}`}
+      className={`flex flex-col rounded-md border-2 sm:flex-row ${column.title === 'do' ? 'border-[#34a853]' : column.title === 'schedule' ? 'border-[#4285f4]' : column.title === 'delegate' ? 'border-[#fbbc05]' : 'border-[#ea4335]'}`}
     >
       <div
-        className={`flex sm:flex-col gap-1 ${column.title === "do" ? "bg-[#34a853]" : column.title === "schedule" ? "bg-[#4285f4]" : column.title === "delegate" ? "bg-[#fbbc05]" : "bg-[#ea4335]"}`}
+        className={`flex gap-1 sm:flex-col ${column.title === 'do' ? 'bg-[#34a853]' : column.title === 'schedule' ? 'bg-[#4285f4]' : column.title === 'delegate' ? 'bg-[#fbbc05]' : 'bg-[#ea4335]'}`}
       >
         <Dialog>
           <DialogTrigger asChild>
-            <Button size={"icon"} variant={"link"} className="text-foreground">
+            <Button size={'icon'} variant={'link'} className="text-foreground">
               <BadgePlus />
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
               <DialogTitle>
-                {column.title === "do"
-                  ? "Urgent and Important"
-                  : column.title === "schedule"
-                    ? "Not Urgent but Important"
-                    : column.title === "delegate"
-                      ? "Urgent but Not Important"
-                      : column.title === "delete"
-                        ? "Not Urgent and Not Important"
-                        : "Not A Valid Title!!"}
+                {column.title === 'do'
+                  ? 'Urgent and Important'
+                  : column.title === 'schedule'
+                    ? 'Not Urgent but Important'
+                    : column.title === 'delegate'
+                      ? 'Urgent but Not Important'
+                      : column.title === 'delete'
+                        ? 'Not Urgent and Not Important'
+                        : 'Not A Valid Title!!'}
               </DialogTitle>
               <DialogDescription>
                 Add a Task To `{column.title.toUpperCase()}` column.
               </DialogDescription>
             </DialogHeader>
             <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-6 bg-card"
-              >
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 bg-card">
                 <FormField
                   control={form.control}
                   name="text"
@@ -287,26 +251,26 @@ function Column({
           </DialogContent>
         </Dialog>
 
-        <h2 className="flex-1 font-extrabold uppercase flex justify-center items-center sm:scale-[-1] sm:[writing-mode:vertical-lr]">
+        <h2 className="flex flex-1 items-center justify-center font-extrabold uppercase sm:scale-[-1] sm:[writing-mode:vertical-lr]">
           {column.title}
         </h2>
 
         <HoverCard>
           <HoverCardTrigger>
-            <div className="w-10 h-10 flex justify-center items-center rounded-full">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full">
               <BadgeInfo />
             </div>
           </HoverCardTrigger>
           <HoverCardContent>
-            {column.title === "do"
-              ? "Tasks with deadlines or consequences"
-              : column.title === "schedule"
-                ? "Tasks with unclear deadlines that contribute to long-term success."
-                : column.title === "delegate"
+            {column.title === 'do'
+              ? 'Tasks with deadlines or consequences'
+              : column.title === 'schedule'
+                ? 'Tasks with unclear deadlines that contribute to long-term success.'
+                : column.title === 'delegate'
                   ? "Tasks that must get done but don't require your specific skill set."
-                  : column.title === "delete"
-                    ? "Distractions and unnecessary tasks."
-                    : "Not A Valid Title!!"}
+                  : column.title === 'delete'
+                    ? 'Distractions and unnecessary tasks.'
+                    : 'Not A Valid Title!!'}
           </HoverCardContent>
         </HoverCard>
       </div>
@@ -315,7 +279,7 @@ function Column({
           <div
             ref={provided.innerRef}
             {...provided.droppableProps}
-            className="overflow-y-auto overflow-x-hidden w-full p-[2px] rounded-md"
+            className="w-full overflow-y-auto overflow-x-hidden rounded-md p-[2px]"
           >
             {tasks.length ? (
               tasks.map((task, index) => (
@@ -359,17 +323,13 @@ function Task({
   return (
     <Draggable draggableId={task.id} index={index}>
       {(provided) => (
-        <div
-          className="p-[2px]"
-          {...provided.draggableProps}
-          ref={provided.innerRef}
-        >
-          <div className="bg-secondary flex items-stretch rounded-md">
+        <div className="p-[2px]" {...provided.draggableProps} ref={provided.innerRef}>
+          <div className="flex items-stretch rounded-md bg-secondary">
             <div className="relative w-6 px-3">
               <Button
-                variant={"link"}
+                variant={'link'}
                 size="sm"
-                className="rounded-none h-full w-full absolute inset-0"
+                className="absolute inset-0 h-full w-full rounded-none"
                 onClick={() => toggleCheck(task.id)}
               >
                 {task.done ? (
@@ -380,15 +340,9 @@ function Task({
               </Button>
             </div>
 
-            <p className="p-1 w-full line-clamp-1 flex items-center">
-              {task.text}
-            </p>
+            <p className="line-clamp-1 flex w-full items-center p-1">{task.text}</p>
             <div className="relative">
-              <TaskSettings
-                task={task}
-                columnId={columnId}
-                setMatrix={setMatrix}
-              />
+              <TaskSettings task={task} columnId={columnId} setMatrix={setMatrix} />
             </div>
             <div className="relative">
               <Icon icon={<Grip size={20} />} {...provided.dragHandleProps} />
@@ -412,10 +366,7 @@ function TaskSettings({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant="link"
-          className={`rounded-none h-full !p-1 !w-6 !bg-none`}
-        >
+        <Button variant="link" className={`h-full !w-6 rounded-none !bg-none !p-1`}>
           <Icon icon={<Settings size={20} />} />
         </Button>
       </DropdownMenuTrigger>
@@ -441,9 +392,7 @@ function DeleteTask({
 
   const deleteTask = (id: string) => {
     delete matrix.tasks[id];
-    const newTaskIds = matrix.columns[columnId].taskIds.filter(
-      (taskId) => taskId !== id,
-    );
+    const newTaskIds = matrix.columns[columnId].taskIds.filter((taskId) => taskId !== id);
     matrix.columns[columnId].taskIds = newTaskIds;
     setMatrix(matrix);
   };
@@ -452,7 +401,7 @@ function DeleteTask({
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-          <button className="flex items-center !w-full">
+          <button className="flex !w-full items-center">
             <BadgeX className="mr-2 h-4 w-4" />
             <span>Delete</span>
           </button>
@@ -463,8 +412,8 @@ function DeleteTask({
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your task
-            and remove it from our servers.
+            This action cannot be undone. This will permanently delete your task and remove it from
+            our servers.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -472,7 +421,7 @@ function DeleteTask({
           <AlertDialogAction
             color="destructive"
             onClick={() => deleteTask(task.id)}
-            className={`${buttonVariants({ variant: "destructive" })}`}
+            className={`${buttonVariants({ variant: 'destructive' })}`}
           >
             Continue
           </AlertDialogAction>
@@ -505,7 +454,7 @@ function EditTask({
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     toast({
-      title: "You submitted the following values:",
+      title: 'You submitted the following values:',
       description: (
         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
           <code className="text-white">{JSON.stringify(data, null, 2)}</code>
@@ -518,7 +467,7 @@ function EditTask({
     <Dialog>
       <DialogTrigger asChild>
         <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-          <button className="flex items-center !w-full">
+          <button className="flex !w-full items-center">
             <Pencil className="mr-2 h-4 w-4" />
             <span>Edit</span>
           </button>
@@ -533,10 +482,7 @@ function EditTask({
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-6 bg-card"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 bg-card">
             <FormField
               control={form.control}
               name="text"
@@ -570,7 +516,7 @@ function EditTask({
 function Icon({ icon, ...props }: { icon: ReactNode }) {
   return (
     <div
-      className={`${buttonVariants({ variant: "link" })} h-full rounded-none !p-1 !w-6`}
+      className={`${buttonVariants({ variant: 'link' })} h-full !w-6 rounded-none !p-1`}
       {...props}
     >
       {icon}

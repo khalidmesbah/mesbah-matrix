@@ -1,46 +1,33 @@
-"use client";
+'use client';
 
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { H3, P } from '@/components/typography';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel";
-import { Button } from "@/components/ui/button";
-import { useQuery } from "@tanstack/react-query";
-import {
-  _getDailyReminders,
-  _setDailyReminders,
-} from "@/lib/server-actions/daily-reminders-actions";
-import useDailyRemindersStore from "@/lib/stores/daily-reminders-store";
-import { useEffect } from "react";
-import { H1, H3, P } from "@/components/typography";
+} from '@/components/ui/carousel';
+import useDailyRemindersStore from '@/lib/stores/daily-reminders-store';
 // TODO: add celebration and sound once finished the reminders
 
 export default function DailyRemindersPage() {
-  const { dailyReminders, setDailyReminders } = useDailyRemindersStore(
-    (state) => state,
-  );
+  const { dailyReminders, setDailyReminders } = useDailyRemindersStore((state) => state);
 
-  const order = dailyReminders.order.filter(
-    (id) => dailyReminders.reminders[id].done === false,
-  );
+  const order = dailyReminders.order.filter((id) => dailyReminders.reminders[id].done === false);
 
   console.log(`order: `, order);
 
   return (
-    <Carousel className="w-full h-full max-w-lg mx-auto">
+    <Carousel className="mx-auto h-full w-full max-w-lg">
       <CarouselContent>
         {order.length === 0 ? (
           <CarouselItem>
             <Card>
               <CardContent className="flex h-[80vh] items-center justify-center overflow-auto">
-                <H3
-                  text={"No More reminders"}
-                  className="text-4xl font-semibold break-all"
-                />
+                <H3 text={'No More reminders'} className="break-all text-4xl font-semibold" />
               </CardContent>
             </Card>
           </CarouselItem>
@@ -54,7 +41,7 @@ export default function DailyRemindersPage() {
                   <CardContent className="flex h-[80vh] items-center justify-center overflow-auto">
                     <P
                       text={reminder.text}
-                      className="text-4xl font-semibold break-all select-none"
+                      className="select-none break-all text-4xl font-semibold"
                     />
                   </CardContent>
                   <CardFooter>

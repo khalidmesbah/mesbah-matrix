@@ -1,18 +1,16 @@
-"use server";
+'use server';
 
-import { doc, getDoc, setDoc } from "firebase/firestore";
-import { db } from "../firebase/init";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import { SharedType, QuoteType, GlobalsType, QuotesType } from "@/types";
+import { db } from '@/lib/firebase/init';
+import { GlobalsType, QuoteType, QuotesType, SharedType } from '@/types';
+import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 const getRandomQuotes = async (): Promise<QuoteType[]> => {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_QUOTES_API}/quotes/random?limit=6`,
-    );
+    const res = await fetch(`${process.env.NEXT_PUBLIC_QUOTES_API}/quotes/random?limit=6`);
 
     if (!res.ok) {
-      throw new Error("Failed to fetch quotes");
+      throw new Error('Failed to fetch quotes');
     }
     return res.json();
   } catch (error) {
@@ -23,18 +21,17 @@ const getRandomQuotes = async (): Promise<QuoteType[]> => {
 
 const getQotd = async (): Promise<QuoteType> => {
   const randomQuotes = await getRandomQuotes();
-  if (randomQuotes === undefined)
-    throw new Error("error fetching random quotes");
+  if (randomQuotes === undefined) throw new Error('error fetching random quotes');
   const [newQotd] = randomQuotes;
 
   const today = new Date().getDay();
 
-  const resGlobal = await getDoc(doc(db, "globals", "data"));
+  const resGlobal = await getDoc(doc(db, 'globals', 'data'));
   const globals = resGlobal.data() as GlobalsType;
 
   if (!globals || today !== globals.today) {
     await setDoc(
-      doc(db, "globals", "data"),
+      doc(db, 'globals', 'data'),
       {
         qotd: newQotd,
         today,
@@ -52,44 +49,35 @@ const getQuotes = async (): Promise<QuotesType | undefined> => {
     const user = await getUser();
 
     const randomQuotes = await getRandomQuotes();
-    if (randomQuotes === undefined)
-      throw new Error("error fetching random quotes");
+    if (randomQuotes === undefined) throw new Error('error fetching random quotes');
     const [newQotd] = randomQuotes;
 
     const today = new Date().getDay();
 
     if (!user) throw new Error("there's no user");
 
-    const resQuotes = await getDoc(doc(db, "users", user.id, "data", "quotes"));
+    const resQuotes = await getDoc(doc(db, 'users', user.id, 'data', 'quotes'));
     let quotes = resQuotes.data() as QuotesType;
 
     if (!quotes) {
       quotes = { favourite: [], qotd: newQotd };
-      await setDoc(doc(db, "users", user.id, "data", "quotes"), quotes);
-      await setDoc(
-        doc(db, "users", user.id, "data", "shared"),
-        { today },
-        { merge: true },
-      );
+      await setDoc(doc(db, 'users', user.id, 'data', 'quotes'), quotes);
+      await setDoc(doc(db, 'users', user.id, 'data', 'shared'), { today }, { merge: true });
       return quotes;
     }
 
-    const resShared = await getDoc(doc(db, "users", user.id, "data", "shared"));
+    const resShared = await getDoc(doc(db, 'users', user.id, 'data', 'shared'));
     const shared = resShared.data() as SharedType;
 
     if (today !== shared.today) {
       await setDoc(
-        doc(db, "users", user.id, "data", "quotes"),
+        doc(db, 'users', user.id, 'data', 'quotes'),
         {
           qotd: newQotd,
         },
         { merge: true },
       );
-      await setDoc(
-        doc(db, "users", user.id, "data", "shared"),
-        { today },
-        { merge: true },
-      );
+      await setDoc(doc(db, 'users', user.id, 'data', 'shared'), { today }, { merge: true });
       quotes.qotd = newQotd;
     }
 
@@ -100,14 +88,14 @@ const getQuotes = async (): Promise<QuotesType | undefined> => {
 };
 
 const toggleFavouriteState = async (quote: QuoteType) => {
-  console.log("-----------------------");
+  console.log('-----------------------');
   try {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
 
     if (!user) return;
 
-    const quotesRes = await getDoc(doc(db, "users", user.id, "data", "quotes"));
+    const quotesRes = await getDoc(doc(db, 'users', user.id, 'data', 'quotes'));
     let { favourite } = quotesRes.data() as QuotesType;
     if (!favourite) favourite = [];
 
@@ -121,14 +109,10 @@ const toggleFavouriteState = async (quote: QuoteType) => {
     }
     console.log(`after`, favourite);
 
-    await setDoc(
-      doc(db, "users", user.id, "data", "quotes"),
-      { favourite },
-      { merge: true },
-    );
+    await setDoc(doc(db, 'users', user.id, 'data', 'quotes'), { favourite }, { merge: true });
   } catch (error) {
     console.error(error);
   }
 };
 
-export { getRandomQuotes, getQuotes, toggleFavouriteState, getQotd };
+export { getQotd, getQuotes, getRandomQuotes, toggleFavouriteState };

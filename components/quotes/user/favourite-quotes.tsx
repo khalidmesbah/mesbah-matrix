@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { Masonry } from "react-plock";
-import NoFavouriteQuotes from "@/components/quotes/no-favourite-quotes";
-import Quote from "@/components/quotes/user/quote";
-import { useQuotesQuery } from "@/lib/hooks/use-quotes-query";
-import QuoteSkeleton from "../quote-skeleton";
+import NoFavouriteQuotes from '@/components/quotes/no-favourite-quotes';
+import Quote from '@/components/quotes/user/quote';
+import { useQuotesQuery } from '@/lib/hooks/use-quotes-query';
+import { Masonry } from 'react-plock';
+import QuoteSkeleton from '../quote-skeleton';
 
 export default function UserFavouriteQuotesPage() {
   const { isLoading, data: quotes, isError } = useQuotesQuery();
@@ -19,10 +19,7 @@ export default function UserFavouriteQuotesPage() {
       }}
       render={(index) => <QuoteSkeleton key={index} />}
     />
-  ) : !quotes ||
-    !quotes.favourite ||
-    isError ||
-    quotes.favourite.length === 0 ? (
+  ) : !quotes || !quotes.favourite || isError || quotes.favourite.length === 0 ? (
     <NoFavouriteQuotes />
   ) : (
     <Masonry

@@ -1,6 +1,6 @@
-import { create } from "zustand";
-import { v4 as uuidv4 } from "uuid";
-import { _setDailyReminders } from "../server-actions/daily-reminders-actions";
+import { v4 as uuidv4 } from 'uuid';
+import { create } from 'zustand';
+import { _setDailyReminders } from '../server-actions/daily-reminders-actions';
 
 export interface DailyReminderType {
   id: string;
@@ -23,19 +23,19 @@ type DailyReminderStore = {
 
 const initialDailyReminders: DailyRemindersType = {
   reminders: {
-    "1": {
-      id: "1",
-      text: "Know that you are powerful beyond your recognition.",
+    '1': {
+      id: '1',
+      text: 'Know that you are powerful beyond your recognition.',
       done: false,
     },
-    "2": {
-      id: "2",
-      text: "Your thoughts become reality. Be positive!",
+    '2': {
+      id: '2',
+      text: 'Your thoughts become reality. Be positive!',
       done: false,
     },
-    "3": { id: "3", text: "Forgiveness leads to love.", done: false },
+    '3': { id: '3', text: 'Forgiveness leads to love.', done: false },
   },
-  order: ["1", "2", "3"],
+  order: ['1', '2', '3'],
 };
 
 const useDailyRemindersStore = create<DailyReminderStore>(

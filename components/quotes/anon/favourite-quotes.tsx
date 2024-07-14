@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import useQuotesStore from "@/lib/stores/quotes-store";
-import { Masonry } from "react-plock";
-import NoFavouriteQuotes from "@/components/quotes/no-favourite-quotes";
-import Quote from "@/components/quotes/anon/quote";
+import Quote from '@/components/quotes/anon/quote';
+import NoFavouriteQuotes from '@/components/quotes/no-favourite-quotes';
+import useQuotesStore from '@/lib/stores/quotes-store';
+import { Masonry } from 'react-plock';
 
 export default function AnonFavouriteQuotesPage() {
   const { favouriteQuotes } = useQuotesStore();

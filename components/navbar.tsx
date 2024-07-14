@@ -1,15 +1,11 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { Button, buttonVariants } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { Separator } from "@/components/ui/separator";
-import { ReactNode } from "react";
+import { buttonVariants } from '@/components/ui/button';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Separator } from '@/components/ui/separator';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
+import { LoginLink } from '@kinde-oss/kinde-auth-nextjs/components';
 import {
   BellRing,
   Bolt,
@@ -22,22 +18,21 @@ import {
   ScanEye,
   SquareKanban,
   SquareUser,
-} from "lucide-react";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { LoginLink } from "@kinde-oss/kinde-auth-nextjs/components";
-import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
-import { usePathname } from "next/navigation";
+} from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { ReactNode } from 'react';
 
 const routes = [
-  { name: "Home", link: "/", icon: <Home /> },
-  { name: "The Matrix", link: "/matrix", icon: <Grid2X2 /> },
-  { name: "Focus", link: "/focus", icon: <ScanEye /> },
-  { name: "Daily Reminders", link: "/daily-reminders", icon: <BellRing /> },
-  { name: "Quotes", link: "/quotes", icon: <Quote /> },
-  { name: "Azkar", link: "/azkar", icon: <Feather /> },
-  { name: "Quran", link: "/quran", icon: <BookHeart /> },
-  { name: "Kanban", link: "/kanban", icon: <SquareKanban /> },
-  { name: "Settings", link: "/settings", icon: <Bolt /> },
+  { name: 'Home', link: '/', icon: <Home /> },
+  { name: 'The Matrix', link: '/matrix', icon: <Grid2X2 /> },
+  { name: 'Focus', link: '/focus', icon: <ScanEye /> },
+  { name: 'Daily Reminders', link: '/daily-reminders', icon: <BellRing /> },
+  { name: 'Quotes', link: '/quotes', icon: <Quote /> },
+  { name: 'Azkar', link: '/azkar', icon: <Feather /> },
+  { name: 'Quran', link: '/quran', icon: <BookHeart /> },
+  { name: 'Kanban', link: '/kanban', icon: <SquareKanban /> },
+  { name: 'Settings', link: '/settings', icon: <Bolt /> },
 ];
 
 export default function Navbar() {
@@ -45,7 +40,7 @@ export default function Navbar() {
   const { isAuthenticated } = useKindeBrowserClient();
 
   return (
-    <div className="w-[56px] min-w-[56px] h-dvh flex flex-col items-center p-2 border-r border-r-1 border-r-primary">
+    <div className="border-r-1 flex h-dvh w-[56px] min-w-[56px] flex-col items-center border-r border-r-primary p-2">
       <Icon name={routes[0].name} icon={routes[0].icon} link={routes[0].link} />
 
       <Separator className="mt-2" />
@@ -58,11 +53,11 @@ export default function Navbar() {
         </div>
       </ScrollArea>
 
-      <Separator className="mt-auto mb-2" />
+      <Separator className="mb-2 mt-auto" />
 
       <div className="mb-2">
         {isAuthenticated ? (
-          <Icon name={"Account"} link={"/account"} icon={<SquareUser />} />
+          <Icon name={'Account'} link={'/account'} icon={<SquareUser />} />
         ) : (
           <TooltipProvider>
             <Tooltip delayDuration={300}>
@@ -70,8 +65,8 @@ export default function Navbar() {
                 <LoginLink
                   postLoginRedirectURL={pathname}
                   className={buttonVariants({
-                    variant: "outline",
-                    size: "icon",
+                    variant: 'outline',
+                    size: 'icon',
                   })}
                 >
                   <LogIn />
@@ -106,7 +101,7 @@ function Icon({ link, name, icon }: IconProps) {
       <Tooltip delayDuration={300}>
         <TooltipTrigger asChild>
           <Link
-            className={`${buttonVariants({ variant: "outline", size: "icon" })} min-h-10 min-w-10`}
+            className={`${buttonVariants({ variant: 'outline', size: 'icon' })} min-h-10 min-w-10`}
             href={link}
           >
             {icon}
