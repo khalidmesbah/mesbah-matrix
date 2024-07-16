@@ -1,56 +1,24 @@
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
-import { buttonVariants } from '@/components/ui/button';
-import { wait } from '@/lib/utils';
-import { promises as fs } from 'fs';
+'use client';
+
+import useAzkarStore from '@/lib/stores/azkar-store';
 import Link from 'next/link';
 
-export default async function AzkarPage() {
-  const categoriesRes = await fs.readFile(process.cwd() + '/public/data/categories.json', 'utf8');
-  await wait(2000);
-  const categories = JSON.parse(categoriesRes);
+export default function AzkarPage() {
+  const { categories } = useAzkarStore((state) => state);
   return (
-    <Accordion type="multiple" defaultValue={['daily', 'misc']}>
-      <AccordionItem value="daily">
-        <AccordionTrigger>Daily</AccordionTrigger>
-        <AccordionContent className="flex flex-col justify-start gap-1">
-          {Object.keys(categories)
-            .slice(0, 3)
-            .map((k, i) => {
-              return (
-                <Link
-                  className={buttonVariants({ variant: 'default' })}
-                  href={`/azkar/${k}`}
-                  key={i}
-                >
-                  {categories[k].ar}
-                </Link>
-              );
-            })}
-        </AccordionContent>
-      </AccordionItem>
-      <AccordionItem value="misc">
-        <AccordionTrigger>Misc</AccordionTrigger>
-        <AccordionContent className="flex flex-wrap justify-end gap-1">
-          {Object.keys(categories)
-            .slice(3)
-            .map((k, i) => {
-              return (
-                <Link
-                  className={buttonVariants({ variant: 'default' })}
-                  href={`/azkar/${k}`}
-                  key={i}
-                >
-                  {categories[k].ar}
-                </Link>
-              );
-            })}
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
+    <div className="grid grid-cols-fit gap-2" dir="rtl">
+      {Object.keys(categories).map((id, i) => {
+        return (
+          <Link
+            className="flex gap-2 flex-col p-2 bg-card border transition-colors hover:bg-primary/50 items-center justify-center text-center rounded-md"
+            href={`/azkar/${id}`}
+            key={i}
+          >
+            <p>{categories[id].ar}</p>
+            <p dir="ltr">{categories[id].en}</p>
+          </Link>
+        );
+      })}
+    </div>
   );
 }

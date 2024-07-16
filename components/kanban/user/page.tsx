@@ -82,8 +82,8 @@ export default function UserKanbanPage() {
   const { data: kanban, isLoading, isError } = useKanbanQuery();
 
   console.log(kanban);
-  if (isLoading) return <h2>loading</h2>;
-  if (isError) return <h2>error</h2>;
+  if (isLoading) return <h1>loading</h1>;
+  if (isError) return <h1>error</h1>;
 
   const boards = Object.keys(kanban?.boards || {});
 
@@ -513,7 +513,7 @@ function KanbanHeader() {
   return (
     <Sheet>
       <div className="mb-2 flex flex-col items-center justify-between gap-2 rounded-md bg-secondary p-2 xs:flex-row">
-        <h1 className="text-2xl">Your Boards</h1>
+        <h1>Your Boards</h1>
         <SheetTrigger asChild>
           <Button className="w-full xs:w-fit">Manage</Button>
         </SheetTrigger>

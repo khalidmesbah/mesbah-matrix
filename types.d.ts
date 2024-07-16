@@ -3,18 +3,6 @@ export interface ActionResponse {
   message: string;
 }
 
-export interface ZekrType {
-  id: number;
-  description: {
-    arabic: string;
-    english: string;
-  };
-  count: number;
-  zekr: string;
-  reference: string;
-  category: string;
-}
-
 export interface QuoteType {
   _id: string;
   author: string;
@@ -53,4 +41,28 @@ export interface CardType {
   id: string;
   title: string;
   column: string;
+}
+
+export interface ZekrType {
+  Id: number;
+  description?: {
+    arabic?: string;
+    english?: string;
+  };
+  maximumCount: number;
+  count: number;
+  zekr: string;
+  reference: string;
+  categoryId: string;
+}
+
+export interface AzkarType {
+  [key: string]: ZekrType[];
+}
+
+export interface CategoriesType {
+  [key: string]: {
+    ar: string;
+    en: string;
+  };
 }

@@ -246,6 +246,7 @@ const Card = ({ title, id, column, handleDragStart }: CardProps) => {
     </>
   );
 };
+
 const DropIndicator = ({ beforeId, column }: DropIndicatorProps) => {
   return (
     <div
