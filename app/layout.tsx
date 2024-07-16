@@ -3,6 +3,7 @@ import Providers from '@/components/providers';
 import TopBarSkeleton from '@/components/skeletons/top-bar';
 import TopBarAuthWrapper from '@/components/top-bar-auth-wrapper';
 import { Toaster } from '@/components/ui/sonner';
+import { Analytics } from '@vercel/analytics/react';
 import { GeistMono } from 'geist/font/mono';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
@@ -30,6 +31,7 @@ export default async function RootLayout({
               </Suspense>
               {children}
             </div>
+            <Analytics />
           </main>
           <Toaster />
         </Providers>
