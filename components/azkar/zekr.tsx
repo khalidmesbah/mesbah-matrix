@@ -4,20 +4,18 @@ import CopyToClipboard from '@/components/copy-to-clipboard';
 import ShareButton from '@/components/share-button';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import useMySound from '@/lib/hooks/use-my-sound';
 import useAzkarStore from '@/lib/stores/azkar-store';
-import useSettingsStore from '@/lib/stores/settings-store';
 import { ZekrType } from '@/types';
 import { Check, RotateCcw } from 'lucide-react';
-import useSound from 'use-sound';
 
 // FIX: share button
 // TODO: add description button
 //  => if there's none say "no description yet"
 
 export default function Zekr({ zekr }: { zekr: ZekrType }) {
-  const isSoundAllowed = useSettingsStore((state) => state.isSoundAllowed);
   const { categories, finishZekr, increaseCount, resetCount } = useAzkarStore((state) => state);
-  const [play] = useSound('/sounds/transition-chord-.wav', { volume: 0.5 });
+  const [play] = useMySound('/sounds/transition-chord-.wav', { volume: 0.5 });
 
   return (
     <Card
@@ -39,7 +37,7 @@ export default function Zekr({ zekr }: { zekr: ZekrType }) {
           variant={'ghost'}
           size={'icon'}
           onClick={() => {
-            if (isSoundAllowed && zekr.count + 1 === zekr.maximumCount) {
+            if (zekr.count + 1 === zekr.maximumCount) {
               play();
             }
             increaseCount(zekr);
@@ -55,7 +53,7 @@ export default function Zekr({ zekr }: { zekr: ZekrType }) {
           variant={'ghost'}
           size={'icon'}
           onClick={() => {
-            if (isSoundAllowed && zekr.count !== zekr.maximumCount) {
+            if (zekr.count !== zekr.maximumCount) {
               play();
             }
             finishZekr(zekr);

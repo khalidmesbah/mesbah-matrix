@@ -66,3 +66,18 @@ export interface CategoriesType {
     en: string;
   };
 }
+
+export interface DailyReminderType {
+  id: string;
+  text: string;
+  done: boolean;
+}
+
+export type CurrentType = 'practise' | 'browse';
+
+export interface DailyRemindersType {
+  reminders: {
+    [key: string]: DailyReminderType;
+  };
+  order: string[];
+}

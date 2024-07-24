@@ -1,5 +1,6 @@
 'use client';
 
+import { P } from '@/components/typography';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -78,6 +79,7 @@ export default function AnonKanbanPage() {
 
   return (
     <div className="h-screen overflow-hidden">
+      <KanbanHeaderWithSheet />
       <KanbanHeader />
       {boards.length === 0 ? (
         <NoBoards />
@@ -480,15 +482,15 @@ function NoBoards() {
   );
 }
 
-function KanbanHeader() {
+function KanbanHeaderWithSheet() {
   const { kanban, setSelectedBoard } = useKanbanStore((state) => state);
   const boards = Object.keys(kanban.boards);
   return (
     <Sheet>
-      <div className="mb-2 flex flex-col items-center justify-between gap-2 rounded-md bg-secondary p-2 xs:flex-row">
-        <h1 className="text-2xl">Your Boards</h1>
+      <div className="mb-2 flex items-center justify-between gap-2 rounded-md bg-secondary p-2 sm:hidden">
+        <h1 className="text-2xl">{kanban.selectedBoard}</h1>
         <SheetTrigger asChild>
-          <Button className="w-full xs:w-fit">Manage</Button>
+          <Button className="xs:w-fit">Manage</Button>
         </SheetTrigger>
       </div>
       <SheetContent>
@@ -496,9 +498,9 @@ function KanbanHeader() {
           <SheetTitle>Your Kanban Board</SheetTitle>
           <SheetDescription className="sr-only">Manage your Kanban Board</SheetDescription>
         </SheetHeader>
-        <header className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2">
           <h2 className="flex flex-wrap items-center gap-2">
-            <span>Board :</span>
+            <span>Board:</span>
             <Select onValueChange={(value) => setSelectedBoard(value)} value={kanban.selectedBoard}>
               <SelectTrigger>
                 <SelectValue placeholder="No Boards" />
@@ -509,7 +511,7 @@ function KanbanHeader() {
                   {boards.map((b, i) => {
                     return (
                       <SelectItem key={i} value={b}>
-                        {b}
+                        <P text={b} className="max-w-[120px]" />
                       </SelectItem>
                     );
                   })}
@@ -521,8 +523,43 @@ function KanbanHeader() {
             {boards.length !== 0 && <DeleteBoard />}
             <AddBoard />
           </div>
-        </header>
+        </div>
       </SheetContent>
     </Sheet>
+  );
+}
+
+function KanbanHeader() {
+  const { kanban, setSelectedBoard } = useKanbanStore((state) => state);
+  const boards = Object.keys(kanban.boards);
+  return (
+    <div className="mb-2 hidden sm:flex items-center justify-between gap-2 rounded-md bg-secondary p-2">
+      <div className="flex items-center gap-2">
+        <h1 className="min-w-fit">Board:</h1>
+        <Select onValueChange={(value) => setSelectedBoard(value)} value={kanban.selectedBoard}>
+          <SelectTrigger>
+            <SelectValue placeholder="No Boards" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>No Boards</SelectLabel>
+              {boards.map((b, i) => {
+                return (
+                  <SelectItem key={i} value={b}>
+                    <P text={b} className="max-w-[120px]" />
+                  </SelectItem>
+                );
+              })}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="flex gap-2">
+        <div className="flex justify-stretch gap-2">
+          {boards.length !== 0 && <DeleteBoard />}
+          <AddBoard />
+        </div>
+      </div>
+    </div>
   );
 }

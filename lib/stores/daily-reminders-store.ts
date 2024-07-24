@@ -1,22 +1,11 @@
+import { CurrentType, DailyRemindersType } from '@/types';
 import { v4 as uuidv4 } from 'uuid';
 import { create } from 'zustand';
-import { _setDailyReminders } from '../server-actions/daily-reminders-actions';
-
-export interface DailyReminderType {
-  id: string;
-  text: string;
-  done: boolean;
-}
-
-export interface DailyRemindersType {
-  reminders: {
-    [key: string]: DailyReminderType;
-  };
-  order: string[];
-}
 
 type DailyReminderStore = {
   dailyReminders: DailyRemindersType;
+  current: CurrentType;
+  setCurrent: (newCurrent: 'practise' | 'browse') => void;
   setDailyReminders: (dailyReminders: DailyRemindersType) => void;
   addDailyReminder: (text: string) => void;
 };
@@ -37,26 +26,33 @@ const initialDailyReminders: DailyRemindersType = {
   },
   order: ['1', '2', '3'],
 };
+const initialCurrent = 'practise';
 
 const useDailyRemindersStore = create<DailyReminderStore>(
   (set): DailyReminderStore => ({
     dailyReminders: initialDailyReminders,
+    current: initialCurrent,
     setDailyReminders: (dailyReminders: DailyRemindersType) => {
-      // NOTE: i'm using optimistic updates cuz i trust google
-      _setDailyReminders(dailyReminders);
-
       return set((state) => {
-        state.dailyReminders = dailyReminders;
-        return { ...state };
+        const newState = { ...state };
+        newState.dailyReminders = dailyReminders;
+        return newState;
+      });
+    },
+    setCurrent: (newCurrent: 'practise' | 'browse') => {
+      return set((state) => {
+        const newState = { ...state };
+        newState.current = newCurrent;
+        return newState;
       });
     },
     addDailyReminder: (text: string) => {
       const newDailyReminder = { id: uuidv4(), text, done: false };
       return set((state) => {
-        state.dailyReminders.reminders[newDailyReminder.id] = newDailyReminder;
-        state.dailyReminders.order.push(newDailyReminder.id);
-        _setDailyReminders(state.dailyReminders);
-        return { ...state };
+        const newState = { ...state };
+        newState.dailyReminders.reminders[newDailyReminder.id] = newDailyReminder;
+        newState.dailyReminders.order.push(newDailyReminder.id);
+        return newState;
       });
     },
   }),

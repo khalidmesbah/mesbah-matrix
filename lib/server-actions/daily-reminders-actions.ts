@@ -1,46 +1,158 @@
 'use server';
 
-import { ActionResponse } from '@/types';
+import { db } from '@/lib/firebase/init';
+import { DailyReminderType, DailyRemindersType, GlobalsType, SharedType } from '@/types';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { db } from '../firebase/init';
-import { DailyRemindersType } from '../stores/daily-reminders-store';
 
-const _setDailyReminders = async (dailyReminders: DailyRemindersType): Promise<ActionResponse> => {
+const getDailyReminders = async (): Promise<DailyRemindersType | undefined> => {
   try {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
-    const userId = user?.id;
 
-    if (!userId) {
-      throw 'there is no user';
+    if (!user) throw 'there is no user';
+
+    const today = new Date().getDay();
+
+    const resDailyReminders = await getDoc(doc(db, 'users', user.id, 'data', 'daily-reminders'));
+    let dailyReminders = resDailyReminders.data() as DailyRemindersType;
+
+    if (!dailyReminders) {
+      dailyReminders = { order: [], reminders: {} };
+      await setDoc(doc(db, 'users', user.id, 'data', 'daily-reminders'), dailyReminders, {
+        merge: true,
+      });
+
+      await setDoc(
+        doc(db, 'users', user.id, 'data', 'shared'),
+        { today },
+        {
+          merge: true,
+        },
+      );
+
+      return dailyReminders;
     }
-    await setDoc(doc(db, userId, 'daily-reminders'), dailyReminders);
-    return {
-      success: true,
-      message: 'the reminders has been added successfully',
-    };
-  } catch (error) {
-    return { success: false, message: error as string };
-  }
-};
 
-const _getDailyReminders = async (): Promise<DailyRemindersType | null> => {
-  try {
-    const { getUser } = getKindeServerSession();
-    const user = await getUser();
-    const userId = user?.id;
+    const resShared = await getDoc(doc(db, 'users', user.id, 'data', 'shared'));
+    const shared = resShared.data() as SharedType;
 
-    if (!userId) {
-      throw 'there is no user';
+    if (!shared || today !== shared.today) {
+      dailyReminders.order.map((id) => {
+        dailyReminders.reminders[id].done = false;
+      });
+
+      await setDoc(doc(db, 'users', user.id, 'data', 'daily-reminders'), dailyReminders, {
+        merge: true,
+      });
+
+      await setDoc(
+        doc(db, 'users', user.id, 'data', 'shared'),
+        { today },
+        {
+          merge: true,
+        },
+      );
     }
-    const res = await getDoc(doc(db, userId, 'daily-reminders'));
-    const dailyReminders = res.data() as DailyRemindersType;
+
     return dailyReminders;
   } catch (error) {
     console.error(error);
-    return null;
   }
 };
 
-export { _getDailyReminders, _setDailyReminders };
+const setDailyReminders = async (dailyReminders: DailyRemindersType): Promise<void> => {
+  try {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+
+    if (!user) throw 'there is no user';
+
+    await setDoc(doc(db, 'users', user.id, 'data', 'daily-reminders'), dailyReminders, {
+      merge: true,
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const addDailyReminder = async (newDailyReminder: DailyReminderType): Promise<void> => {
+  try {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+
+    if (!user) throw 'there is no user';
+
+    const resDailyReminders = await getDoc(doc(db, 'users', user.id, 'data', 'daily-reminders'));
+    let dailyReminders = resDailyReminders.data() as DailyRemindersType;
+
+    const order = [...dailyReminders.order, newDailyReminder.id];
+    const reminders = dailyReminders.reminders;
+    reminders[newDailyReminder.id] = newDailyReminder;
+
+    await setDoc(
+      doc(db, 'users', user.id, 'data', 'daily-reminders'),
+      {
+        order,
+        reminders,
+      },
+      {
+        merge: true,
+      },
+    );
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const getIsNewDay = async () => {
+  const today = new Date().getDay();
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+
+  if (!user) throw 'there is no user';
+
+  const resShared = await getDoc(doc(db, 'users', user.id, 'data', 'shared'));
+  const shared = resShared.data() as GlobalsType;
+
+  if (!shared || today !== shared.today) {
+    await setDoc(
+      doc(db, 'globals', 'data'),
+      {
+        today,
+      },
+      { merge: true },
+    );
+    return true;
+  }
+  return false;
+};
+
+const toggleDailyReminder = async (newDailyReminder: DailyReminderType): Promise<void> => {
+  try {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+
+    if (!user) throw 'there is no user';
+
+    const resDailyReminders = await getDoc(doc(db, 'users', user.id, 'data', 'daily-reminders'));
+    let dailyReminders = resDailyReminders.data() as DailyRemindersType;
+
+    const reminders = dailyReminders.reminders;
+    reminders[newDailyReminder.id].done = !newDailyReminder.done;
+
+    await setDoc(
+      doc(db, 'users', user.id, 'data', 'daily-reminders'),
+      {
+        reminders,
+      },
+      {
+        merge: true,
+      },
+    );
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export { addDailyReminder, getDailyReminders, getIsNewDay, setDailyReminders, toggleDailyReminder };

@@ -1,42 +1,15 @@
 'use client';
 
 import Zekr from '@/components/azkar/zekr';
+import useMySound from '@/lib/hooks/use-my-sound';
 import useAzkarStore from '@/lib/stores/azkar-store';
+import { startFireworks } from '@/lib/utils';
 import { CategoriesType, ZekrType } from '@/types';
-import confetti from 'canvas-confetti';
-import useSound from 'use-sound';
 
 export default function CategoryPage({ params: { id } }: { params: { id: string } }) {
   const { azkar, categories, wasCompleted, setWasCompleted } = useAzkarStore((state) => state);
   const isComplete = azkar[id].every((z) => z.count === z.maximumCount);
-  const [play] = useSound('/sounds/winfantasia-6912.mp3');
-  const startFireworks = () => {
-    const duration = 5 * 1000;
-    const animationEnd = Date.now() + duration;
-    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-
-    const randomInRange = (min: number, max: number) => Math.random() * (max - min) + min;
-
-    const interval = window.setInterval(() => {
-      const timeLeft = animationEnd - Date.now();
-
-      if (timeLeft <= 0) {
-        return clearInterval(interval);
-      }
-
-      const particleCount = 50 * (timeLeft / duration);
-      confetti({
-        ...defaults,
-        particleCount,
-        origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
-      });
-      confetti({
-        ...defaults,
-        particleCount,
-        origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
-      });
-    }, 250);
-  };
+  const [play] = useMySound('/sounds/winfantasia-6912.mp3');
 
   if (!wasCompleted[+id] && isComplete) {
     setWasCompleted(+id, true);
