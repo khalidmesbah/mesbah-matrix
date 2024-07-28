@@ -81,3 +81,30 @@ export interface DailyRemindersType {
   };
   order: string[];
 }
+
+// types
+type SelectOptionType = {
+  label: string;
+  value: string | number;
+};
+
+type AyahType = {
+  text: string;
+  translation: string;
+  interpretation: string;
+
+  numberInSurah: number;
+  numberOfAyahs: number;
+
+  audio: string;
+  audioSecondary: string[];
+
+  surahEnglishName: string;
+};
+
+export type AyahRequestType = {
+  numberOfAyah: number;
+  recitation: string;
+  translation?: string;
+  interpretation?: string;
+};
