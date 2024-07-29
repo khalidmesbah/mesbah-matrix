@@ -1,15 +1,22 @@
 import { Button } from '@/components/ui/button';
+import { SizeType, VariantType } from '@/types';
 
 type IconProps = {
   icon: React.ReactElement;
-  size?: 'default' | 'sm' | 'lg' | 'icon';
-  variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
+  size?: SizeType;
+  variant?: VariantType;
+  className?: string;
   onClick?: () => void;
 };
 
-export default function Icon({ icon, size, variant, onClick }: IconProps) {
+export default function Icon({ icon, size, variant, className, onClick }: IconProps) {
   return (
-    <Button size={size || 'icon'} variant={variant || 'outline'} onClick={onClick}>
+    <Button
+      size={size || 'icon'}
+      variant={variant || 'outline'}
+      onClick={onClick}
+      className={className}
+    >
       {icon}
     </Button>
   );

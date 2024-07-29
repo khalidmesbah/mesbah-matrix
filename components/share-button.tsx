@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { VariantType } from '@/types';
 import { ShareIcon } from 'lucide-react';
 import {
   EmailIcon,
@@ -35,13 +36,14 @@ import CopyToClipboard from './copy-to-clipboard';
 type ShareButtonProps = {
   url: string;
   title?: string;
+  variant?: VariantType;
 };
 
-export default function ShareButton({ url, title }: ShareButtonProps) {
+export default function ShareButton({ url, title, variant }: ShareButtonProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant={'ghost'} size={'icon'}>
+        <Button variant={variant || 'ghost'} size={'icon'}>
           <ShareIcon />
         </Button>
       </DialogTrigger>

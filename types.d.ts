@@ -95,6 +95,7 @@ type AyahType = {
 
   numberInSurah: number;
   numberOfAyahs: number;
+  numberOfSurah: number;
 
   audio: string;
   audioSecondary: string[];
@@ -108,3 +109,10 @@ export type AyahRequestType = {
   translation?: string;
   interpretation?: string;
 };
+
+export type AyahNumberRequestType = {
+  numberOfAyah: string;
+};
+
+export type SizeType = 'default' | 'sm' | 'lg' | 'icon';
+export type VariantType = 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';

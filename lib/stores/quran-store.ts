@@ -7,8 +7,9 @@ import {
   getRandomAyah,
 } from '@/public/data/quran';
 import { Howl } from 'howler';
-
 import { create } from 'zustand';
+
+type ModeType = 'loop' | 'continuous' | 'once';
 
 type SettingsType = {
   recitation: string;
@@ -16,7 +17,8 @@ type SettingsType = {
   interpretation: string;
   rate: number;
   volume: number;
-  mode: { autoplay: boolean; loop: boolean };
+  autoplay: boolean;
+  mode: ModeType;
   isSoundPlaying: boolean;
 };
 
@@ -26,12 +28,10 @@ const initialSettings: SettingsType = {
   interpretation: INTERPRETATIONS[0].value,
   rate: 4,
   volume: 0.5,
-  mode: { autoplay: false, loop: true },
+  mode: 'once',
+  autoplay: false,
   isSoundPlaying: false,
 };
-
-// autoRepeat => loop
-// playbackRate => rate
 
 const initialNumberOfAyah = getRandomAyah();
 const initialAudio = new Howl({ src: [''] });
@@ -46,14 +46,14 @@ type QuranStore = {
   isEnded: boolean;
   getNextAyah: () => void;
   getPrevAyah: () => void;
+  setNumberOfAyah: (numberOfAyah: number) => void;
   setIsSoundPlaying: (status: boolean) => void;
   setAudio: (newAudio: Howl) => void;
   setAutoplay: (status: boolean) => void;
   setPlaybackRate: (newRate: number) => void;
-  setLoop: (status: boolean) => void;
+  setMode: (newMode: ModeType) => void;
   setIsTranslation: (status: boolean) => void;
   setIsInterpretation: (status: boolean) => void;
-  setIsContnuousPlay: (status: boolean) => void;
   setIsEnded: (status: boolean) => void;
 };
 
@@ -72,6 +72,12 @@ const useQuranStore = create<QuranStore>(
         const newNumberOfAyah = state.numberOfAyah + 1;
         if (newNumberOfAyah > MAXIMUM_NUMBER_OF_AYAHS) return newState;
         newState.numberOfAyah = newNumberOfAyah;
+        return newState;
+      }),
+    setNumberOfAyah: (numberOfAyah: number) =>
+      set((state) => {
+        const newState = { ...state };
+        newState.numberOfAyah = numberOfAyah;
         return newState;
       }),
     setIsSoundPlaying: (status: boolean) =>
@@ -97,7 +103,7 @@ const useQuranStore = create<QuranStore>(
     setAutoplay: (status: boolean) =>
       set((state) => {
         const newState = { ...state };
-        newState.settings.mode.autoplay = status;
+        newState.settings.autoplay = status;
         return newState;
       }),
     setPlaybackRate: (newRate: number) =>
@@ -106,10 +112,10 @@ const useQuranStore = create<QuranStore>(
         newState.settings.rate = newRate;
         return newState;
       }),
-    setLoop: (status: boolean) =>
+    setMode: (newMode: ModeType) =>
       set((state) => {
         const newState = { ...state };
-        newState.settings.mode.loop = status;
+        newState.settings.mode = newMode;
         return newState;
       }),
     setIsInterpretation: (status: boolean) =>
@@ -122,12 +128,6 @@ const useQuranStore = create<QuranStore>(
       set((state) => {
         const newState = { ...state };
         newState.isTranslation = status;
-        return newState;
-      }),
-    setIsContnuousPlay: (status: boolean) =>
-      set((state) => {
-        const newState = { ...state };
-        newState.continuousPlay = status;
         return newState;
       }),
     setIsEnded: (status: boolean) =>

@@ -1,4 +1,4 @@
-import { AyahRequestType, AyahType } from '@/types';
+import { AyahNumberRequestType, AyahRequestType, AyahType } from '@/types';
 
 export const getTheAudio = async (
   edition: string,
@@ -33,6 +33,7 @@ export const getAyahInfo = async ({
 
       numberInSurah: json.data[0].numberInSurah,
       numberOfAyahs: json.data[0].surah.numberOfAyahs,
+      numberOfSurah: json.data[0].surah.number,
 
       audio: json.data[0].audio,
       audioSecondary: json.data[0].audioSecondary,
@@ -40,6 +41,18 @@ export const getAyahInfo = async ({
       surahEnglishName: json.data[0].surah.englishName,
     };
     return ayah;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const getAyahNumber = async ({
+  numberOfAyah,
+}: AyahNumberRequestType): Promise<number | undefined> => {
+  try {
+    const res = await fetch(`https://api.alquran.cloud/v1/ayah/${numberOfAyah}`);
+    const json = await res.json();
+    return json.data.number;
   } catch (error) {
     console.error(error);
   }

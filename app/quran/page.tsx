@@ -2,6 +2,7 @@
 
 import Icon from '@/components/icon';
 import { ParticlesLoader } from '@/components/particles-loader';
+import ShareButton from '@/components/share-button';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -15,27 +16,37 @@ import {
 } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
 import { Switch } from '@/components/ui/switch';
-import { useGetAyahQuery } from '@/lib/hooks/use-quran-query';
+import { useGetAyahQuery, useGetNumberOfAyahQuery } from '@/lib/hooks/use-quran-query';
 import useQuranStore from '@/lib/stores/quran-store';
+import { SURAHS } from '@/public/data/quran';
 import { AyahType } from '@/types';
 import {
   ArrowLeft,
   ArrowRight,
   Folder,
   Heart,
+  Info,
   LoaderIcon,
-  Pen,
   Play,
   Repeat,
+  Repeat1,
   Settings as SettingsIcon,
-  Share,
   Shuffle,
   StopCircle,
 } from 'lucide-react';
 import { Amiri_Quran } from 'next/font/google';
-import { useEffect } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useCallback, useEffect } from 'react';
+import { z } from 'zod';
 
 const myFont = Amiri_Quran({
   weight: '400',
@@ -47,14 +58,9 @@ export default function QuranPage() {
     setIsSoundPlaying,
     audio,
     setAudio,
-    settings: {
-      rate,
-      volume,
-      isSoundPlaying,
-      mode: { autoplay, loop },
-    },
+    settings: { rate, volume, isSoundPlaying, mode, autoplay },
     numberOfAyah,
-    settings,
+    settings: { recitation, translation, interpretation },
     getNextAyah,
     getPrevAyah,
     isInterpretation,
@@ -67,15 +73,18 @@ export default function QuranPage() {
     isLoading,
     isError,
   } = useGetAyahQuery({
-    numberOfAyah: numberOfAyah,
-    recitation: settings.recitation,
-    translation: settings.translation,
-    interpretation: settings.interpretation,
+    numberOfAyah,
+    recitation,
+    translation,
+    interpretation,
   });
 
   useEffect(() => {
+    console.log(`the new mode is: `, mode);
+  }, [mode]);
+
+  useEffect(() => {
     if (ayah) {
-      audio.stop();
       audio.unload();
       const newAudio = new Howl({
         src: [ayah.audio, ...ayah.audioSecondary],
@@ -83,17 +92,13 @@ export default function QuranPage() {
         volume,
         preload: true,
         autoplay,
-        loop,
+        loop: mode === 'loop',
         html5: true,
-        onplay: () => setIsEnded(false),
-        onend: () => setIsEnded(true),
       });
+      newAudio.on('end', () => setIsEnded(true));
+      newAudio.on('play', () => setIsEnded(false));
       setAudio(newAudio);
     }
-    return () => {
-      console.log('finished -----------', ayah?.audio);
-      setIsSoundPlaying(autoplay);
-    };
   }, [ayah]);
 
   if (isError) return <h1>error</h1>;
@@ -129,7 +134,7 @@ function Ayah(props: AyahProps) {
         </div>
       ) : (
         <p
-          className={`text-center bg-primary select-none text-2xl/10 p-2 pb-5 rounded-md ${myFont.className}`}
+          className={`text-center bg-card select-none text-2xl/10 p-2 pb-5 rounded-md ${myFont.className}`}
           dir="rtl"
           lang="ar"
         >
@@ -163,18 +168,108 @@ function Translation(props: TranslationProps) {
     </ScrollArea>
   );
 }
+const ChangeAyahFormSchema = z.object({
+  email: z
+    .string({
+      required_error: 'Please select a surah.',
+    })
+    .email(),
+});
 
 type ChangeAyahProps = {
   ayah: AyahType;
 };
 function ChangeAyah(props: ChangeAyahProps) {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  const ayah = searchParams.get('ayah') || props.ayah.numberInSurah.toString();
+  const surah = searchParams.get('surah') || props.ayah.numberOfSurah.toString();
+  const setNumberOfAyah = useQuranStore((state) => state.setNumberOfAyah);
+
+  const {
+    data: numberOfAyah,
+    isLoading,
+    isError,
+  } = useGetNumberOfAyahQuery({
+    numberOfAyah: `${searchParams.get('surah')}:${searchParams.get('ayah')}`,
+  });
+
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set(name, value);
+
+      return params.toString();
+    },
+    [searchParams],
+  );
+
   return (
-    <div className="fc gap-2 p-2 bg-card">
-      <h1 className="text-2xl rounded-md">
-        {props.ayah.surahEnglishName} ({props.ayah.numberInSurah}/{props.ayah.numberOfAyahs})
-      </h1>
-      <Icon size="sm" icon={<Pen />} />
-    </div>
+    <Dialog>
+      <DialogTrigger asChild>
+        <div className="fc gap-2 p-2 bg-border/90 cursor-pointer rounded-md hover:bg-border transition-colors">
+          <h1 className="text-xl rounded-md">
+            {props.ayah.surahEnglishName} ({props.ayah.numberInSurah}/{props.ayah.numberOfAyahs})
+          </h1>
+          <Info />
+        </div>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Change Ayah</DialogTitle>
+          <DialogDescription>Select the desired Ayah</DialogDescription>
+        </DialogHeader>
+        <div className="flex flex-col gap-2">
+          <Select
+            defaultValue={surah}
+            onValueChange={(newSurah) => {
+              router.push(pathname + '?' + createQueryString('surah', newSurah));
+            }}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select a Surah" />
+            </SelectTrigger>
+            <SelectContent>
+              {SURAHS.map((surah) => (
+                <SelectItem key={surah.value} value={surah.value.toString()}>
+                  {surah.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <Select
+            defaultValue={ayah}
+            onValueChange={(newAyah) => {
+              router.push(pathname + '?' + createQueryString('ayah', newAyah));
+            }}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select an Ayah" />
+            </SelectTrigger>
+            <SelectContent>
+              {Array.from({ length: props.ayah.numberOfAyahs }).map((_, ayah) => (
+                <SelectItem key={ayah + 1} value={`${ayah + 1}`}>
+                  {ayah + 1}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <DialogClose asChild>
+          <Button
+            disabled={isLoading}
+            onClick={() => {
+              if (!numberOfAyah || isError) return;
+              setNumberOfAyah(numberOfAyah);
+              console.log(numberOfAyah);
+            }}
+          >
+            close
+          </Button>
+        </DialogClose>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -197,10 +292,32 @@ function Options(props: OptionsProps) {
       </div>
       <div className="flex justify-center items-center gap-2">
         <Icon onClick={() => {}} icon={<Folder />} />
-        <Icon onClick={() => {}} icon={<Repeat />} />
-        <Icon onClick={() => {}} icon={<Share />} />
+        <Mode />
+        <ShareButton
+          url={`${process.env.NEXT_PUBLIC_MESBAH_MATRIX_URL}/quran?${2}/${3}`}
+          title={`${props.ayah?.surahEnglishName}: ${props.ayah?.text}`}
+          variant="outline"
+        />
       </div>
       <Settings />
+    </div>
+  );
+}
+
+function Mode() {
+  const {
+    settings: { mode },
+    setMode,
+  } = useQuranStore((state) => state);
+  return (
+    <div>
+      {mode === 'once' ? (
+        <Icon onClick={() => setMode('continuous')} icon={<Repeat />} className="opacity-50" />
+      ) : mode === 'continuous' ? (
+        <Icon onClick={() => setMode('loop')} icon={<Repeat />} />
+      ) : (
+        <Icon onClick={() => setMode('once')} icon={<Repeat1 />} />
+      )}
     </div>
   );
 }
@@ -211,43 +328,46 @@ type PlayPauseButtonProps = {
 function PlayPauseButton() {
   const {
     audio,
-    settings: {
-      isSoundPlaying,
-      mode: { loop },
-    },
+    settings: { isSoundPlaying, mode, autoplay },
     setIsSoundPlaying,
     isEnded,
+    getNextAyah,
   } = useQuranStore((state) => state);
-  // useEffect(() => {
-  //   console.log('hi from PlayPauseButton', audio);
-  //   // return () => {
-  //   //   audio.stop();
-  //   //   audio.unload();
-  //   //   console.log('finished!!!!!!!!!1');
-  //   // };
-  // }, []);
+
   useEffect(() => {
-    setIsSoundPlaying(loop);
+    if (mode === 'once' && (!autoplay || isEnded)) return;
+    play();
+  }, [audio]);
+
+  useEffect(() => {
+    if (!isEnded) return;
+
+    if (mode === 'loop') {
+      play();
+    } else if (mode === 'continuous') {
+      getNextAyah();
+    } else {
+      setIsSoundPlaying(false);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEnded]);
+
+  const play = () => {
+    audio.play();
+    setIsSoundPlaying(true);
+  };
+
+  const pause = () => {
+    audio.pause();
+    setIsSoundPlaying(false);
+  };
+
   return (
     <>
       {isSoundPlaying ? (
-        <Icon
-          onClick={() => {
-            audio.pause();
-            setIsSoundPlaying(false);
-          }}
-          icon={<StopCircle />}
-        />
+        <Icon onClick={pause} icon={<StopCircle />} />
       ) : (
-        <Icon
-          onClick={() => {
-            if (!isSoundPlaying) audio.play();
-            setIsSoundPlaying(true);
-          }}
-          icon={<Play />}
-        />
+        <Icon onClick={play} icon={<Play />} />
       )}
     </>
   );
@@ -258,12 +378,7 @@ function Settings() {
     setIsSoundPlaying,
     audio,
     setAudio,
-    settings: {
-      rate: playbackRate,
-      volume,
-      isSoundPlaying,
-      mode: { autoplay, loop },
-    },
+    settings: { rate: playbackRate, volume, isSoundPlaying, mode, autoplay },
     numberOfAyah,
     settings,
     getNextAyah,
@@ -272,7 +387,7 @@ function Settings() {
     isTranslation,
     setAutoplay,
     setPlaybackRate,
-    setLoop,
+    setMode,
     setIsTranslation,
     setIsInterpretation,
   } = useQuranStore((state) => state);
@@ -289,25 +404,17 @@ function Settings() {
           <DialogDescription>Configure your settings</DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-2">
-          <Label className="flex-1 flex items-center justify-between gap-2 p-1 hover:bg-secondary rounded-md transition-colors">
-            Autoplay
-            <Switch
-              checked={autoplay}
-              onCheckedChange={(e) => {
-                setAutoplay(e);
-              }}
-            />
-          </Label>
-          <Label className="flex-1 flex items-center justify-between gap-2 p-1 hover:bg-secondary rounded-md transition-colors">
-            Loop
-            <Switch
-              checked={loop}
-              onCheckedChange={(e) => {
-                setLoop(e);
-                audio.loop(e);
-              }}
-            />
-          </Label>
+          {mode === 'once' && (
+            <Label className="flex-1 flex items-center justify-between gap-2 p-1 hover:bg-secondary rounded-md transition-colors">
+              Autoplay
+              <Switch
+                checked={autoplay}
+                onCheckedChange={(e) => {
+                  setAutoplay(e);
+                }}
+              />
+            </Label>
+          )}
           <Label className="flex-1 flex items-center justify-between gap-2 p-1 hover:bg-secondary rounded-md transition-colors">
             Translation
             <Switch
@@ -360,3 +467,9 @@ function Settings() {
 // add copy button
 //
 // TODO: create a global Icon that serves both the navbar and quran and all icons
+// add the select behavour from quran tab
+// use search params for surah and ayahnumber
+// test on small screen sizes and use a drawer
+// make an image maker of the verse and export it
+// add multiple templates for this image maker
+// add language

@@ -1,5 +1,5 @@
-import { getAyahInfo } from '@/lib/server-actions/quran-actions';
-import { AyahRequestType } from '@/types';
+import { getAyahInfo, getAyahNumber } from '@/lib/server-actions/quran-actions';
+import { AyahNumberRequestType, AyahRequestType } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 
 export const useGetAyahQuery = ({
@@ -58,3 +58,11 @@ export const useGetAyahQuery = ({
     refetchOnWindowFocus: false,
   });
 };
+
+export const useGetNumberOfAyahQuery = ({ numberOfAyah }: AyahNumberRequestType) =>
+  useQuery({
+    queryKey: ['number-of-ayah', numberOfAyah],
+    queryFn: () => getAyahNumber({ numberOfAyah }),
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
+  });
