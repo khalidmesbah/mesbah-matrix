@@ -3,6 +3,7 @@
 import Icon from '@/components/icon';
 import { ParticlesLoader } from '@/components/particles-loader';
 import ShareButton from '@/components/share-button';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -14,6 +15,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import { Label } from '@/components/ui/label';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import {
@@ -25,9 +27,15 @@ import {
 } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
 import { Switch } from '@/components/ui/switch';
-import { useGetAyahQuery, useGetNumberOfAyahQuery } from '@/lib/hooks/use-quran-query';
+import { useGetAyahQuery } from '@/lib/hooks/use-quran-query';
 import useQuranStore from '@/lib/stores/quran-store';
-import { SURAHS } from '@/public/data/quran';
+import {
+  TRANSLATIONS as INTERPRETATIONS,
+  SURAHS,
+  SURAH_AYAHS,
+  TRANSLATIONS,
+  getNumberOfAyah,
+} from '@/public/data/quran';
 import { AyahType } from '@/types';
 import {
   ArrowLeft,
@@ -46,7 +54,6 @@ import {
 import { Amiri_Quran } from 'next/font/google';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect } from 'react';
-import { z } from 'zod';
 
 const myFont = Amiri_Quran({
   weight: '400',
@@ -168,13 +175,6 @@ function Translation(props: TranslationProps) {
     </ScrollArea>
   );
 }
-const ChangeAyahFormSchema = z.object({
-  email: z
-    .string({
-      required_error: 'Please select a surah.',
-    })
-    .email(),
-});
 
 type ChangeAyahProps = {
   ayah: AyahType;
@@ -183,93 +183,109 @@ function ChangeAyah(props: ChangeAyahProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-  const ayah = searchParams.get('ayah') || props.ayah.numberInSurah.toString();
-  const surah = searchParams.get('surah') || props.ayah.numberOfSurah.toString();
   const setNumberOfAyah = useQuranStore((state) => state.setNumberOfAyah);
 
-  const {
-    data: numberOfAyah,
-    isLoading,
-    isError,
-  } = useGetNumberOfAyahQuery({
-    numberOfAyah: `${searchParams.get('surah')}:${searchParams.get('ayah')}`,
-  });
+  const getSurah = useCallback(() => {
+    return searchParams.get('surah') || props.ayah.numberOfSurah.toString();
+  }, [searchParams, props.ayah.numberOfSurah]);
 
-  const createQueryString = useCallback(
-    (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams.toString());
-      params.set(name, value);
+  const getAyah = useCallback(() => {
+    return searchParams.get('ayah') || props.ayah.numberInSurah.toString();
+  }, [searchParams, props.ayah.numberInSurah]);
 
-      return params.toString();
-    },
-    [searchParams],
-  );
+  useEffect(() => {
+    console.log(`change`, searchParams.get('surah'), searchParams.get('ayah'));
+  }, [searchParams]);
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <div className="fc gap-2 p-2 bg-border/90 cursor-pointer rounded-md hover:bg-border transition-colors">
-          <h1 className="text-xl rounded-md">
+    <div className="fc gap-2">
+      <HoverCard openDelay={100}>
+        <HoverCardTrigger>
+          <Info />
+        </HoverCardTrigger>
+        <HoverCardContent>
+          <p>
+            <Badge>Juz</Badge> {props.ayah.juz}
+          </p>
+          <p>
+            <Badge>Hizb</Badge> {props.ayah.hizbQuarter}
+          </p>
+          <p>
+            <Badge>Page</Badge> {props.ayah.page}
+          </p>
+          <p>
+            <Badge>Revelation Type</Badge> {props.ayah.revelationType}
+          </p>
+        </HoverCardContent>
+      </HoverCard>
+      <Dialog>
+        <DialogTrigger asChild>
+          <h1 className="text-lg p-2 bg-primary/90 cursor-pointer rounded-md hover:bg-primary transition-colors">
             {props.ayah.surahEnglishName} ({props.ayah.numberInSurah}/{props.ayah.numberOfAyahs})
           </h1>
-          <Info />
-        </div>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Change Ayah</DialogTitle>
-          <DialogDescription>Select the desired Ayah</DialogDescription>
-        </DialogHeader>
-        <div className="flex flex-col gap-2">
-          <Select
-            defaultValue={surah}
-            onValueChange={(newSurah) => {
-              router.push(pathname + '?' + createQueryString('surah', newSurah));
-            }}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Select a Surah" />
-            </SelectTrigger>
-            <SelectContent>
-              {SURAHS.map((surah) => (
-                <SelectItem key={surah.value} value={surah.value.toString()}>
-                  {surah.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <Select
-            defaultValue={ayah}
-            onValueChange={(newAyah) => {
-              router.push(pathname + '?' + createQueryString('ayah', newAyah));
-            }}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Select an Ayah" />
-            </SelectTrigger>
-            <SelectContent>
-              {Array.from({ length: props.ayah.numberOfAyahs }).map((_, ayah) => (
-                <SelectItem key={ayah + 1} value={`${ayah + 1}`}>
-                  {ayah + 1}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <DialogClose asChild>
-          <Button
-            disabled={isLoading}
-            onClick={() => {
-              if (!numberOfAyah || isError) return;
-              setNumberOfAyah(numberOfAyah);
-              console.log(numberOfAyah);
-            }}
-          >
-            close
-          </Button>
-        </DialogClose>
-      </DialogContent>
-    </Dialog>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Change Ayah</DialogTitle>
+            <DialogDescription>Select the desired Ayah</DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col gap-2">
+            <Select
+              value={getSurah()}
+              onValueChange={(newSurah) => {
+                const params = new URLSearchParams({
+                  surah: newSurah,
+                  ayah: '1',
+                }).toString();
+                router.replace(pathname + '?' + params);
+              }}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select a Surah" />
+              </SelectTrigger>
+              <SelectContent>
+                {SURAHS.map((surah) => (
+                  <SelectItem key={surah.value} value={surah.value.toString()}>
+                    {surah.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Select
+              value={getAyah()}
+              onValueChange={(newAyah) => {
+                console.log(`newAyah`, newAyah);
+                const params = new URLSearchParams({
+                  surah: getSurah(),
+                  ayah: newAyah,
+                }).toString();
+                router.replace(pathname + '?' + params);
+              }}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select an Ayah" />
+              </SelectTrigger>
+              <SelectContent>
+                {Array.from({ length: SURAH_AYAHS[+getSurah()] }).map((_, ayah) => (
+                  <SelectItem key={ayah + 1} value={`${ayah + 1}`}>
+                    {ayah + 1}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <DialogClose asChild>
+            <Button
+              onClick={() => {
+                setNumberOfAyah(getNumberOfAyah(+getSurah(), +getAyah()));
+              }}
+            >
+              Change
+            </Button>
+          </DialogClose>
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 }
 
@@ -281,6 +297,7 @@ type OptionsProps = {
   audio: any;
 };
 function Options(props: OptionsProps) {
+  const searchParams = useSearchParams();
   return (
     <div className="flex flex-col gap-2 p-2 rounded-md">
       <div className="flex justify-center items-center gap-2">
@@ -294,7 +311,7 @@ function Options(props: OptionsProps) {
         <Icon onClick={() => {}} icon={<Folder />} />
         <Mode />
         <ShareButton
-          url={`${process.env.NEXT_PUBLIC_MESBAH_MATRIX_URL}/quran?${2}/${3}`}
+          url={`${process.env.NEXT_PUBLIC_MESBAH_MATRIX_URL}/quran?surah=${searchParams.get('surah')}&ayah=${searchParams.get('ayah')}`}
           title={`${props.ayah?.surahEnglishName}: ${props.ayah?.text}`}
           variant="outline"
         />
@@ -335,7 +352,11 @@ function PlayPauseButton() {
   } = useQuranStore((state) => state);
 
   useEffect(() => {
-    if (mode === 'once' && (!autoplay || isEnded)) return;
+    if (mode === 'once' && !autoplay && isSoundPlaying === true) {
+      setIsSoundPlaying(false);
+      return;
+    }
+    if (mode === 'once' && !autoplay) return;
     play();
   }, [audio]);
 
@@ -383,6 +404,8 @@ function Settings() {
     settings,
     getNextAyah,
     getPrevAyah,
+    setTranslation,
+    setInterpretation,
     isInterpretation,
     isTranslation,
     setAutoplay,
@@ -424,6 +447,25 @@ function Settings() {
               }}
             />
           </Label>
+          {isTranslation && (
+            <Select
+              defaultValue={TRANSLATIONS[0].value}
+              onValueChange={(newTranslation) => {
+                setTranslation(newTranslation);
+              }}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select a Translation" />
+              </SelectTrigger>
+              <SelectContent>
+                {TRANSLATIONS.map((translation) => (
+                  <SelectItem key={translation.value} value={translation.value}>
+                    {translation.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
           <Label className="flex-1 flex items-center justify-between gap-2 p-1 hover:bg-secondary rounded-md transition-colors">
             Interpretation
             <Switch
@@ -433,6 +475,25 @@ function Settings() {
               }}
             />
           </Label>
+          {isInterpretation && (
+            <Select
+              defaultValue={INTERPRETATIONS[0].value}
+              onValueChange={(newInterpretation) => {
+                setInterpretation(newInterpretation);
+              }}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select an Interpretation" />
+              </SelectTrigger>
+              <SelectContent>
+                {INTERPRETATIONS.map((interpretation) => (
+                  <SelectItem key={interpretation.value} value={interpretation.value}>
+                    {interpretation.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
           <Label className="flex-1 flex items-center justify-between gap-2 p-1 hover:bg-secondary rounded-md transition-colors">
             Playback rate
             <Slider
@@ -473,3 +534,6 @@ function Settings() {
 // make an image maker of the verse and export it
 // add multiple templates for this image maker
 // add language
+// add translation and interpretation to the URLSearchParams
+// determine which state to be saved into firebase
+// fix interpretations (unknowns and duplicates)

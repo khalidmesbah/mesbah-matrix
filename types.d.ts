@@ -101,6 +101,11 @@ type AyahType = {
   audioSecondary: string[];
 
   surahEnglishName: string;
+
+  revelationType: string;
+  juz: string;
+  page: string;
+  hizbQuarter: string;
 };
 
 export type AyahRequestType = {

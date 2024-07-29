@@ -55,6 +55,8 @@ type QuranStore = {
   setIsTranslation: (status: boolean) => void;
   setIsInterpretation: (status: boolean) => void;
   setIsEnded: (status: boolean) => void;
+  setTranslation: (newTranslation: string) => void;
+  setInterpretation: (newInterpretation: string) => void;
 };
 
 const useQuranStore = create<QuranStore>(
@@ -128,6 +130,19 @@ const useQuranStore = create<QuranStore>(
       set((state) => {
         const newState = { ...state };
         newState.isTranslation = status;
+        return newState;
+      }),
+
+    setTranslation: (newTranslation: string) =>
+      set((state) => {
+        const newState = { ...state };
+        newState.settings.translation = newTranslation;
+        return newState;
+      }),
+    setInterpretation: (newInterpretation: string) =>
+      set((state) => {
+        const newState = { ...state };
+        newState.settings.interpretation = newInterpretation;
         return newState;
       }),
     setIsEnded: (status: boolean) =>
