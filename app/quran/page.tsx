@@ -120,6 +120,7 @@ export default function QuranPage() {
       audio.stop();
       audio.unload();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ayah]);
 
   if (isError) return <h1>error</h1>;
@@ -372,6 +373,7 @@ function PlayPauseButton() {
     }
     if (mode === 'once' && !autoplay) return;
     play();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [audio]);
 
   useEffect(() => {
