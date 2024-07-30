@@ -57,6 +57,8 @@ type QuranStore = {
   setIsEnded: (status: boolean) => void;
   setTranslation: (newTranslation: string) => void;
   setInterpretation: (newInterpretation: string) => void;
+  setRecitation: (newRecitation: string) => void;
+  setVolume: (newVolume: number) => void;
 };
 
 const useQuranStore = create<QuranStore>(
@@ -143,6 +145,18 @@ const useQuranStore = create<QuranStore>(
       set((state) => {
         const newState = { ...state };
         newState.settings.interpretation = newInterpretation;
+        return newState;
+      }),
+    setVolume: (newVolume: number) =>
+      set((state) => {
+        const newState = { ...state };
+        newState.settings.volume = newVolume;
+        return newState;
+      }),
+    setRecitation: (newRecitation: string) =>
+      set((state) => {
+        const newState = { ...state };
+        newState.settings.recitation = newRecitation;
         return newState;
       }),
     setIsEnded: (status: boolean) =>

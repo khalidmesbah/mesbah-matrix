@@ -30,7 +30,8 @@ import { Switch } from '@/components/ui/switch';
 import { useGetAyahQuery } from '@/lib/hooks/use-quran-query';
 import useQuranStore from '@/lib/stores/quran-store';
 import {
-  TRANSLATIONS as INTERPRETATIONS,
+  INTERPRETATIONS,
+  RECITATIONS,
   SURAHS,
   SURAH_AYAHS,
   TRANSLATIONS,
@@ -40,16 +41,25 @@ import { AyahType } from '@/types';
 import {
   ArrowLeft,
   ArrowRight,
+  BookOpen,
   Folder,
+  Gauge,
   Heart,
   Info,
+  Languages,
   LoaderIcon,
   Play,
   Repeat,
   Repeat1,
+  Repeat2,
   Settings as SettingsIcon,
   Shuffle,
+  Speech,
   StopCircle,
+  Volume,
+  Volume1,
+  Volume2,
+  VolumeX,
 } from 'lucide-react';
 import { Amiri_Quran } from 'next/font/google';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
@@ -106,6 +116,10 @@ export default function QuranPage() {
       newAudio.on('play', () => setIsEnded(false));
       setAudio(newAudio);
     }
+    return () => {
+      audio.stop();
+      audio.unload();
+    };
   }, [ayah]);
 
   if (isError) return <h1>error</h1>;
@@ -399,11 +413,21 @@ function Settings() {
     setIsSoundPlaying,
     audio,
     setAudio,
-    settings: { rate: playbackRate, volume, isSoundPlaying, mode, autoplay },
+    settings: {
+      rate: playbackRate,
+      volume,
+      isSoundPlaying,
+      mode,
+      autoplay,
+      translation,
+      interpretation,
+      recitation,
+    },
     numberOfAyah,
     settings,
     getNextAyah,
     getPrevAyah,
+    setVolume,
     setTranslation,
     setInterpretation,
     isInterpretation,
@@ -413,6 +437,7 @@ function Settings() {
     setMode,
     setIsTranslation,
     setIsInterpretation,
+    setRecitation,
   } = useQuranStore((state) => state);
   return (
     <Dialog>
@@ -429,7 +454,8 @@ function Settings() {
         <div className="flex flex-col gap-2">
           {mode === 'once' && (
             <Label className="flex-1 flex items-center justify-between gap-2 p-1 hover:bg-secondary rounded-md transition-colors">
-              Autoplay
+              <Repeat2 />
+              <p className="flex-1">Autoplay</p>
               <Switch
                 checked={autoplay}
                 onCheckedChange={(e) => {
@@ -438,9 +464,87 @@ function Settings() {
               />
             </Label>
           )}
+
           <Label className="flex-1 flex items-center justify-between gap-2 p-1 hover:bg-secondary rounded-md transition-colors">
-            Translation
+            <Icon
+              icon={<Speech />}
+              className="p-1 h-min text-foreground pointer-events-none"
+              variant="link"
+              size="sm"
+            />
+            <p className="flex-1">Recitation</p>
+          </Label>
+
+          <Select
+            value={recitation}
+            onValueChange={(newRecitation) => {
+              setRecitation(newRecitation);
+            }}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select a recitation" />
+            </SelectTrigger>
+            <SelectContent>
+              {RECITATIONS.map((recitation) => (
+                <SelectItem key={recitation.value} value={recitation.value}>
+                  {recitation.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          <Label
+            htmlFor="interpretation"
+            className="flex-1 flex items-center justify-between gap-2 p-1 hover:bg-secondary rounded-md transition-colors"
+          >
+            <Icon
+              icon={<BookOpen />}
+              className="p-1 h-min text-foreground pointer-events-none"
+              variant="link"
+              size="sm"
+            />
+            <p className="flex-1">Interpretation</p>
             <Switch
+              id="interpretation"
+              checked={isInterpretation}
+              onCheckedChange={(e) => {
+                setIsInterpretation(e);
+              }}
+            />
+          </Label>
+          {isInterpretation && (
+            <Select
+              value={interpretation}
+              onValueChange={(newInterpretation) => {
+                setInterpretation(newInterpretation);
+              }}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select an Interpretation" />
+              </SelectTrigger>
+              <SelectContent>
+                {INTERPRETATIONS.map((interpretation) => (
+                  <SelectItem key={interpretation.value} value={interpretation.value}>
+                    {interpretation.label.en}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
+
+          <Label
+            htmlFor="translation"
+            className="flex-1 flex items-center justify-between gap-2 p-1 hover:bg-secondary rounded-md transition-colors"
+          >
+            <Icon
+              icon={<Languages />}
+              className="p-1 h-min text-foreground pointer-events-none"
+              variant="link"
+              size="sm"
+            />
+            <p className="flex-1">Translation</p>
+            <Switch
+              id="translation"
               checked={isTranslation}
               onCheckedChange={(e) => {
                 setIsTranslation(e);
@@ -449,7 +553,7 @@ function Settings() {
           </Label>
           {isTranslation && (
             <Select
-              defaultValue={TRANSLATIONS[0].value}
+              value={translation}
               onValueChange={(newTranslation) => {
                 setTranslation(newTranslation);
               }}
@@ -466,48 +570,82 @@ function Settings() {
               </SelectContent>
             </Select>
           )}
+
           <Label className="flex-1 flex items-center justify-between gap-2 p-1 hover:bg-secondary rounded-md transition-colors">
-            Interpretation
-            <Switch
-              checked={isInterpretation}
-              onCheckedChange={(e) => {
-                setIsInterpretation(e);
-              }}
+            <Icon
+              onClick={() => setPlaybackRate(1)}
+              icon={<Gauge />}
+              className="p-1 h-min"
+              variant="ghost"
+              size="sm"
             />
+            <p className="flex-1">Playback rate</p>
+            <span>{playbackRate}</span>
           </Label>
-          {isInterpretation && (
-            <Select
-              defaultValue={INTERPRETATIONS[0].value}
-              onValueChange={(newInterpretation) => {
-                setInterpretation(newInterpretation);
-              }}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select an Interpretation" />
-              </SelectTrigger>
-              <SelectContent>
-                {INTERPRETATIONS.map((interpretation) => (
-                  <SelectItem key={interpretation.value} value={interpretation.value}>
-                    {interpretation.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          )}
-          <Label className="flex-1 flex items-center justify-between gap-2 p-1 hover:bg-secondary rounded-md transition-colors">
-            Playback rate
-            <Slider
-              value={[playbackRate]}
-              defaultValue={[playbackRate]}
-              max={4}
-              step={0.1}
-              min={0.25}
-              onValueChange={(e) => {
-                setPlaybackRate(e[0]);
-                audio.rate(e[0]);
-              }}
-            />
+
+          <Slider
+            value={[playbackRate]}
+            max={4}
+            step={0.1}
+            min={0.25}
+            onValueChange={(e) => {
+              setPlaybackRate(e[0]);
+              audio.rate(e[0]);
+            }}
+          />
+
+          <Label
+            htmlFor="volume"
+            className="flex-1 flex items-center justify-between gap-2 p-1 hover:bg-secondary rounded-md transition-colors"
+          >
+            {volume === 0 ? (
+              <Icon
+                onClick={() => setVolume(0.33)}
+                icon={<VolumeX />}
+                className="p-1 h-min"
+                variant="ghost"
+                size="sm"
+              />
+            ) : volume <= 0.33 ? (
+              <Icon
+                onClick={() => setVolume(0.66)}
+                icon={<Volume />}
+                className="p-1 h-min"
+                variant="ghost"
+                size="sm"
+              />
+            ) : volume <= 0.66 ? (
+              <Icon
+                onClick={() => setVolume(1)}
+                icon={<Volume1 />}
+                className="p-1 h-min"
+                variant="ghost"
+                size="sm"
+              />
+            ) : (
+              <Icon
+                onClick={() => setVolume(0)}
+                icon={<Volume2 />}
+                className="p-1 h-min"
+                variant="ghost"
+                size="sm"
+              />
+            )}
+            <p className="flex-1">Volume</p>
+            <span>{volume}</span>
           </Label>
+
+          <Slider
+            id="volume"
+            value={[volume]}
+            max={1}
+            step={0.1}
+            min={0}
+            onValueChange={(e) => {
+              setVolume(e[0]);
+              audio.volume(e[0]);
+            }}
+          />
         </div>
         <DialogFooter className="sm:justify-start">
           <DialogClose asChild>
@@ -537,3 +675,5 @@ function Settings() {
 // add translation and interpretation to the URLSearchParams
 // determine which state to be saved into firebase
 // fix interpretations (unknowns and duplicates)
+// work on background
+// stop working when moving to another tab

@@ -427,12 +427,48 @@ const TRANSLATIONS = [
 ];
 
 const INTERPRETATIONS = [
-  { label: 'تفسير المیسر', value: 'ar.muyassar' },
-  { label: 'تفسير الجلالين', value: 'ar.jalalayn' },
-  { label: 'الـتـفـسـيـر الـوسـيـط', value: 'ar.waseet' },
-  { label: 'تفسير البغوي‎', value: 'ar.baghawi' },
-  { label: 'تنوير المقباس من تفسير بن عباس', value: 'ar.miqbas' },
-  { label: 'تفسير القرطبي', value: 'ar.qurtubi' },
+  {
+    label: {
+      ar: 'تفسير المیسر',
+      en: 'Al-Tafsīr Al-Muyassar',
+    },
+    value: 'ar.muyassar',
+  },
+  {
+    label: {
+      ar: 'تفسير الجلالين',
+      en: 'Tafsir al-Jalalayn',
+    },
+    value: 'ar.jalalayn',
+  },
+  {
+    label: {
+      ar: 'الـتـفـسـيـر الـوسـيـط',
+      en: 'Al-tafser al-waset',
+    },
+    value: 'ar.waseet',
+  },
+  {
+    label: {
+      ar: 'تفسير البغوي',
+      en: 'Tafsīr al-Baghawī',
+    },
+    value: 'ar.baghawi',
+  },
+  {
+    label: {
+      ar: 'تنوير المقباس من تفسير بن عباس',
+      en: 'Tanwir al-Miqbas min Tafsir Ibn Abbas',
+    },
+    value: 'ar.miqbas',
+  },
+  {
+    label: {
+      ar: 'تفسير القرطبي',
+      en: 'Tafsir al-Qurtubi',
+    },
+    value: 'ar.qurtubi',
+  },
 ];
 
 export {
