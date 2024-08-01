@@ -26,7 +26,7 @@ const initialSettings: SettingsType = {
   recitation: RECITATIONS[0].value,
   translation: TRANSLATIONS[0].value,
   interpretation: INTERPRETATIONS[0].value,
-  rate: 4,
+  rate: 1,
   volume: 0.5,
   mode: 'once',
   autoplay: false,
@@ -44,13 +44,14 @@ type QuranStore = {
   settings: SettingsType;
   continuousPlay: boolean;
   isEnded: boolean;
+  isColoredTajweed: boolean;
   getNextAyah: () => void;
   getPrevAyah: () => void;
   setNumberOfAyah: (numberOfAyah: number) => void;
   setIsSoundPlaying: (status: boolean) => void;
   setAudio: (newAudio: Howl) => void;
   setAutoplay: (status: boolean) => void;
-  setPlaybackRate: (newRate: number) => void;
+  setRate: (newRate: number) => void;
   setMode: (newMode: ModeType) => void;
   setIsTranslation: (status: boolean) => void;
   setIsInterpretation: (status: boolean) => void;
@@ -59,6 +60,7 @@ type QuranStore = {
   setInterpretation: (newInterpretation: string) => void;
   setRecitation: (newRecitation: string) => void;
   setVolume: (newVolume: number) => void;
+  setIsColoredTajweed: (status: boolean) => void;
 };
 
 const useQuranStore = create<QuranStore>(
@@ -70,6 +72,7 @@ const useQuranStore = create<QuranStore>(
     isInterpretation: true,
     continuousPlay: false,
     isEnded: false,
+    isColoredTajweed: false,
     getNextAyah: () =>
       set((state) => {
         const newState = { ...state };
@@ -110,7 +113,7 @@ const useQuranStore = create<QuranStore>(
         newState.settings.autoplay = status;
         return newState;
       }),
-    setPlaybackRate: (newRate: number) =>
+    setRate: (newRate: number) =>
       set((state) => {
         const newState = { ...state };
         newState.settings.rate = newRate;
@@ -151,6 +154,12 @@ const useQuranStore = create<QuranStore>(
       set((state) => {
         const newState = { ...state };
         newState.settings.volume = newVolume;
+        return newState;
+      }),
+    setIsColoredTajweed: (status: boolean) =>
+      set((state) => {
+        const newState = { ...state };
+        newState.isColoredTajweed = status;
         return newState;
       }),
     setRecitation: (newRecitation: string) =>

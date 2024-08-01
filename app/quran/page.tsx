@@ -1,5 +1,6 @@
 'use client';
 
+import CopyToClipboard from '@/components/copy-to-clipboard';
 import Icon from '@/components/icon';
 import { ParticlesLoader } from '@/components/particles-loader';
 import ShareButton from '@/components/share-button';
@@ -31,6 +32,8 @@ import { useGetAyahQuery } from '@/lib/hooks/use-quran-query';
 import useQuranStore from '@/lib/stores/quran-store';
 import {
   INTERPRETATIONS,
+  MAXIMUM_NUMBER_OF_AYAHS,
+  MAXIMUM_NUMBER_OF_SURAHS,
   RECITATIONS,
   SURAHS,
   SURAH_AYAHS,
@@ -48,6 +51,7 @@ import {
   Info,
   Languages,
   LoaderIcon,
+  Palette,
   Play,
   Repeat,
   Repeat1,
@@ -61,16 +65,23 @@ import {
   Volume2,
   VolumeX,
 } from 'lucide-react';
-import { Amiri_Quran } from 'next/font/google';
+import { Amiri, Amiri_Quran } from 'next/font/google';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect } from 'react';
 
-const myFont = Amiri_Quran({
+const AmiriFont = Amiri({
+  weight: '400',
+  subsets: ['arabic'],
+});
+const AmiriQuranFont = Amiri_Quran({
   weight: '400',
   subsets: ['arabic'],
 });
 
 export default function QuranPage() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
   const {
     setIsSoundPlaying,
     audio,
@@ -84,6 +95,7 @@ export default function QuranPage() {
     isTranslation,
     setIsEnded,
     isEnded,
+    setNumberOfAyah,
   } = useQuranStore((state) => state);
   const {
     data: ayah,
@@ -97,11 +109,36 @@ export default function QuranPage() {
   });
 
   useEffect(() => {
-    console.log(`the new mode is: `, mode);
-  }, [mode]);
+    const surah = searchParams.get('surah');
+    const ayah = searchParams.get('ayah');
+
+    if (!surah || !ayah) return;
+    if (Number.isNaN(Number(surah)) || Number.isNaN(Number(ayah))) return;
+    if (
+      +surah > MAXIMUM_NUMBER_OF_SURAHS ||
+      +surah < 1 ||
+      +ayah > MAXIMUM_NUMBER_OF_AYAHS ||
+      +ayah < 1
+    )
+      return;
+
+    setNumberOfAyah(getNumberOfAyah(+surah, +ayah));
+  }, []);
 
   useEffect(() => {
     if (ayah) {
+      let surahNumber = ayah.numberOfSurah.toString();
+      let ayahNumber = ayah.numberInSurah.toString();
+
+      console.log(`initial`, surahNumber, ayahNumber, searchParams.toString());
+      const params = new URLSearchParams({
+        surah: surahNumber,
+        ayah: ayahNumber,
+      }).toString();
+
+      router.replace(pathname + '?' + params);
+
+      audio.stop();
       audio.unload();
       const newAudio = new Howl({
         src: [ayah.audio, ...ayah.audioSecondary],
@@ -148,6 +185,7 @@ type AyahProps = {
   ayah: AyahType;
 };
 function Ayah(props: AyahProps) {
+  const isColoredTajweed = useQuranStore((state) => state.isColoredTajweed);
   return (
     <ScrollArea className="max-h-52 w-full rounded-md border">
       {props.isLoading ? (
@@ -155,13 +193,30 @@ function Ayah(props: AyahProps) {
           <ParticlesLoader />
         </div>
       ) : (
-        <p
-          className={`text-center bg-card select-none text-2xl/10 p-2 pb-5 rounded-md ${myFont.className}`}
-          dir="rtl"
-          lang="ar"
-        >
-          {props.ayah.text}
-        </p>
+        <div className="group">
+          {isColoredTajweed ? (
+            <p
+              className={`text-center bg-card text-2xl/[3rem] px-2 pb-6 pt-4 rounded-md ${AmiriQuranFont.className}`}
+              dir="rtl"
+              lang="ar"
+            >
+              {props.ayah.text}
+            </p>
+          ) : (
+            <p
+              className={`text-center bg-card text-2xl/[3rem] px-2 pb-4 pt-6 rounded-md ${AmiriFont.className}`}
+              dir="rtl"
+              lang="ar"
+            >
+              {props.ayah.text}
+            </p>
+          )}
+          <CopyToClipboard
+            text={props.ayah.text}
+            className="absolute bottom-1 left-1 opacity-0 group-hover:opacity-100 transition-opacity"
+            variant="outline"
+          />
+        </div>
       )}
     </ScrollArea>
   );
@@ -173,8 +228,17 @@ type InterpretationProps = {
 function Interpretation(props: InterpretationProps) {
   return (
     <ScrollArea className="max-h-48 rounded-md border">
-      <p className="bg-secondary p-2 rounded-md text-center" lang="ar" dir="rtl">
+      <p
+        className={`group text-xl/10 bg-secondary p-2 rounded-md text-center ${AmiriFont.className}`}
+        lang="ar"
+        dir="rtl"
+      >
         {props.interpretation}
+        <CopyToClipboard
+          text={props.interpretation}
+          className="absolute bottom-1 left-1 opacity-0 group-hover:opacity-100 transition-opacity"
+          variant="outline"
+        />
       </p>
     </ScrollArea>
   );
@@ -186,7 +250,14 @@ type TranslationProps = {
 function Translation(props: TranslationProps) {
   return (
     <ScrollArea className="max-h-44 rounded-md border">
-      <p className="bg-secondary p-2 rounded-md text-center">{props.translation}</p>
+      <p className="group bg-secondary p-2 rounded-md text-center">
+        {props.translation}
+        <CopyToClipboard
+          text={props.translation}
+          className="absolute bottom-1 left-1 opacity-0 group-hover:opacity-100 transition-opacity"
+          variant="outline"
+        />
+      </p>
     </ScrollArea>
   );
 }
@@ -200,17 +271,25 @@ function ChangeAyah(props: ChangeAyahProps) {
   const pathname = usePathname();
   const setNumberOfAyah = useQuranStore((state) => state.setNumberOfAyah);
 
-  const getSurah = useCallback(() => {
-    return searchParams.get('surah') || props.ayah.numberOfSurah.toString();
-  }, [searchParams, props.ayah.numberOfSurah]);
+  const getParams = useCallback((): { ayah: string; surah: string } => {
+    let surah =
+      (searchParams.has('surah')
+        ? searchParams.get('surah')
+        : props.ayah.numberOfSurah.toString()) || '';
+    let ayah =
+      (searchParams.has('ayah') ? searchParams.get('ayah') : props.ayah.numberInSurah.toString()) ||
+      '';
 
-  const getAyah = useCallback(() => {
-    return searchParams.get('ayah') || props.ayah.numberInSurah.toString();
-  }, [searchParams, props.ayah.numberInSurah]);
+    return { surah, ayah };
+  }, [props.ayah.numberInSurah, props.ayah.numberOfSurah, searchParams]);
 
   useEffect(() => {
     console.log(`change`, searchParams.get('surah'), searchParams.get('ayah'));
   }, [searchParams]);
+
+  // useEffect(() => {
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [props.ayah.numberInSurah, props.ayah.numberOfSurah]);
 
   return (
     <div className="fc gap-2">
@@ -219,18 +298,18 @@ function ChangeAyah(props: ChangeAyahProps) {
           <Info />
         </HoverCardTrigger>
         <HoverCardContent>
-          <p>
-            <Badge>Juz</Badge> {props.ayah.juz}
-          </p>
-          <p>
-            <Badge>Hizb</Badge> {props.ayah.hizbQuarter}
-          </p>
-          <p>
-            <Badge>Page</Badge> {props.ayah.page}
-          </p>
-          <p>
-            <Badge>Revelation Type</Badge> {props.ayah.revelationType}
-          </p>
+          <div>
+            <Badge variant="outline">Juz</Badge> {props.ayah.juz}
+          </div>
+          <div>
+            <Badge variant="outline">Hizb</Badge> {props.ayah.hizbQuarter}
+          </div>
+          <div>
+            <Badge variant="outline">Page</Badge> {props.ayah.page}
+          </div>
+          <div>
+            <Badge variant="outline">Revelation Type</Badge> {props.ayah.revelationType}
+          </div>
         </HoverCardContent>
       </HoverCard>
       <Dialog>
@@ -246,7 +325,7 @@ function ChangeAyah(props: ChangeAyahProps) {
           </DialogHeader>
           <div className="flex flex-col gap-2">
             <Select
-              value={getSurah()}
+              value={getParams().surah}
               onValueChange={(newSurah) => {
                 const params = new URLSearchParams({
                   surah: newSurah,
@@ -267,11 +346,10 @@ function ChangeAyah(props: ChangeAyahProps) {
               </SelectContent>
             </Select>
             <Select
-              value={getAyah()}
+              value={getParams().ayah}
               onValueChange={(newAyah) => {
-                console.log(`newAyah`, newAyah);
                 const params = new URLSearchParams({
-                  surah: getSurah(),
+                  surah: getParams().surah,
                   ayah: newAyah,
                 }).toString();
                 router.replace(pathname + '?' + params);
@@ -281,7 +359,7 @@ function ChangeAyah(props: ChangeAyahProps) {
                 <SelectValue placeholder="Select an Ayah" />
               </SelectTrigger>
               <SelectContent>
-                {Array.from({ length: SURAH_AYAHS[+getSurah()] }).map((_, ayah) => (
+                {Array.from({ length: SURAH_AYAHS[+getParams().surah] }).map((_, ayah) => (
                   <SelectItem key={ayah + 1} value={`${ayah + 1}`}>
                     {ayah + 1}
                   </SelectItem>
@@ -292,7 +370,7 @@ function ChangeAyah(props: ChangeAyahProps) {
           <DialogClose asChild>
             <Button
               onClick={() => {
-                setNumberOfAyah(getNumberOfAyah(+getSurah(), +getAyah()));
+                setNumberOfAyah(getNumberOfAyah(+getParams().surah, +getParams().ayah));
               }}
             >
               Change
@@ -416,7 +494,7 @@ function Settings() {
     audio,
     setAudio,
     settings: {
-      rate: playbackRate,
+      rate,
       volume,
       isSoundPlaying,
       mode,
@@ -435,8 +513,10 @@ function Settings() {
     isInterpretation,
     isTranslation,
     setAutoplay,
-    setPlaybackRate,
+    setRate,
     setMode,
+    isColoredTajweed,
+    setIsColoredTajweed,
     setIsTranslation,
     setIsInterpretation,
     setRecitation,
@@ -454,6 +534,20 @@ function Settings() {
           <DialogDescription>Configure your settings</DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-2">
+          <Label
+            htmlFor="colored-tajweed"
+            className="flex-1 flex items-center justify-between gap-2 p-1 hover:bg-secondary rounded-md transition-colors"
+          >
+            <Palette /> <p className="flex-1">Colored Tajweed</p>
+            <Switch
+              id="colored-tajweed"
+              checked={isColoredTajweed}
+              onCheckedChange={(e) => {
+                setIsColoredTajweed(e);
+              }}
+            />
+          </Label>
+
           {mode === 'once' && (
             <Label className="flex-1 flex items-center justify-between gap-2 p-1 hover:bg-secondary rounded-md transition-colors">
               <Repeat2 />
@@ -573,25 +667,32 @@ function Settings() {
             </Select>
           )}
 
-          <Label className="flex-1 flex items-center justify-between gap-2 p-1 hover:bg-secondary rounded-md transition-colors">
+          <Label
+            htmlFor="rate"
+            className="flex-1 flex items-center justify-between gap-2 p-1 hover:bg-secondary rounded-md transition-colors"
+          >
             <Icon
-              onClick={() => setPlaybackRate(1)}
+              onClick={() => {
+                setRate(1);
+                audio.rate(1);
+              }}
               icon={<Gauge />}
               className="p-1 h-min"
               variant="ghost"
               size="sm"
             />
             <p className="flex-1">Playback rate</p>
-            <span>{playbackRate}</span>
+            <span>{rate}</span>
           </Label>
 
           <Slider
-            value={[playbackRate]}
+            id="rate"
+            value={[rate]}
             max={4}
             step={0.1}
             min={0.25}
             onValueChange={(e) => {
-              setPlaybackRate(e[0]);
+              setRate(e[0]);
               audio.rate(e[0]);
             }}
           />
@@ -602,7 +703,10 @@ function Settings() {
           >
             {volume === 0 ? (
               <Icon
-                onClick={() => setVolume(0.33)}
+                onClick={() => {
+                  setVolume(0.33);
+                  audio.volume(0.33);
+                }}
                 icon={<VolumeX />}
                 className="p-1 h-min"
                 variant="ghost"
@@ -610,7 +714,10 @@ function Settings() {
               />
             ) : volume <= 0.33 ? (
               <Icon
-                onClick={() => setVolume(0.66)}
+                onClick={() => {
+                  setVolume(0.66);
+                  audio.volume(0.66);
+                }}
                 icon={<Volume />}
                 className="p-1 h-min"
                 variant="ghost"
@@ -618,7 +725,10 @@ function Settings() {
               />
             ) : volume <= 0.66 ? (
               <Icon
-                onClick={() => setVolume(1)}
+                onClick={() => {
+                  setVolume(1);
+                  audio.volume(1);
+                }}
                 icon={<Volume1 />}
                 className="p-1 h-min"
                 variant="ghost"
@@ -626,7 +736,10 @@ function Settings() {
               />
             ) : (
               <Icon
-                onClick={() => setVolume(0)}
+                onClick={() => {
+                  setVolume(0);
+                  audio.volume(0);
+                }}
                 icon={<Volume2 />}
                 className="p-1 h-min"
                 variant="ghost"
@@ -663,10 +776,6 @@ function Settings() {
 
 //
 // keyboardshortcuts
-// when isTranslation is on => show the select translation component
-// color the tashkel option (search for the correct word instead of tashkel)// change font
-// add copy button
-//
 // TODO: create a global Icon that serves both the navbar and quran and all icons
 // add the select behavour from quran tab
 // use search params for surah and ayahnumber

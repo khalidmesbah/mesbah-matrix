@@ -21,7 +21,7 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={GeistMono.className}>
+      <body className={`${GeistMono.className} antialiased`}>
         <Providers>
           <main className="flex">
             <Navbar />
