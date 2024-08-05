@@ -586,26 +586,3 @@
     opacity: 0.65;
   }
 }
-
-/* excalidraw */
-.excalidraw {
-  --color-primary: #f00;
-  --color-primary-darker: #f00;
-  --color-primary-darkest: #f00;
-  --color-primary-light: #f00;
-  --background-primary: #f00;
-  --background-primary-darker: #f00;
-  --background-primary-darkest: #f00;
-  --background-primary-light: #f00;
-}
-.excalidraw__canvas {
-  fill: 'red';
-  width: '200px';
-}
-
-/* .excalidraw.theme--dark { */
-/*   --color-primary: #f00; */
-/*   --color-primary-darker: #d64c7e; */
-/*   --color-primary-darkest: #e86e99; */
-/*   --color-primary-light: #dcbec9; */
-/* } */
