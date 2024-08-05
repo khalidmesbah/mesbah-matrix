@@ -14,11 +14,7 @@ export const metadata: Metadata = {
   description: 'Live better',
 };
 
-export default async function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${GeistMono.className} antialiased`}>

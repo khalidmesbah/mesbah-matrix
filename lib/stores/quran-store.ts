@@ -8,9 +8,9 @@ import {
 } from '@/public/data/quran';
 import { Howl } from 'howler';
 import { create } from 'zustand';
-
+// Types
 type ModeType = 'loop' | 'continuous' | 'once';
-
+type FontType = '__className_a12e74' | '__className_af25f8';
 type SettingsType = {
   recitation: string;
   translation: string;
@@ -20,22 +20,8 @@ type SettingsType = {
   autoplay: boolean;
   mode: ModeType;
   isSoundPlaying: boolean;
+  font: FontType;
 };
-
-const initialSettings: SettingsType = {
-  recitation: RECITATIONS[0].value,
-  translation: TRANSLATIONS[0].value,
-  interpretation: INTERPRETATIONS[0].value,
-  rate: 1,
-  volume: 0.5,
-  mode: 'once',
-  autoplay: false,
-  isSoundPlaying: false,
-};
-
-const initialNumberOfAyah = getRandomAyah();
-const initialAudio = new Howl({ src: [''] });
-
 type QuranStore = {
   numberOfAyah: number;
   audio: Howl;
@@ -44,7 +30,7 @@ type QuranStore = {
   settings: SettingsType;
   continuousPlay: boolean;
   isEnded: boolean;
-  isColoredTajweed: boolean;
+  setFont: (newFont: FontType) => void;
   getNextAyah: () => void;
   getPrevAyah: () => void;
   setNumberOfAyah: (numberOfAyah: number) => void;
@@ -60,9 +46,22 @@ type QuranStore = {
   setInterpretation: (newInterpretation: string) => void;
   setRecitation: (newRecitation: string) => void;
   setVolume: (newVolume: number) => void;
-  setIsColoredTajweed: (status: boolean) => void;
 };
-
+// Intitils
+const initialNumberOfAyah = getRandomAyah();
+const initialAudio = new Howl({ src: [''] });
+const initialSettings: SettingsType = {
+  recitation: RECITATIONS[0].value,
+  translation: TRANSLATIONS[0].value,
+  interpretation: INTERPRETATIONS[0].value,
+  rate: 1,
+  volume: 0.5,
+  mode: 'once',
+  autoplay: false,
+  isSoundPlaying: false,
+  font: '__className_a12e74',
+};
+// Store
 const useQuranStore = create<QuranStore>(
   (set): QuranStore => ({
     numberOfAyah: initialNumberOfAyah,
@@ -72,7 +71,12 @@ const useQuranStore = create<QuranStore>(
     isInterpretation: true,
     continuousPlay: false,
     isEnded: false,
-    isColoredTajweed: false,
+    setFont: (newFont: FontType) =>
+      set((state) => {
+        const newState = { ...state };
+        newState.settings.font = newFont;
+        return newState;
+      }),
     getNextAyah: () =>
       set((state) => {
         const newState = { ...state };
@@ -154,12 +158,6 @@ const useQuranStore = create<QuranStore>(
       set((state) => {
         const newState = { ...state };
         newState.settings.volume = newVolume;
-        return newState;
-      }),
-    setIsColoredTajweed: (status: boolean) =>
-      set((state) => {
-        const newState = { ...state };
-        newState.isColoredTajweed = status;
         return newState;
       }),
     setRecitation: (newRecitation: string) =>

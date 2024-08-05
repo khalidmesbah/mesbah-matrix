@@ -28,8 +28,10 @@ import {
 } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
 import { Switch } from '@/components/ui/switch';
+import { AmiriFont } from '@/lib/fonts/fonts';
 import { useGetAyahQuery } from '@/lib/hooks/use-quran-query';
 import useQuranStore from '@/lib/stores/quran-store';
+import { cn } from '@/lib/utils';
 import {
   INTERPRETATIONS,
   MAXIMUM_NUMBER_OF_AYAHS,
@@ -65,18 +67,8 @@ import {
   Volume2,
   VolumeX,
 } from 'lucide-react';
-import { Amiri, Amiri_Quran } from 'next/font/google';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect } from 'react';
-
-const AmiriFont = Amiri({
-  weight: '400',
-  subsets: ['arabic'],
-});
-const AmiriQuranFont = Amiri_Quran({
-  weight: '400',
-  subsets: ['arabic'],
-});
 
 export default function QuranPage() {
   const searchParams = useSearchParams();
@@ -123,6 +115,32 @@ export default function QuranPage() {
       return;
 
     setNumberOfAyah(getNumberOfAyah(+surah, +ayah));
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      console.log('heeeeeeere', event.key);
+      if (event.key === 'ArrowRight') {
+        getNextAyah();
+      } else if (event.key === 'ArrowLeft') {
+        getPrevAyah();
+      } else if (event.key === 'Space') {
+        if (isSoundPlaying) {
+          audio.stop();
+          setIsSoundPlaying(false);
+        } else {
+          audio.play();
+          setIsSoundPlaying(true);
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -185,7 +203,10 @@ type AyahProps = {
   ayah: AyahType;
 };
 function Ayah(props: AyahProps) {
-  const isColoredTajweed = useQuranStore((state) => state.isColoredTajweed);
+  const {
+    settings: { font },
+  } = useQuranStore((state) => state);
+
   return (
     <ScrollArea className="max-h-52 w-full rounded-md border">
       {props.isLoading ? (
@@ -194,27 +215,21 @@ function Ayah(props: AyahProps) {
         </div>
       ) : (
         <div className="group">
-          {isColoredTajweed ? (
-            <p
-              className={`text-center bg-card text-2xl/[3rem] px-2 pb-6 pt-4 rounded-md ${AmiriQuranFont.className}`}
-              dir="rtl"
-              lang="ar"
-            >
-              {props.ayah.text}
-            </p>
-          ) : (
-            <p
-              className={`text-center bg-card text-2xl/[3rem] px-2 pb-4 pt-6 rounded-md ${AmiriFont.className}`}
-              dir="rtl"
-              lang="ar"
-            >
-              {props.ayah.text}
-            </p>
-          )}
+          <p
+            className={cn(`text-center bg-card text-2xl/[3rem] px-2 rounded-md ${font}`, {
+              'pb-4 pt-6': font === '__className_a12e74',
+              'pb-6 pt-4': font === '__className_af25f8',
+            })}
+            dir="rtl"
+            lang="ar"
+          >
+            {props.ayah.text}
+          </p>
           <CopyToClipboard
             text={props.ayah.text}
-            className="absolute bottom-1 left-1 opacity-0 group-hover:opacity-100 transition-opacity"
+            className="absolute bottom-1 left-1 opacity-0 group-hover:opacity-100 transition-opacity p-0 h-7 w-6"
             variant="outline"
+            size="sm"
           />
         </div>
       )}
@@ -236,8 +251,9 @@ function Interpretation(props: InterpretationProps) {
         {props.interpretation}
         <CopyToClipboard
           text={props.interpretation}
-          className="absolute bottom-1 left-1 opacity-0 group-hover:opacity-100 transition-opacity"
+          className="absolute bottom-1 left-1 opacity-0 group-hover:opacity-100 transition-opacity p-0 h-7 w-6"
           variant="outline"
+          size="sm"
         />
       </p>
     </ScrollArea>
@@ -254,8 +270,9 @@ function Translation(props: TranslationProps) {
         {props.translation}
         <CopyToClipboard
           text={props.translation}
-          className="absolute bottom-1 left-1 opacity-0 group-hover:opacity-100 transition-opacity"
+          className="absolute bottom-1 left-1 opacity-0 group-hover:opacity-100 transition-opacity p-0 h-7 w-6"
           variant="outline"
+          size="sm"
         />
       </p>
     </ScrollArea>
@@ -391,6 +408,7 @@ type OptionsProps = {
 };
 function Options(props: OptionsProps) {
   const searchParams = useSearchParams();
+
   return (
     <div className="flex flex-col gap-2 p-2 rounded-md">
       <div className="flex justify-center items-center gap-2">
@@ -502,11 +520,8 @@ function Settings() {
       translation,
       interpretation,
       recitation,
+      font,
     },
-    numberOfAyah,
-    settings,
-    getNextAyah,
-    getPrevAyah,
     setVolume,
     setTranslation,
     setInterpretation,
@@ -514,12 +529,10 @@ function Settings() {
     isTranslation,
     setAutoplay,
     setRate,
-    setMode,
-    isColoredTajweed,
-    setIsColoredTajweed,
     setIsTranslation,
     setIsInterpretation,
     setRecitation,
+    setFont,
   } = useQuranStore((state) => state);
   return (
     <Dialog>
@@ -541,9 +554,9 @@ function Settings() {
             <Palette /> <p className="flex-1">Colored Tajweed</p>
             <Switch
               id="colored-tajweed"
-              checked={isColoredTajweed}
+              checked={font === '__className_af25f8'}
               onCheckedChange={(e) => {
-                setIsColoredTajweed(e);
+                setFont(e ? '__className_af25f8' : '__className_a12e74');
               }}
             />
           </Label>

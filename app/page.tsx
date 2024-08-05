@@ -1,3 +1,3 @@
-export default async function Home() {
-  return <canvas></canvas>;
+export default function Home() {
+  return <>jfkdslf</>;
 }

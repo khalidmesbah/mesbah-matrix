@@ -23,7 +23,11 @@ export default function Zekr({ zekr }: { zekr: ZekrType }) {
       id={zekr.Id.toString()}
     >
       <CardContent>
-        <p dir="rtl" className={`${zekr.count === zekr.maximumCount && 'line-through'} flex-1`}>
+        <p
+          dir="rtl"
+          lang="ar"
+          className={`${zekr.count === zekr.maximumCount && 'line-through'} {AmiriFont.className} flex-1`}
+        >
           {zekr.zekr}
         </p>
       </CardContent>
