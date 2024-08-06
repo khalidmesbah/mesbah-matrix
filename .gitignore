@@ -37,6 +37,3 @@ next-env.d.ts
 
 # by me
 /dev
-
-# Sentry Config File
-.env.sentry-build-plugin

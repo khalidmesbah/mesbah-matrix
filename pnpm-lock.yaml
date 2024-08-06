@@ -16,7 +16,7 @@ importers:
         version: 3.9.0(react-hook-form@7.52.2(react@18.3.1))
       '@kinde-oss/kinde-auth-nextjs':
         specifier: ^2.3.3
-        version: 2.3.6(@babel/core@7.25.2)(next@14.2.4(@babel/core@7.25.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.51.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 2.3.6(@babel/core@7.25.2)(next@14.2.4(@babel/core@7.25.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-accordion':
         specifier: ^1.2.0
         version: 1.2.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -70,7 +70,7 @@ importers:
         version: 5.51.21(@tanstack/react-query@5.51.21(react@18.3.1))(react@18.3.1)
       '@vercel/analytics':
         specifier: ^1.3.1
-        version: 1.3.1(next@14.2.4(@babel/core@7.25.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.51.0))(react@18.3.1)
+        version: 1.3.1(next@14.2.4(@babel/core@7.25.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8))(react@18.3.1)
       canvas-confetti:
         specifier: ^1.9.3
         version: 1.9.3
@@ -94,7 +94,7 @@ importers:
         version: 11.3.21(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       geist:
         specifier: ^1.3.0
-        version: 1.3.1(next@14.2.4(@babel/core@7.25.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.51.0))
+        version: 1.3.1(next@14.2.4(@babel/core@7.25.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8))
       howler:
         specifier: ^2.2.4
         version: 2.2.4
@@ -103,7 +103,7 @@ importers:
         version: 0.394.0(react@18.3.1)
       next:
         specifier: 14.2.4
-        version: 14.2.4(@babel/core@7.25.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.51.0)
+        version: 14.2.4(@babel/core@7.25.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)
       next-share:
         specifier: ^0.27.0
         version: 0.27.0(react@18.3.1)
@@ -201,6 +201,9 @@ importers:
       prettier-plugin-tailwindcss:
         specifier: ^0.6.5
         version: 0.6.5(prettier-plugin-organize-imports@4.0.0(prettier@3.3.3)(typescript@5.5.4))(prettier@3.3.3)
+      sass:
+        specifier: ^1.77.8
+        version: 1.77.8
       tailwindcss:
         specifier: ^3.4.4
         version: 3.4.7
@@ -3949,9 +3952,9 @@ packages:
     resolution: {integrity: sha512-CdASjNJPvRa7roO6Ra/gLYBTzYzzPyyBXxIMdGW3USQLyjWEls2RgW5UBTXaQVp+OrpeCK3bLem8smtmheoRuw==}
     engines: {node: '>= 0.4'}
 
-  sass@1.51.0:
-    resolution: {integrity: sha512-haGdpTgywJTvHC2b91GSq+clTKGbtkkZmVAb82jZQN/wTy6qs8DdFm2lhEQbEwrY0QDRgSQ3xDurqM977C3noA==}
-    engines: {node: '>=12.0.0'}
+  sass@1.77.8:
+    resolution: {integrity: sha512-4UHg6prsrycW20fqLGPShtEvo/WyHRVRHwOP4DzkUrObWoWI05QBSfzU71TVB7PFaL104TwNaHpjlWXAZbQiNQ==}
+    engines: {node: '>=14.0.0'}
     hasBin: true
 
   scheduler@0.23.2:
@@ -5642,14 +5645,14 @@ snapshots:
   '@js-sdsl/ordered-map@4.4.2':
     optional: true
 
-  '@kinde-oss/kinde-auth-nextjs@2.3.6(@babel/core@7.25.2)(next@14.2.4(@babel/core@7.25.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.51.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@kinde-oss/kinde-auth-nextjs@2.3.6(@babel/core@7.25.2)(next@14.2.4(@babel/core@7.25.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@babel/preset-env': 7.25.3(@babel/core@7.25.2)
       '@kinde-oss/kinde-typescript-sdk': 2.9.1
       cookie: 0.6.0
       crypto-js: 4.2.0
       jwt-decode: 3.1.2
-      next: 14.2.4(@babel/core@7.25.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.51.0)
+      next: 14.2.4(@babel/core@7.25.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       uncrypto: 0.1.3
@@ -6832,11 +6835,11 @@ snapshots:
       '@use-gesture/core': 10.3.1
       react: 18.3.1
 
-  '@vercel/analytics@1.3.1(next@14.2.4(@babel/core@7.25.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.51.0))(react@18.3.1)':
+  '@vercel/analytics@1.3.1(next@14.2.4(@babel/core@7.25.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8))(react@18.3.1)':
     dependencies:
       server-only: 0.0.1
     optionalDependencies:
-      next: 14.2.4(@babel/core@7.25.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.51.0)
+      next: 14.2.4(@babel/core@7.25.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)
       react: 18.3.1
 
   abort-controller@3.0.0:
@@ -7791,9 +7794,9 @@ snapshots:
       - supports-color
     optional: true
 
-  geist@1.3.1(next@14.2.4(@babel/core@7.25.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.51.0)):
+  geist@1.3.1(next@14.2.4(@babel/core@7.25.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)):
     dependencies:
-      next: 14.2.4(@babel/core@7.25.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.51.0)
+      next: 14.2.4(@babel/core@7.25.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)
 
   gensync@1.0.0-beta.2: {}
 
@@ -7986,8 +7989,7 @@ snapshots:
 
   ignore@5.3.1: {}
 
-  immutable@4.3.7:
-    optional: true
+  immutable@4.3.7: {}
 
   import-fresh@3.3.0:
     dependencies:
@@ -8389,7 +8391,7 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  next@14.2.4(@babel/core@7.25.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.51.0):
+  next@14.2.4(@babel/core@7.25.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8):
     dependencies:
       '@next/env': 14.2.4
       '@swc/helpers': 0.5.5
@@ -8410,7 +8412,7 @@ snapshots:
       '@next/swc-win32-arm64-msvc': 14.2.4
       '@next/swc-win32-ia32-msvc': 14.2.4
       '@next/swc-win32-x64-msvc': 14.2.4
-      sass: 1.51.0
+      sass: 1.77.8
     transitivePeerDependencies:
       - '@babel/core'
       - babel-plugin-macros
@@ -8810,12 +8812,11 @@ snapshots:
       es-errors: 1.3.0
       is-regex: 1.1.4
 
-  sass@1.51.0:
+  sass@1.77.8:
     dependencies:
       chokidar: 3.6.0
       immutable: 4.3.7
       source-map-js: 1.2.0
-    optional: true
 
   scheduler@0.23.2:
     dependencies:
