@@ -3,10 +3,22 @@
 import styles from '@/styles/analog-clock.module.scss';
 import { useEffect, useRef } from 'react';
 
+const scale = (child: HTMLDivElement | null): number => {
+  if (!child) return 1;
+  const parent = child.parentElement;
+  if (!parent) return 1;
+  const parentWidth = parent.offsetWidth;
+  const childWidth = child.offsetWidth;
+  const number = parentWidth / childWidth;
+  return number;
+};
+
 export default function AnalogClock() {
   const secondsHand = useRef<HTMLDivElement>(null);
   const minutesHand = useRef<HTMLDivElement>(null);
   const hoursHand = useRef<HTMLDivElement>(null);
+  const clockRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const updateTime = () => {
       const d = new Date();
@@ -15,7 +27,6 @@ export default function AnalogClock() {
       let minutesHandRotation = (secondsHandRotation + d.getMinutes()) / 60;
       let hoursHandRotation = (minutesHandRotation + d.getHours()) / 12;
 
-      // Ensure current is not null before accessing style
       if (!secondsHand.current || !minutesHand.current || !hoursHand.current) return;
 
       secondsHand.current.style.transform = `rotate(${secondsHandRotation * 360}deg)`;
@@ -28,8 +39,13 @@ export default function AnalogClock() {
       clearInterval(interval);
     };
   }, []);
+
   return (
-    <div className={styles.clock}>
+    <div
+      className={`${styles.clock} bg-primary/50`}
+      ref={clockRef}
+      style={{ scale: scale(clockRef.current) }}
+    >
       <div className={styles.inside}>
         <span className={`${styles.span} ${styles['span-1']}`}></span>
         <span className={`${styles.span} ${styles['span-2']}`}></span>

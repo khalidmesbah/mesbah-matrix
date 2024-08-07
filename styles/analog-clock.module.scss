@@ -1,12 +1,13 @@
 .clock {
   width: 240px;
+  min-width: 240px;
   height: 240px;
-  background-color: silver;
+  min-height: 240px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 25px;
+  padding: 20px;
 }
 .inside {
   border-radius: 50%;
@@ -21,9 +22,12 @@
 .span {
   position: absolute;
   width: 2px;
+  height: 2px;
   background-color: #161616;
-  transform-origin: 0 90px;
-  top: 5px;
+  border-radius: 0 0 50px 50px;
+  left: 50%;
+  transform-origin: 0 95px;
+  top: 4px;
 }
 @for $i from 0 to 60 {
   .span-#{$i} {
@@ -49,16 +53,17 @@
 .hand {
   position: absolute;
   border-radius: 50px;
-  background: linear-gradient(#000 51%, 0, transparent);
+  background: linear-gradient(#000 50%, 0, transparent);
 }
 .center {
   position: absolute;
-  padding: 2px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background: #000;
 }
 .seconds-hand {
-  height: 150px;
+  height: 140px;
   width: 1px;
 }
 .minutes-hand {
