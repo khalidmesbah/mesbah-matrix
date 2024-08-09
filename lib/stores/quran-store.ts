@@ -1,9 +1,10 @@
 import {
-  INTERPRETATIONS,
   MAXIMUM_NUMBER_OF_AYAHS,
   MINIMUM_NUMBER_OF_AYAHS,
   RECITATIONS,
+  TAFASIR,
   TRANSLATIONS,
+  TRANSLITERATIONS,
   getRandomAyah,
 } from '@/public/data/quran';
 import { Howl } from 'howler';
@@ -13,8 +14,9 @@ type ModeType = 'loop' | 'continuous' | 'once';
 type FontType = '__className_a12e74' | '__className_af25f8';
 type SettingsType = {
   recitation: string;
+  transliteration: string;
   translation: string;
-  interpretation: string;
+  tafsir: string;
   rate: number;
   volume: number;
   autoplay: boolean;
@@ -25,8 +27,6 @@ type SettingsType = {
 type QuranStore = {
   numberOfAyah: number;
   audio: Howl;
-  isTranslation: boolean;
-  isInterpretation: boolean;
   settings: SettingsType;
   continuousPlay: boolean;
   isEnded: boolean;
@@ -39,21 +39,21 @@ type QuranStore = {
   setAutoplay: (status: boolean) => void;
   setRate: (newRate: number) => void;
   setMode: (newMode: ModeType) => void;
-  setIsTranslation: (status: boolean) => void;
-  setIsInterpretation: (status: boolean) => void;
   setIsEnded: (status: boolean) => void;
   setTranslation: (newTranslation: string) => void;
-  setInterpretation: (newInterpretation: string) => void;
+  setTafsir: (newTafsir: string) => void;
   setRecitation: (newRecitation: string) => void;
+  setTransliteration: (newTransliteration: string) => void;
   setVolume: (newVolume: number) => void;
 };
 // Intitils
 const initialNumberOfAyah = getRandomAyah();
 const initialAudio = new Howl({ src: [''] });
 const initialSettings: SettingsType = {
-  recitation: RECITATIONS[0].value,
-  translation: TRANSLATIONS[0].value,
-  interpretation: INTERPRETATIONS[0].value,
+  recitation: RECITATIONS[0].identifier,
+  translation: TRANSLATIONS[0].identifier,
+  transliteration: TRANSLITERATIONS[1].identifier,
+  tafsir: TAFASIR[0].identifier,
   rate: 1,
   volume: 0.5,
   mode: 'once',
@@ -67,8 +67,6 @@ const useQuranStore = create<QuranStore>(
     numberOfAyah: initialNumberOfAyah,
     audio: initialAudio,
     settings: initialSettings,
-    isTranslation: true,
-    isInterpretation: true,
     continuousPlay: false,
     isEnded: false,
     setFont: (newFont: FontType) =>
@@ -129,29 +127,16 @@ const useQuranStore = create<QuranStore>(
         newState.settings.mode = newMode;
         return newState;
       }),
-    setIsInterpretation: (status: boolean) =>
-      set((state) => {
-        const newState = { ...state };
-        newState.isInterpretation = status;
-        return newState;
-      }),
-    setIsTranslation: (status: boolean) =>
-      set((state) => {
-        const newState = { ...state };
-        newState.isTranslation = status;
-        return newState;
-      }),
-
     setTranslation: (newTranslation: string) =>
       set((state) => {
         const newState = { ...state };
         newState.settings.translation = newTranslation;
         return newState;
       }),
-    setInterpretation: (newInterpretation: string) =>
+    setTafsir: (newTafsir: string) =>
       set((state) => {
         const newState = { ...state };
-        newState.settings.interpretation = newInterpretation;
+        newState.settings.tafsir = newTafsir;
         return newState;
       }),
     setVolume: (newVolume: number) =>
@@ -164,6 +149,12 @@ const useQuranStore = create<QuranStore>(
       set((state) => {
         const newState = { ...state };
         newState.settings.recitation = newRecitation;
+        return newState;
+      }),
+    setTransliteration: (newTransliteration: string) =>
+      set((state) => {
+        const newState = { ...state };
+        newState.settings.transliteration = newTransliteration;
         return newState;
       }),
     setIsEnded: (status: boolean) =>

@@ -7,7 +7,8 @@ export const useGetAyahQuery = ({
   numberOfAyah,
   recitation,
   translation,
-  interpretation,
+  tafsir,
+  transliteration,
 }: AyahRequestType) => {
   useQuery({
     queryKey: [
@@ -15,14 +16,16 @@ export const useGetAyahQuery = ({
       checkIsNextNumberOfAyahValid(numberOfAyah, 1),
       recitation,
       translation,
-      interpretation,
+      tafsir,
+      transliteration,
     ],
     queryFn: () =>
       getAyahInfo({
         numberOfAyah: checkIsNextNumberOfAyahValid(numberOfAyah, 1),
         recitation,
         translation,
-        interpretation,
+        tafsir,
+        transliteration,
       }),
     staleTime: Infinity,
     refetchOnWindowFocus: false,
@@ -33,14 +36,16 @@ export const useGetAyahQuery = ({
       checkIsPrevNumberOfAyahValid(numberOfAyah, 1),
       recitation,
       translation,
-      interpretation,
+      tafsir,
+      transliteration,
     ],
     queryFn: () =>
       getAyahInfo({
         numberOfAyah: checkIsPrevNumberOfAyahValid(numberOfAyah, 1),
         recitation,
         translation,
-        interpretation,
+        tafsir,
+        transliteration,
       }),
     staleTime: Infinity,
     refetchOnWindowFocus: false,
@@ -51,14 +56,16 @@ export const useGetAyahQuery = ({
       checkIsNextNumberOfAyahValid(numberOfAyah, 2),
       recitation,
       translation,
-      interpretation,
+      tafsir,
+      transliteration,
     ],
     queryFn: () =>
       getAyahInfo({
         numberOfAyah: checkIsNextNumberOfAyahValid(numberOfAyah, 2),
         recitation,
         translation,
-        interpretation,
+        tafsir,
+        transliteration,
       }),
     staleTime: Infinity,
     refetchOnWindowFocus: false,
@@ -69,14 +76,16 @@ export const useGetAyahQuery = ({
       checkIsPrevNumberOfAyahValid(numberOfAyah, 2),
       recitation,
       translation,
-      interpretation,
+      tafsir,
+      transliteration,
     ],
     queryFn: () =>
       getAyahInfo({
         numberOfAyah: checkIsPrevNumberOfAyahValid(numberOfAyah, 2),
         recitation,
         translation,
-        interpretation,
+        tafsir,
+        transliteration,
       }),
     staleTime: Infinity,
     refetchOnWindowFocus: false,
@@ -87,14 +96,16 @@ export const useGetAyahQuery = ({
       checkIsNextNumberOfAyahValid(numberOfAyah, 3),
       recitation,
       translation,
-      interpretation,
+      tafsir,
+      transliteration,
     ],
     queryFn: () =>
       getAyahInfo({
         numberOfAyah: checkIsNextNumberOfAyahValid(numberOfAyah, 3),
         recitation,
         translation,
-        interpretation,
+        tafsir,
+        transliteration,
       }),
     staleTime: Infinity,
     refetchOnWindowFocus: false,
@@ -105,22 +116,24 @@ export const useGetAyahQuery = ({
       checkIsPrevNumberOfAyahValid(numberOfAyah, 3),
       recitation,
       translation,
-      interpretation,
+      tafsir,
+      transliteration,
     ],
     queryFn: () =>
       getAyahInfo({
         numberOfAyah: checkIsPrevNumberOfAyahValid(numberOfAyah, 3),
         recitation,
         translation,
-        interpretation,
+        tafsir,
+        transliteration,
       }),
     staleTime: Infinity,
     refetchOnWindowFocus: false,
   });
 
   return useQuery({
-    queryKey: ['quran', numberOfAyah, recitation, translation, interpretation],
-    queryFn: () => getAyahInfo({ numberOfAyah, recitation, translation, interpretation }),
+    queryKey: ['quran', numberOfAyah, recitation, translation, tafsir, transliteration],
+    queryFn: () => getAyahInfo({ numberOfAyah, recitation, translation, tafsir, transliteration }),
     staleTime: Infinity,
     refetchOnWindowFocus: false,
   });

@@ -91,7 +91,8 @@ type SelectOptionType = {
 type AyahType = {
   text: string;
   translation: string;
-  interpretation: string;
+  tafsir: string;
+  transliteration: string;
 
   numberInSurah: number;
   numberOfAyahs: number;
@@ -108,11 +109,13 @@ type AyahType = {
   hizbQuarter: string;
 };
 
+// INFO: why ?, delete man
 export type AyahRequestType = {
   numberOfAyah: number;
   recitation: string;
   translation?: string;
-  interpretation?: string;
+  tafsir?: string;
+  transliteration?: string;
 };
 
 export type AyahNumberRequestType = {

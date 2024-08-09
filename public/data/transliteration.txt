@@ -1,0 +1,18 @@
+{
+  "identifier": "tr.transliteration",
+  "language": "tr",
+  "name": "Çeviriyazı",
+  "englishName": "Muhammet Abay",
+  "format": "text",
+  "type": "transliteration",
+  "direction": "ltr"
+}
+{
+  "identifier": "en.transliteration",
+  "language": "en",
+  "name": "Transliteration",
+  "englishName": "English Transliteration",
+  "format": "text",
+  "type": "transliteration",
+  "direction": "ltr"
+}

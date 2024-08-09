@@ -4,11 +4,12 @@ export const getAyahInfo = async ({
   numberOfAyah,
   recitation,
   translation,
-  interpretation,
+  tafsir,
+  transliteration,
 }: AyahRequestType): Promise<AyahType | undefined> => {
   try {
     const res = await fetch(
-      `https://api.alquran.cloud/v1/ayah/${numberOfAyah}/editions/${recitation},${translation},${interpretation}`,
+      `https://api.alquran.cloud/v1/ayah/${numberOfAyah}/editions/${recitation},${translation},${tafsir},${transliteration}`,
     );
     const json = await res.json();
 
@@ -20,7 +21,8 @@ export const getAyahInfo = async ({
     const ayah: AyahType = {
       text: json.data[0].text,
       translation: json.data[1].text,
-      interpretation: json.data[2].text,
+      tafsir: json.data[2].text,
+      transliteration: json.data[3].text,
 
       numberInSurah: json.data[0].numberInSurah,
       numberOfAyahs: json.data[0].surah.numberOfAyahs,
@@ -40,4 +42,10 @@ export const getAyahInfo = async ({
   } catch (error) {
     console.error(error);
   }
+};
+
+export const getImage = async (surah: number, ayah: number) => {
+  const res = await fetch(`https://cdn.islamic.network/quran/images/${surah}_${ayah}.png`);
+  const blob = await res.blob();
+  return blob;
 };

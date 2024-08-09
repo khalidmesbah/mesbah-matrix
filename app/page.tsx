@@ -298,6 +298,7 @@ function LoadButton() {
       loadSnapshot(editor.store, { document, session });
     };
     loadWorkSpaces();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return null;

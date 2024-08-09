@@ -28,18 +28,20 @@ import {
 } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
 import { Switch } from '@/components/ui/switch';
-import { AmiriFont } from '@/lib/fonts/fonts';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { AmiriFont, AmiriQuranFont } from '@/lib/fonts/fonts';
 import { useGetAyahQuery } from '@/lib/hooks/use-quran-query';
 import useQuranStore from '@/lib/stores/quran-store';
 import { cn } from '@/lib/utils';
 import {
-  INTERPRETATIONS,
   MAXIMUM_NUMBER_OF_AYAHS,
   MAXIMUM_NUMBER_OF_SURAHS,
   RECITATIONS,
   SURAHS,
   SURAH_AYAHS,
+  TAFASIR,
   TRANSLATIONS,
+  TRANSLITERATIONS,
   getNumberOfAyah,
 } from '@/public/data/quran';
 import { AyahType } from '@/types';
@@ -50,9 +52,11 @@ import {
   Folder,
   Gauge,
   Heart,
+  Image as ImageIcon,
   Info,
   Languages,
   LoaderIcon,
+  MicVocal,
   Palette,
   Play,
   Repeat,
@@ -67,6 +71,7 @@ import {
   Volume2,
   VolumeX,
 } from 'lucide-react';
+import Image from 'next/image';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect } from 'react';
 
@@ -78,15 +83,17 @@ export default function QuranPage() {
     setIsSoundPlaying,
     audio,
     setAudio,
-    settings: { rate, volume, isSoundPlaying, mode, autoplay },
+    settings: { rate, volume, isSoundPlaying, mode, autoplay, font },
     numberOfAyah,
-    settings: { recitation, translation, interpretation },
+    settings: {
+      recitation,
+      translation: translationIdentifier,
+      tafsir,
+      transliteration: transliterationIdentifier,
+    },
     getNextAyah,
     getPrevAyah,
-    isInterpretation,
-    isTranslation,
     setIsEnded,
-    isEnded,
     setNumberOfAyah,
   } = useQuranStore((state) => state);
   const {
@@ -96,9 +103,12 @@ export default function QuranPage() {
   } = useGetAyahQuery({
     numberOfAyah,
     recitation,
-    translation,
-    interpretation,
+    translation: translationIdentifier,
+    tafsir,
+    transliteration: transliterationIdentifier,
   });
+  const translation = TRANSLATIONS.find((e) => e.identifier === translationIdentifier);
+  const transliteration = TRANSLITERATIONS.find((e) => e.identifier === translationIdentifier);
 
   useEffect(() => {
     const surah = searchParams.get('surah');
@@ -117,18 +127,18 @@ export default function QuranPage() {
     setNumberOfAyah(getNumberOfAyah(+surah, +ayah));
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      console.log('heeeeeeere', event.key);
-      if (event.key === 'ArrowRight') {
+      if (['ArrowRight', 'h'].includes(event.key)) {
         getNextAyah();
-      } else if (event.key === 'ArrowLeft') {
+      } else if (['ArrowLeft', 'l'].includes(event.key)) {
         getPrevAyah();
-      } else if (event.key === 'Space') {
+      } else if (event.key === 'k') {
+        // FIX: doesn't work
         if (isSoundPlaying) {
-          audio.stop();
           setIsSoundPlaying(false);
+          audio.stop();
         } else {
-          audio.play();
           setIsSoundPlaying(true);
+          audio.play();
         }
       }
     };
@@ -148,7 +158,6 @@ export default function QuranPage() {
       let surahNumber = ayah.numberOfSurah.toString();
       let ayahNumber = ayah.numberInSurah.toString();
 
-      console.log(`initial`, surahNumber, ayahNumber, searchParams.toString());
       const params = new URLSearchParams({
         surah: surahNumber,
         ayah: ayahNumber,
@@ -178,15 +187,80 @@ export default function QuranPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ayah]);
 
-  if (isError) return <h1>error</h1>;
-  if (isLoading || !ayah) return <h1>loading</h1>;
+  if (isError) return <AyahUnavailable />;
+  if (isLoading || !ayah) return <ParticlesLoader />;
 
   return (
     <div className="flex flex-col gap-2 flex-1 justify-center items-center">
-      <ChangeAyah ayah={ayah} />
-      <Ayah isLoading={isLoading} ayah={ayah} />
-      {isInterpretation && <Interpretation interpretation={ayah.interpretation} />}
-      {isTranslation && <Translation translation={ayah.translation} />}
+      <ChangeAyah setNumberOfAyah={setNumberOfAyah} ayah={ayah} />
+      <Ayah font={font} ayah={ayah} />
+
+      <Tabs defaultValue="tafsir" className="">
+        <TabsList className="w-full">
+          <TabsTrigger value="tafsir" className="fc gap-2">
+            <BookOpen />
+            <p className="hidden sm:block">Tafsir</p>
+          </TabsTrigger>
+          <TabsTrigger value="translation" className="fc gap-2">
+            <Languages />
+            <p className="hidden sm:block">Translation</p>
+          </TabsTrigger>
+          <TabsTrigger value="transliterations" className="fc gap-2">
+            <Speech />
+            <p className="hidden sm:block">Transliteration</p>
+          </TabsTrigger>
+        </TabsList>
+        <ScrollArea className="max-h-48">
+          <div className="max-h-48">
+            <TabsContent value="tafsir">
+              <p
+                className={`group text-xl/10 bg-secondary p-2 rounded-md text-center ${AmiriFont.className}`}
+                lang="ar"
+                dir="rtl"
+              >
+                {ayah.tafsir}
+                <CopyToClipboard
+                  text={ayah.tafsir}
+                  className="absolute bottom-1 left-1 opacity-0 group-hover:opacity-100 transition-opacity p-0 h-7 w-6"
+                  variant="outline"
+                  size="sm"
+                />
+              </p>
+            </TabsContent>
+            <TabsContent value="translation">
+              <p
+                className="group bg-secondary p-2 rounded-md text-center"
+                lang={translation?.language}
+                dir={translation?.direction}
+              >
+                {ayah.translation}
+                <CopyToClipboard
+                  text={ayah.translation}
+                  className="absolute bottom-1 left-1 opacity-0 group-hover:opacity-100 transition-opacity p-0 h-7 w-6"
+                  variant="outline"
+                  size="sm"
+                />
+              </p>
+            </TabsContent>
+
+            <TabsContent value="transliterations">
+              <p
+                className="group bg-secondary p-2 rounded-md text-center"
+                lang={transliteration?.language}
+                dir={transliteration?.direction}
+              >
+                {ayah.transliteration}
+                <CopyToClipboard
+                  text={ayah.transliteration}
+                  className="absolute bottom-1 left-1 opacity-0 group-hover:opacity-100 transition-opacity p-0 h-7 w-6"
+                  variant="outline"
+                  size="sm"
+                />
+              </p>
+            </TabsContent>
+          </div>
+        </ScrollArea>
+      </Tabs>
       <Options
         audio={audio}
         ayah={ayah}
@@ -199,94 +273,45 @@ export default function QuranPage() {
 }
 
 type AyahProps = {
-  isLoading: boolean;
   ayah: AyahType;
+  font: string;
 };
-function Ayah(props: AyahProps) {
-  const {
-    settings: { font },
-  } = useQuranStore((state) => state);
-
+function Ayah({ ayah, font }: AyahProps) {
   return (
     <ScrollArea className="max-h-52 w-full rounded-md border">
-      {props.isLoading ? (
-        <div className="flex justify-center items-center p-2">
-          <ParticlesLoader />
-        </div>
-      ) : (
-        <div className="group">
-          <p
-            className={cn(`text-center bg-card text-2xl/[3rem] px-2 rounded-md ${font}`, {
+      <div className="group">
+        <p
+          className={cn(
+            `text-center bg-card text-2xl/[3rem] px-2 rounded-md ${font === '__className_af25f8' ? AmiriQuranFont.className : AmiriFont.className}`,
+            {
               'pb-4 pt-6': font === '__className_a12e74',
               'pb-6 pt-4': font === '__className_af25f8',
-            })}
-            dir="rtl"
-            lang="ar"
-          >
-            {props.ayah.text}
-          </p>
-          <CopyToClipboard
-            text={props.ayah.text}
-            className="absolute bottom-1 left-1 opacity-0 group-hover:opacity-100 transition-opacity p-0 h-7 w-6"
-            variant="outline"
-            size="sm"
-          />
-        </div>
-      )}
-    </ScrollArea>
-  );
-}
-
-type InterpretationProps = {
-  interpretation: string;
-};
-function Interpretation(props: InterpretationProps) {
-  return (
-    <ScrollArea className="max-h-48 rounded-md border">
-      <p
-        className={`group text-xl/10 bg-secondary p-2 rounded-md text-center ${AmiriFont.className}`}
-        lang="ar"
-        dir="rtl"
-      >
-        {props.interpretation}
+            },
+          )}
+          dir="rtl"
+          lang="ar"
+        >
+          {ayah.text}
+        </p>
         <CopyToClipboard
-          text={props.interpretation}
+          text={ayah.text}
           className="absolute bottom-1 left-1 opacity-0 group-hover:opacity-100 transition-opacity p-0 h-7 w-6"
           variant="outline"
           size="sm"
         />
-      </p>
-    </ScrollArea>
-  );
-}
-
-type TranslationProps = {
-  translation: string;
-};
-function Translation(props: TranslationProps) {
-  return (
-    <ScrollArea className="max-h-44 rounded-md border">
-      <p className="group bg-secondary p-2 rounded-md text-center">
-        {props.translation}
-        <CopyToClipboard
-          text={props.translation}
-          className="absolute bottom-1 left-1 opacity-0 group-hover:opacity-100 transition-opacity p-0 h-7 w-6"
-          variant="outline"
-          size="sm"
-        />
-      </p>
+      </div>
     </ScrollArea>
   );
 }
 
 type ChangeAyahProps = {
   ayah: AyahType;
+  setNumberOfAyah: (numberOfAyah: number) => void;
 };
 function ChangeAyah(props: ChangeAyahProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-  const setNumberOfAyah = useQuranStore((state) => state.setNumberOfAyah);
 
   const getParams = useCallback((): { ayah: string; surah: string } => {
     let surah =
@@ -299,14 +324,6 @@ function ChangeAyah(props: ChangeAyahProps) {
 
     return { surah, ayah };
   }, [props.ayah.numberInSurah, props.ayah.numberOfSurah, searchParams]);
-
-  useEffect(() => {
-    console.log(`change`, searchParams.get('surah'), searchParams.get('ayah'));
-  }, [searchParams]);
-
-  // useEffect(() => {
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [props.ayah.numberInSurah, props.ayah.numberOfSurah]);
 
   return (
     <div className="fc gap-2">
@@ -387,7 +404,7 @@ function ChangeAyah(props: ChangeAyahProps) {
           <DialogClose asChild>
             <Button
               onClick={() => {
-                setNumberOfAyah(getNumberOfAyah(+getParams().surah, +getParams().ayah));
+                props.setNumberOfAyah(getNumberOfAyah(+getParams().surah, +getParams().ayah));
               }}
             >
               Change
@@ -402,7 +419,7 @@ function ChangeAyah(props: ChangeAyahProps) {
 type OptionsProps = {
   getPrevAyah: () => void;
   getNextAyah: () => void;
-  ayah?: AyahType;
+  ayah: AyahType;
   isLoading: boolean;
   audio: any;
 };
@@ -423,12 +440,66 @@ function Options(props: OptionsProps) {
         <Mode />
         <ShareButton
           url={`${process.env.NEXT_PUBLIC_MESBAH_MATRIX_URL}/quran?surah=${searchParams.get('surah')}&ayah=${searchParams.get('ayah')}`}
-          title={`${props.ayah?.surahEnglishName}: ${props.ayah?.text}`}
+          title={`${props.ayah.surahEnglishName}: ${props.ayah.text}`}
           variant="outline"
         />
+        <AyahImage surah={props.ayah.numberOfSurah} ayah={props.ayah.numberInSurah} />
       </div>
       <Settings />
     </div>
+  );
+}
+
+type AyahImageProps = {
+  surah: number;
+  ayah: number;
+};
+function AyahImage({ surah, ayah }: AyahImageProps) {
+  const src = `http://cdn.islamic.network/quran/images/${surah}_${ayah}.png`;
+
+  const handleDownload = async () => {
+    const a = document.createElement('a');
+    a.href = src;
+    a.setAttribute('download', 'true');
+    a.target = '_blank';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  };
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Icon icon={<ImageIcon />} />
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Image of the Ayah</DialogTitle>
+          <DialogDescription className="flex items-center gap-2 flex-wrap text-xs">
+            <span className="fc gap-1 flex-wrap">
+              <Badge variant={'secondary'}>Surah</Badge>
+              {SURAHS[surah - 1].label}
+            </span>
+            <span className="fc gap-1 flex-wrap">
+              <Badge variant={'secondary'}>Ayah</Badge>
+              {ayah}
+            </span>
+          </DialogDescription>
+        </DialogHeader>
+        <div className="flex justify-center flex-col gap-2">
+          <Image
+            src={src}
+            width={1000}
+            height={1000}
+            placeholder="blur"
+            blurDataURL="/imgs/ayah-placeholder.jpeg"
+            className="bg-white rounded-md p-2"
+            alt={`surah: ${surah}, ayah: ${ayah}`}
+          />
+          <Button onClick={handleDownload}>Download</Button>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -450,9 +521,6 @@ function Mode() {
   );
 }
 
-type PlayPauseButtonProps = {
-  audio: any;
-};
 function PlayPauseButton() {
   const {
     audio,
@@ -508,31 +576,26 @@ function PlayPauseButton() {
 
 function Settings() {
   const {
-    setIsSoundPlaying,
     audio,
-    setAudio,
     settings: {
       rate,
       volume,
-      isSoundPlaying,
       mode,
       autoplay,
       translation,
-      interpretation,
+      tafsir,
       recitation,
       font,
+      transliteration,
     },
     setVolume,
     setTranslation,
-    setInterpretation,
-    isInterpretation,
-    isTranslation,
+    setTafsir,
     setAutoplay,
     setRate,
-    setIsTranslation,
-    setIsInterpretation,
     setRecitation,
     setFont,
+    setTransliteration,
   } = useQuranStore((state) => state);
   return (
     <Dialog>
@@ -576,7 +639,7 @@ function Settings() {
 
           <Label className="flex-1 flex items-center justify-between gap-2 p-1 hover:bg-secondary rounded-md transition-colors">
             <Icon
-              icon={<Speech />}
+              icon={<MicVocal />}
               className="p-1 h-min text-foreground pointer-events-none"
               variant="link"
               size="sm"
@@ -595,15 +658,15 @@ function Settings() {
             </SelectTrigger>
             <SelectContent>
               {RECITATIONS.map((recitation) => (
-                <SelectItem key={recitation.value} value={recitation.value}>
-                  {recitation.label}
+                <SelectItem key={recitation.identifier} value={recitation.identifier}>
+                  {recitation.englishName}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
 
           <Label
-            htmlFor="interpretation"
+            htmlFor="tafir"
             className="flex-1 flex items-center justify-between gap-2 p-1 hover:bg-secondary rounded-md transition-colors"
           >
             <Icon
@@ -612,34 +675,25 @@ function Settings() {
               variant="link"
               size="sm"
             />
-            <p className="flex-1">Interpretation</p>
-            <Switch
-              id="interpretation"
-              checked={isInterpretation}
-              onCheckedChange={(e) => {
-                setIsInterpretation(e);
-              }}
-            />
+            <p className="flex-1">Tafsir</p>
           </Label>
-          {isInterpretation && (
-            <Select
-              value={interpretation}
-              onValueChange={(newInterpretation) => {
-                setInterpretation(newInterpretation);
-              }}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select an Interpretation" />
-              </SelectTrigger>
-              <SelectContent>
-                {INTERPRETATIONS.map((interpretation) => (
-                  <SelectItem key={interpretation.value} value={interpretation.value}>
-                    {interpretation.label.en}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          )}
+          <Select
+            value={tafsir}
+            onValueChange={(newTafsir) => {
+              setTafsir(newTafsir);
+            }}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select an Tafsir" />
+            </SelectTrigger>
+            <SelectContent>
+              {TAFASIR.map((tafsir) => (
+                <SelectItem key={tafsir.identifier} value={tafsir.identifier}>
+                  {tafsir.englishName}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
           <Label
             htmlFor="translation"
@@ -652,33 +706,54 @@ function Settings() {
               size="sm"
             />
             <p className="flex-1">Translation</p>
-            <Switch
-              id="translation"
-              checked={isTranslation}
-              onCheckedChange={(e) => {
-                setIsTranslation(e);
-              }}
-            />
           </Label>
-          {isTranslation && (
-            <Select
-              value={translation}
-              onValueChange={(newTranslation) => {
-                setTranslation(newTranslation);
-              }}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select a Translation" />
-              </SelectTrigger>
-              <SelectContent>
-                {TRANSLATIONS.map((translation) => (
-                  <SelectItem key={translation.value} value={translation.value}>
-                    {translation.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          )}
+          <Select
+            value={translation}
+            onValueChange={(newTranslation) => {
+              setTranslation(newTranslation);
+            }}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select a Translation" />
+            </SelectTrigger>
+            <SelectContent>
+              {TRANSLATIONS.map((translation) => (
+                <SelectItem key={translation.identifier} value={translation.identifier}>
+                  {translation.englishName}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          <Label
+            htmlFor="transliteration"
+            className="flex-1 flex items-center justify-between gap-2 p-1 hover:bg-secondary rounded-md transition-colors"
+          >
+            <Icon
+              icon={<Speech />}
+              className="p-1 h-min text-foreground pointer-events-none"
+              variant="link"
+              size="sm"
+            />
+            <p className="flex-1">Transliteration</p>
+          </Label>
+          <Select
+            value={transliteration}
+            onValueChange={(newTransliteration) => {
+              setTransliteration(newTransliteration);
+            }}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select a Transliteration" />
+            </SelectTrigger>
+            <SelectContent>
+              {TRANSLITERATIONS.map((transliteration) => (
+                <SelectItem key={transliteration.identifier} value={transliteration.identifier}>
+                  {transliteration.englishName}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
           <Label
             htmlFor="rate"
@@ -787,17 +862,27 @@ function Settings() {
   );
 }
 
-//
-// keyboardshortcuts
-// TODO: create a global Icon that serves both the navbar and quran and all icons
-// add the select behavour from quran tab
-// use search params for surah and ayahnumber
-// test on small screen sizes and use a drawer
-// make an image maker of the verse and export it
-// add multiple templates for this image maker
-// add language
-// add translation and interpretation to the URLSearchParams
-// determine which state to be saved into firebase
-// fix interpretations (unknowns and duplicates)
-// work on background
-// stop working when moving to another tab
+function AyahUnavailable() {
+  return (
+    <div className="flex min-h-[100dvh] flex-col items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-md text-center">
+        <div className="mx-auto h-12 w-12 text-primary" />
+        <h1 className="mt-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          Ayah Unavailable
+        </h1>
+        <p className="mt-4 text-muted-foreground">
+          We are sorry, but we were unable to fetch the ayah of the Quran you requested. Please try
+          again later.
+        </p>
+        <div className="mt-6">
+          <Button
+            className="inline-flex items-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+            onClick={() => {}} // TODO: fix this
+          >
+            Try Again
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}
