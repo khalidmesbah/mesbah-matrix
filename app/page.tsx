@@ -3,9 +3,13 @@
 import { getWorkspaces, setWorkspaces } from '@/actions/workspace';
 import '@/app/index.css';
 import { AnalogClockTool, AnalogClockUtil } from '@/components/workspace/analog-clock-tool';
+import { SlideShapeTool } from '@/components/workspace/slide-show/SlideShapeTool';
+import { SlideShapeUtil } from '@/components/workspace/slide-show/SlideShapeUtil';
+import { SlidesPanel } from '@/components/workspace/slide-show/SlidesPanel';
+import '@/components/workspace/slide-show/slides.css';
+import { $currentSlide, getSlides, moveToSlide } from '@/components/workspace/slide-show/useSlides';
 import { StickerTool } from '@/components/workspace/sticker-tool-util';
 import { useTheme } from 'next-themes';
-import { useEffect } from 'react';
 import { toast } from 'sonner';
 import {
   DefaultActionsMenu,
@@ -20,13 +24,16 @@ import {
   DefaultKeyboardShortcutsDialogContent,
   DefaultMainMenu,
   DefaultMainMenuContent,
+  DefaultNavigationPanel,
   DefaultPageMenu,
   DefaultQuickActions,
   DefaultQuickActionsContent,
+  DefaultSharePanel,
   DefaultStylePanel,
   DefaultStylePanelContent,
   DefaultToolbar,
   DefaultToolbarContent,
+  DefaultTopPanel,
   DefaultZoomMenu,
   DefaultZoomMenuContent,
   TLComponents,
@@ -38,6 +45,7 @@ import {
   Tldraw,
   TldrawUiMenuGroup,
   TldrawUiMenuItem,
+  computed,
   getSnapshot,
   loadSnapshot,
   useEditor,
@@ -67,7 +75,7 @@ function CustomContextMenu(props: TLUiContextMenuProps) {
           <TldrawUiMenuGroup id="example">
             <TldrawUiMenuItem
               id="clear"
-              label="Clear Canvas 🧨"
+              label="Clear Canvas"
               icon="bomb"
               onSelect={() => {
                 editor.selectAll().deleteShapes(editor.getSelectedShapeIds());
@@ -102,6 +110,7 @@ function CustomKeyboardShortcutsDialog(props: TLUiKeyboardShortcutsDialogProps) 
   return (
     <DefaultKeyboardShortcutsDialog {...props}>
       <TldrawUiMenuGroup id="Components" label="Components">
+        <TldrawUiMenuItem {...tools['slide']} />
         <TldrawUiMenuItem {...tools['analog-clock']} />
         <TldrawUiMenuItem {...tools['sticker']} />
       </TldrawUiMenuGroup>
@@ -118,7 +127,7 @@ function CustomMainMenu() {
         <TldrawUiMenuGroup id="example">
           <TldrawUiMenuItem
             id="clear"
-            label="Clear Canvas 🧨"
+            label="Clear Canvas"
             onSelect={() => {
               editor.selectAll().deleteShapes(editor.getSelectedShapeIds());
             }}
@@ -164,15 +173,11 @@ function CustomMainMenu() {
 }
 //[7]
 function CustomNavigationPanel() {
-  return null;
+  return <DefaultNavigationPanel />;
 }
 //[8]
 function CustomPageMenu() {
-  return (
-    <div>
-      <DefaultPageMenu />
-    </div>
-  );
+  return <DefaultPageMenu />;
 }
 //[9]
 function CustomQuickActions() {
@@ -198,9 +203,12 @@ function CustomToolbar() {
   const isStickerSelected = useIsToolSelected(tools['sticker']);
   const isAnalogClockSelected = useIsToolSelected(tools['analog-clock']);
   const isScreenshotSelected = useIsToolSelected(tools['rhombus-2']);
+  const isSlideSelected = useIsToolSelected(tools['slide']);
+
   return (
     <DefaultToolbar>
       <DefaultToolbarContent />
+      <TldrawUiMenuItem {...tools['slide']} isSelected={isSlideSelected} />
       <TldrawUiMenuItem {...tools['rhombus-2']} isSelected={isScreenshotSelected} />
       <TldrawUiMenuItem {...tools['analog-clock']} isSelected={isAnalogClockSelected} />
       <TldrawUiMenuItem {...tools['sticker']} isSelected={isStickerSelected} />
@@ -211,19 +219,6 @@ function CustomToolbar() {
 function CustomZoomMenu() {
   return (
     <DefaultZoomMenu>
-      <div style={{ backgroundColor: 'thistle' }}>
-        <TldrawUiMenuGroup id="example">
-          <TldrawUiMenuItem
-            id="like"
-            label="Like my posts"
-            icon="external-link"
-            readonlyOk
-            onSelect={() => {
-              window.open('https://x.com/tldraw', '_blank');
-            }}
-          />
-        </TldrawUiMenuGroup>
-      </div>
       <DefaultZoomMenuContent />
     </DefaultZoomMenu>
   );
@@ -231,24 +226,68 @@ function CustomZoomMenu() {
 //------------------
 
 // [1]
-const customTools = [StickerTool, AnalogClockTool];
-const customShapeUtils = [AnalogClockUtil];
+const customTools = [StickerTool, AnalogClockTool, SlideShapeTool];
+const customShapeUtils = [AnalogClockUtil, SlideShapeUtil];
 
 // [2]
+
 const customUiOverrides: TLUiOverrides = {
-  tools(editor, tools) {
+  actions(editor, actions) {
+    const $slides = computed('slides', () => getSlides(editor));
     return {
-      ...tools,
-      sticker: {
-        id: 'sticker',
-        icon: 'heart',
-        label: 'Sticker',
-        kbd: 's',
-        onSelect: () => {
-          editor.setCurrentTool('sticker');
+      ...actions,
+      'next-slide': {
+        id: 'next-slide',
+        label: 'Next slide',
+        kbd: 'right',
+        onSelect() {
+          const slides = $slides.get();
+          const currentSlide = $currentSlide.get();
+          const index = slides.findIndex((s) => s.id === currentSlide?.id);
+          const nextSlide = slides[index + 1] ?? currentSlide ?? slides[0];
+          if (nextSlide) {
+            editor.stopCameraAnimation();
+            moveToSlide(editor, nextSlide);
+          }
         },
       },
-      'analog-clock': {
+      'previous-slide': {
+        id: 'previous-slide',
+        label: 'Previous slide',
+        kbd: 'left',
+        onSelect() {
+          const slides = $slides.get();
+          const currentSlide = $currentSlide.get();
+          const index = slides.findIndex((s) => s.id === currentSlide?.id);
+          const previousSlide = slides[index - 1] ?? currentSlide ?? slides[slides.length - 1];
+          if (previousSlide) {
+            editor.stopCameraAnimation();
+            moveToSlide(editor, previousSlide);
+          }
+        },
+      },
+    };
+  },
+
+  tools(editor, tools) {
+    tools.slide = {
+      id: 'slide',
+      icon: 'group',
+      label: 'Slide',
+      kbd: 's',
+      onSelect: () => editor.setCurrentTool('slide'),
+    };
+
+    (tools.sticker = {
+      id: 'sticker',
+      icon: 'heart',
+      label: 'Sticker',
+      kbd: 's',
+      onSelect: () => {
+        editor.setCurrentTool('sticker');
+      },
+    }),
+      (tools['analog-clock'] = {
         id: 'analog-clock',
         icon: 'analog-clock',
         label: 'Analog Clock',
@@ -256,8 +295,8 @@ const customUiOverrides: TLUiOverrides = {
         onSelect: () => {
           editor.setCurrentTool('analog-clock');
         },
-      },
-    };
+      });
+    return tools;
   },
 };
 
@@ -284,25 +323,11 @@ const customComponents: TLComponents = {
   StylePanel: CustomStylePanel,
   Toolbar: CustomToolbar,
   ZoomMenu: CustomZoomMenu,
+  SharePanel: DefaultSharePanel,
+  TopPanel: DefaultTopPanel,
+  HelperButtons: SlidesPanel,
+  Minimap: null,
 };
-
-function LoadButton() {
-  const editor = useEditor();
-
-  useEffect(() => {
-    const loadWorkSpaces = async () => {
-      const res = await getWorkspaces();
-      if (!res) return;
-      const { document, session } = res;
-      editor.setCurrentTool('select');
-      loadSnapshot(editor.store, { document, session });
-    };
-    loadWorkSpaces();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  return null;
-}
 
 export default function Home() {
   const { resolvedTheme } = useTheme();
@@ -316,8 +341,6 @@ export default function Home() {
       shapeUtils={customShapeUtils}
       assetUrls={customAssetUrls}
       components={customComponents}
-    >
-      <LoadButton />
-    </Tldraw>
+    />
   );
 }

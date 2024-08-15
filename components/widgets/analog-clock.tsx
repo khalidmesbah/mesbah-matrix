@@ -42,7 +42,7 @@ export default function AnalogClock() {
 
   return (
     <div
-      className={`${styles.clock} bg-primary/50`}
+      className={clockRef.current ? `${styles.clock} bg-primary/50` : 'hidden'}
       ref={clockRef}
       style={{ scale: scale(clockRef.current) }}
     >

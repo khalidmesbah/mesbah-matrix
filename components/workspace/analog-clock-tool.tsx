@@ -16,16 +16,6 @@ import {
   resizeBox,
 } from 'tldraw';
 
-// const scaleFun = (child: HTMLDivElement | null): number => {
-//   if (!child) return 1;
-//   const parent = child.parentElement;
-//   if (!parent) return 1;
-//   const parentWidth = parent.offsetWidth;
-//   const childWidth = child.offsetWidth;
-//   const number = parentWidth / childWidth;
-//   return number;
-// };
-
 export class AnalogClockTool extends BaseBoxShapeTool {
   static override id = 'analog-clock';
   static override initial = 'idle';
