@@ -41,8 +41,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import useKanbanStore from '@/lib/stores/kanban-store';
-import { CardType } from '@/types';
+import useKanbanStore from '@/stores/kanban';
+import { CardT } from '@/types/kanban';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { motion } from 'framer-motion';
 import { Plus, Trash, Trash2 } from 'lucide-react';
@@ -61,7 +61,7 @@ interface CardProps {
   title: string;
   id: string;
   column: string;
-  handleDragStart: (e: React.DragEvent, card: CardType) => void;
+  handleDragStart: (e: React.DragEvent, card: CardT) => void;
 }
 
 interface DropIndicatorProps {
@@ -101,7 +101,7 @@ const Column = ({ title, headingColor, column }: ColumnProps) => {
   const { kanban, setCards } = useKanbanStore((state) => state);
   const cards = kanban.boards[kanban.selectedBoard];
 
-  const handleDragStart = (e: React.DragEvent, card: CardType) => {
+  const handleDragStart = (e: React.DragEvent, card: CardT) => {
     e.dataTransfer.setData('cardId', card.id);
   };
 
@@ -309,7 +309,7 @@ const AddCard = ({ column }: AddCardProps) => {
 
     if (!text.trim().length) return;
 
-    const newCard: CardType = {
+    const newCard: CardT = {
       column,
       title: text.trim(),
       id: Math.random().toString(),
@@ -533,7 +533,7 @@ function KanbanHeader() {
   const { kanban, setSelectedBoard } = useKanbanStore((state) => state);
   const boards = Object.keys(kanban.boards);
   return (
-    <div className="mb-2 hidden sm:flex items-center justify-between gap-2 rounded-md bg-secondary p-2">
+    <div className="mb-2 hidden items-center justify-between gap-2 rounded-md bg-secondary p-2 sm:flex">
       <div className="flex items-center gap-2">
         <h1 className="min-w-fit">Board:</h1>
         <Select onValueChange={(value) => setSelectedBoard(value)} value={kanban.selectedBoard}>

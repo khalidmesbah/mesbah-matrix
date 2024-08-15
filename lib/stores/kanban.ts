@@ -1,7 +1,7 @@
-import { CardType, KanbanType } from '@/types';
+import { CardT, KanbanT } from '@/lib/types/kanban';
 import { create } from 'zustand';
 
-const initialKanban: KanbanType = {
+const initialKanban: KanbanT = {
   boards: {
     'board-1': [
       { title: 'Look into render bug in dashboard', id: '1', column: 'backlog' },
@@ -68,8 +68,8 @@ const initialKanban: KanbanType = {
 };
 
 interface KanbanStore {
-  kanban: KanbanType;
-  setCards: (cards: CardType[]) => void;
+  kanban: KanbanT;
+  setCards: (cards: CardT[]) => void;
   addBoard: (board: string) => void;
   setSelectedBoard: (board: string) => void;
   deleteSelectedBoard: () => void;

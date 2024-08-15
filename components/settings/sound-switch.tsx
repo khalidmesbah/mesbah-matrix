@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
-import useSettingsStore from '@/lib/stores/settings-store';
+import useSettingsStore from '@/stores/settings';
 
 export default function SoundSwitch() {
   const { isSoundAllowed, setIsSoundAllowed } = useSettingsStore((state) => state);

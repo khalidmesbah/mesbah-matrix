@@ -1,18 +1,18 @@
+import { AzkarCategoriesT, AzkarT, ZekrT } from '@/lib/types/azkar';
 import azkar from '@/public/data/azkar.json';
 import categories from '@/public/data/categories.json';
-import { AzkarType, CategoriesType, ZekrType } from '@/types';
 import { create } from 'zustand';
 
-const wasCompleted = Array.from({ length: 134 }).map((i) => false);
+const wasCompleted = Array.from({ length: 134 }).map(() => false);
 
 type AzkarStore = {
-  azkar: AzkarType;
+  azkar: AzkarT;
   wasCompleted: boolean[];
-  categories: CategoriesType;
-  setAzkar: (newAzkar: AzkarType) => void;
-  finishZekr: (zekr: ZekrType) => void;
-  resetCount: (zekr: ZekrType) => void;
-  increaseCount: (zekr: ZekrType) => void;
+  categories: AzkarCategoriesT;
+  setAzkar: (newAzkar: AzkarT) => void;
+  finishZekr: (zekr: ZekrT) => void;
+  resetCount: (zekr: ZekrT) => void;
+  increaseCount: (zekr: ZekrT) => void;
   setWasCompleted: (idx: number, status: boolean) => void;
 };
 
@@ -21,12 +21,12 @@ const useAzkarStore = create<AzkarStore>(
     azkar,
     wasCompleted: wasCompleted,
     categories,
-    setAzkar: (newAzkar: AzkarType) =>
+    setAzkar: (newAzkar: AzkarT) =>
       set((state) => ({
         ...state,
         azkar: newAzkar,
       })),
-    finishZekr: (zekr: ZekrType) =>
+    finishZekr: (zekr: ZekrT) =>
       set((state) => {
         const newState = { ...state };
         const newZekr = newState.azkar[zekr.categoryId].find((e) => e.Id === zekr.Id);
@@ -38,7 +38,7 @@ const useAzkarStore = create<AzkarStore>(
         }
         return newState;
       }),
-    resetCount: (zekr: ZekrType) =>
+    resetCount: (zekr: ZekrT) =>
       set((state) => {
         const newState = { ...state };
         const newZekr = newState.azkar[zekr.categoryId].find((z) => z.Id === zekr.Id);
@@ -50,7 +50,7 @@ const useAzkarStore = create<AzkarStore>(
         }
         return newState;
       }),
-    increaseCount: (zekr: ZekrType) =>
+    increaseCount: (zekr: ZekrT) =>
       set((state) => {
         const newState = { ...state };
         if (zekr.count >= zekr.maximumCount) return newState;

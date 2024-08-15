@@ -5,16 +5,16 @@ import NoFavouriteQuotes from '@/components/quotes/no-favourite-quotes';
 import NoFetchedQuotes from '@/components/quotes/no-fetched-quotes';
 import { NoQuoteOfTheDay } from '@/components/quotes/no-quote-of-the-day';
 import QuoteSkeleton from '@/components/quotes/quote-skeleton';
+import QuotesMasonary from '@/components/quotes/quotes-masonary';
+import FavouriteButton from '@/components/quotes/user/favourite-button';
 import Quote from '@/components/quotes/user/quote';
 import { Badge } from '@/components/ui/badge';
 import { Button, buttonVariants } from '@/components/ui/button';
-import { useQuotesQuery, useRandomQuotesQuery } from '@/lib/hooks/use-quotes-query';
+import { useQuotesQuery, useRandomQuotesQuery } from '@/hooks/use-quotes';
 import { useQueryClient } from '@tanstack/react-query';
 import { RefreshCcwIcon } from 'lucide-react';
 import Link from 'next/link';
 import { Masonry } from 'react-plock';
-import QuotesMasonary from '../quotes-masonary';
-import FavouriteButton from './favourite-button';
 
 export default function UserQuotesPage() {
   const {

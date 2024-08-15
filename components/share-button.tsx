@@ -1,3 +1,5 @@
+import CopyToClipboard from '@/components/copy-to-clipboard';
+import Icon from '@/components/icon';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -11,7 +13,7 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { VariantType } from '@/types';
+import { VariantT } from '@/types/globals';
 import { ShareIcon } from 'lucide-react';
 import {
   EmailIcon,
@@ -31,22 +33,26 @@ import {
   WhatsappIcon,
   WhatsappShareButton,
 } from 'next-share';
-import CopyToClipboard from './copy-to-clipboard';
 
 type ShareButtonProps = {
   url: string;
   title?: string;
-  variant?: VariantType;
+  description?: string;
+  variant?: VariantT;
 };
 
-export default function ShareButton({ url, title, variant }: ShareButtonProps) {
+export default function ShareButton({ url, title, description, variant }: ShareButtonProps) {
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button variant={variant || 'ghost'} size={'icon'}>
-          <ShareIcon />
-        </Button>
-      </DialogTrigger>
+      <Icon
+        description={description || 'Share'}
+        variant={variant}
+        icon={
+          <DialogTrigger asChild className="flex items-center gap-2">
+            <ShareIcon />
+          </DialogTrigger>
+        }
+      />
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Share link</DialogTitle>
@@ -62,7 +68,7 @@ export default function ShareButton({ url, title, variant }: ShareButtonProps) {
           </div>
           <CopyToClipboard text={url} />
         </div>
-        <div className="flex gap-2 flex-wrap">
+        <div className="flex flex-wrap gap-2">
           <TwitterShareButton url={url} title={title}>
             <TwitterIcon size={32} round />
           </TwitterShareButton>

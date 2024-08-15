@@ -1,11 +1,12 @@
 'use server';
 
-import { db } from '@/lib/firebase/init';
-import { DailyReminderType, DailyRemindersType, GlobalsType, SharedType } from '@/types';
+import { db } from '@/firebase/init';
+import { DailyRemindersT, DailyReminderT } from '@/types/daily';
+import { SharedT } from '@/types/globals';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 
-const getDailyReminders = async (): Promise<DailyRemindersType | undefined> => {
+const getDailyReminders = async (): Promise<DailyRemindersT | undefined> => {
   try {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
@@ -15,7 +16,7 @@ const getDailyReminders = async (): Promise<DailyRemindersType | undefined> => {
     const today = new Date().getDay();
 
     const resDailyReminders = await getDoc(doc(db, 'users', user.id, 'data', 'daily-reminders'));
-    let dailyReminders = resDailyReminders.data() as DailyRemindersType;
+    let dailyReminders = resDailyReminders.data() as DailyRemindersT;
 
     if (!dailyReminders) {
       dailyReminders = { order: [], reminders: {} };
@@ -35,7 +36,7 @@ const getDailyReminders = async (): Promise<DailyRemindersType | undefined> => {
     }
 
     const resShared = await getDoc(doc(db, 'users', user.id, 'data', 'shared'));
-    const shared = resShared.data() as SharedType;
+    const shared = resShared.data() as SharedT;
 
     if (!shared || today !== shared.today) {
       dailyReminders.order.map((id) => {
@@ -61,7 +62,7 @@ const getDailyReminders = async (): Promise<DailyRemindersType | undefined> => {
   }
 };
 
-const setDailyReminders = async (dailyReminders: DailyRemindersType): Promise<void> => {
+const setDailyReminders = async (dailyReminders: DailyRemindersT): Promise<void> => {
   try {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
@@ -76,7 +77,7 @@ const setDailyReminders = async (dailyReminders: DailyRemindersType): Promise<vo
   }
 };
 
-const addDailyReminder = async (newDailyReminder: DailyReminderType): Promise<void> => {
+const addDailyReminder = async (newDailyReminder: DailyReminderT): Promise<void> => {
   try {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
@@ -84,7 +85,7 @@ const addDailyReminder = async (newDailyReminder: DailyReminderType): Promise<vo
     if (!user) throw 'there is no user';
 
     const resDailyReminders = await getDoc(doc(db, 'users', user.id, 'data', 'daily-reminders'));
-    let dailyReminders = resDailyReminders.data() as DailyRemindersType;
+    let dailyReminders = resDailyReminders.data() as DailyRemindersT;
 
     const order = [...dailyReminders.order, newDailyReminder.id];
     const reminders = dailyReminders.reminders;
@@ -113,7 +114,7 @@ const getIsNewDay = async () => {
   if (!user) throw 'there is no user';
 
   const resShared = await getDoc(doc(db, 'users', user.id, 'data', 'shared'));
-  const shared = resShared.data() as GlobalsType;
+  const shared = resShared.data() as SharedT;
 
   if (!shared || today !== shared.today) {
     await setDoc(
@@ -128,7 +129,7 @@ const getIsNewDay = async () => {
   return false;
 };
 
-const toggleDailyReminder = async (newDailyReminder: DailyReminderType): Promise<void> => {
+const toggleDailyReminder = async (newDailyReminder: DailyReminderT): Promise<void> => {
   try {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
@@ -136,7 +137,7 @@ const toggleDailyReminder = async (newDailyReminder: DailyReminderType): Promise
     if (!user) throw 'there is no user';
 
     const resDailyReminders = await getDoc(doc(db, 'users', user.id, 'data', 'daily-reminders'));
-    let dailyReminders = resDailyReminders.data() as DailyRemindersType;
+    let dailyReminders = resDailyReminders.data() as DailyRemindersT;
 
     const reminders = dailyReminders.reminders;
     reminders[newDailyReminder.id].done = !newDailyReminder.done;

@@ -1,5 +1,6 @@
 'use client';
 
+import { _getMatrix } from '@/actions/the-matrix';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -32,8 +33,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '@/component
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/use-toast';
-import { _getMatrix } from '@/lib/server-actions/the-matrix-actions';
-import useMatrixStore, { ColumnType, MatrixType, TaskType } from '@/lib/stores/the-matrix-store';
+import useMatrixStore, { ColumnType, MatrixType, TaskType } from '@/stores/the-matrix';
 import { DragDropContext, Draggable, DropResult, Droppable } from '@hello-pangea/dnd';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -78,8 +78,6 @@ export default function MatrixPage() {
   };
 
   useEffect(() => {
-    console.log(`data: `, data?.columns['column-1'].taskIds);
-    console.log(`matrix: `, matrix.columns['column-1'].taskIds);
     if (!isLoading && data) {
       setMatrix(data);
     }

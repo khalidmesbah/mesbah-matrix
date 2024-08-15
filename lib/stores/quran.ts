@@ -1,18 +1,20 @@
 import {
+  getRandomAyah,
   MAXIMUM_NUMBER_OF_AYAHS,
   MINIMUM_NUMBER_OF_AYAHS,
   RECITATIONS,
   TAFASIR,
   TRANSLATIONS,
   TRANSLITERATIONS,
-  getRandomAyah,
 } from '@/public/data/quran';
+import { FavouriteAyahsT, FavouriteAyahT } from '@/types/quran';
 import { Howl } from 'howler';
 import { create } from 'zustand';
-// Types
-type ModeType = 'loop' | 'continuous' | 'once';
-type FontType = '__className_a12e74' | '__className_af25f8';
-type SettingsType = {
+import { toggle } from '../utils/quran';
+// Ts
+type ModeT = 'loop' | 'continuous' | 'once';
+type FontT = '__className_a12e74' | '__className_af25f8';
+type SettingsT = {
   recitation: string;
   transliteration: string;
   translation: string;
@@ -20,36 +22,42 @@ type SettingsType = {
   rate: number;
   volume: number;
   autoplay: boolean;
-  mode: ModeType;
+  mode: ModeT;
   isSoundPlaying: boolean;
-  font: FontType;
+  font: FontT;
 };
+
 type QuranStore = {
   numberOfAyah: number;
   audio: Howl;
-  settings: SettingsType;
+  settings: SettingsT;
   continuousPlay: boolean;
   isEnded: boolean;
-  setFont: (newFont: FontType) => void;
+  setFont: (newFont: FontT) => void;
   getNextAyah: () => void;
   getPrevAyah: () => void;
+  getRandomAyah: () => void;
   setNumberOfAyah: (numberOfAyah: number) => void;
   setIsSoundPlaying: (status: boolean) => void;
   setAudio: (newAudio: Howl) => void;
   setAutoplay: (status: boolean) => void;
   setRate: (newRate: number) => void;
-  setMode: (newMode: ModeType) => void;
+  setMode: (newMode: ModeT) => void;
   setIsEnded: (status: boolean) => void;
   setTranslation: (newTranslation: string) => void;
   setTafsir: (newTafsir: string) => void;
   setRecitation: (newRecitation: string) => void;
   setTransliteration: (newTransliteration: string) => void;
   setVolume: (newVolume: number) => void;
+  favouriteAyahs: FavouriteAyahsT;
+  toggleAyahFavouriteState: (favouriteAyah: FavouriteAyahT) => void;
+  surah: string;
+  setSurah: (newSurah: string) => void;
 };
 // Intitils
 const initialNumberOfAyah = getRandomAyah();
 const initialAudio = new Howl({ src: [''] });
-const initialSettings: SettingsType = {
+const initialSettings: SettingsT = {
   recitation: RECITATIONS[0].identifier,
   translation: TRANSLATIONS[0].identifier,
   transliteration: TRANSLITERATIONS[1].identifier,
@@ -69,7 +77,22 @@ const useQuranStore = create<QuranStore>(
     settings: initialSettings,
     continuousPlay: false,
     isEnded: false,
-    setFont: (newFont: FontType) =>
+    favouriteAyahs: {},
+    surah: '',
+    setSurah: (newSurah: string) =>
+      set((state) => {
+        const newState = { ...state };
+        newState.surah = newSurah;
+        return newState;
+      }),
+    toggleAyahFavouriteState: (favouriteAyah: FavouriteAyahT) =>
+      set((state) => {
+        const newState = { ...state };
+        console.clear();
+        toggle(newState.favouriteAyahs, favouriteAyah);
+        return newState;
+      }),
+    setFont: (newFont: FontT) =>
       set((state) => {
         const newState = { ...state };
         newState.settings.font = newFont;
@@ -103,6 +126,12 @@ const useQuranStore = create<QuranStore>(
         newState.numberOfAyah = newNumberOfAyah;
         return newState;
       }),
+    getRandomAyah: () =>
+      set((state) => {
+        const newState = { ...state };
+        newState.numberOfAyah = getRandomAyah();
+        return newState;
+      }),
     setAudio: (newAudio: Howl) =>
       set((state) => {
         const newState = { ...state };
@@ -121,7 +150,7 @@ const useQuranStore = create<QuranStore>(
         newState.settings.rate = newRate;
         return newState;
       }),
-    setMode: (newMode: ModeType) =>
+    setMode: (newMode: ModeT) =>
       set((state) => {
         const newState = { ...state };
         newState.settings.mode = newMode;

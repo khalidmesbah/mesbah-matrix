@@ -2,10 +2,10 @@
   "extends": [
     "next/core-web-vitals",
     "eslint:recommended",
+    "next/typescript",
     "plugin:react/recommended",
     "prettier",
-    "plugin:@tanstack/eslint-plugin-query/recommended",
-    "next"
+    "plugin:@tanstack/eslint-plugin-query/recommended"
   ],
   "plugins": ["react", "@tanstack/query"],
   "parserOptions": {

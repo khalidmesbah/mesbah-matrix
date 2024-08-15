@@ -1,8 +1,9 @@
 'use client';
 
+import { getWorkspaces, setWorkspaces } from '@/actions/workspace';
+import '@/app/index.css';
 import { AnalogClockTool, AnalogClockUtil } from '@/components/workspace/analog-clock-tool';
 import { StickerTool } from '@/components/workspace/sticker-tool-util';
-import { getWorkspaces, setWorkspaces } from '@/lib/server-actions/workspace-actions';
 import { useTheme } from 'next-themes';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
@@ -28,23 +29,22 @@ import {
   DefaultToolbarContent,
   DefaultZoomMenu,
   DefaultZoomMenuContent,
-  getSnapshot,
-  loadSnapshot,
   TLComponents,
-  Tldraw,
-  TldrawUiMenuGroup,
-  TldrawUiMenuItem,
   TLUiAssetUrlOverrides,
   TLUiContextMenuProps,
   TLUiKeyboardShortcutsDialogProps,
   TLUiOverrides,
   TLUiStylePanelProps,
+  Tldraw,
+  TldrawUiMenuGroup,
+  TldrawUiMenuItem,
+  getSnapshot,
+  loadSnapshot,
   useEditor,
   useIsToolSelected,
   useRelevantStyles,
   useTools,
 } from 'tldraw';
-import './index.css';
 
 //------------------
 

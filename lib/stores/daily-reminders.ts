@@ -1,16 +1,16 @@
-import { CurrentType, DailyRemindersType } from '@/types';
+import { CurrentDailyReminderT, DailyRemindersT } from '@/lib/types/daily';
 import { v4 as uuidv4 } from 'uuid';
 import { create } from 'zustand';
 
 type DailyReminderStore = {
-  dailyReminders: DailyRemindersType;
-  current: CurrentType;
+  dailyReminders: DailyRemindersT;
+  current: CurrentDailyReminderT;
   setCurrent: (newCurrent: 'practise' | 'browse') => void;
-  setDailyReminders: (dailyReminders: DailyRemindersType) => void;
+  setDailyReminders: (dailyReminders: DailyRemindersT) => void;
   addDailyReminder: (text: string) => void;
 };
 
-const initialDailyReminders: DailyRemindersType = {
+const initialDailyReminders: DailyRemindersT = {
   reminders: {
     '1': {
       id: '1',
@@ -32,7 +32,7 @@ const useDailyRemindersStore = create<DailyReminderStore>(
   (set): DailyReminderStore => ({
     dailyReminders: initialDailyReminders,
     current: initialCurrent,
-    setDailyReminders: (dailyReminders: DailyRemindersType) => {
+    setDailyReminders: (dailyReminders: DailyRemindersT) => {
       return set((state) => {
         const newState = { ...state };
         newState.dailyReminders = dailyReminders;

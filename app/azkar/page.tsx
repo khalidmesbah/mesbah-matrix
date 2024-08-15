@@ -1,6 +1,6 @@
 'use client';
 
-import useAzkarStore from '@/lib/stores/azkar-store';
+import useAzkarStore from '@/stores/azkar';
 import Link from 'next/link';
 
 export default function AzkarPage() {
@@ -10,7 +10,7 @@ export default function AzkarPage() {
       {Object.keys(categories).map((id, i) => {
         return (
           <Link
-            className="flex gap-2 flex-col p-2 bg-card border transition-colors hover:bg-primary/50 items-center justify-center text-center rounded-md"
+            className="flex flex-col items-center justify-center gap-2 rounded-md border bg-card p-2 text-center transition-colors hover:bg-primary/50"
             href={`/azkar/${id}`}
             key={i}
           >

@@ -1,11 +1,11 @@
 'use server';
 
-import { db } from '@/lib/firebase/init';
-import { CardType, KanbanType } from '@/types';
+import { db } from '@/firebase/init';
+import { CardT, KanbanT } from '@/types/kanban';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 
-const getKanban = async (): Promise<KanbanType | undefined> => {
+const getKanban = async (): Promise<KanbanT | undefined> => {
   try {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
@@ -13,7 +13,7 @@ const getKanban = async (): Promise<KanbanType | undefined> => {
     if (!user) throw new Error("there's no user");
 
     const resKanban = await getDoc(doc(db, 'users', user.id, 'data', 'kanban'));
-    let kanban = resKanban.data() as KanbanType;
+    let kanban = resKanban.data() as KanbanT;
 
     if (!kanban) {
       kanban = { boards: {}, selectedBoard: '' };
@@ -26,7 +26,7 @@ const getKanban = async (): Promise<KanbanType | undefined> => {
   }
 };
 
-const setCards = async (cards: CardType[]): Promise<void> => {
+const setCards = async (cards: CardT[]): Promise<void> => {
   try {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
@@ -34,7 +34,7 @@ const setCards = async (cards: CardType[]): Promise<void> => {
     if (!user) throw new Error("there's no user");
 
     const resKanban = await getDoc(doc(db, 'users', user.id, 'data', 'kanban'));
-    let kanban = resKanban.data() as KanbanType;
+    let kanban = resKanban.data() as KanbanT;
 
     kanban.boards[kanban.selectedBoard] = cards;
     await setDoc(doc(db, 'users', user.id, 'data', 'kanban'), kanban, { merge: true });
@@ -51,7 +51,7 @@ const deleteSelectedBoard = async (): Promise<void> => {
     if (!user) throw new Error("there's no user");
 
     const resKanban = await getDoc(doc(db, 'users', user.id, 'data', 'kanban'));
-    let kanban = resKanban.data() as KanbanType;
+    let kanban = resKanban.data() as KanbanT;
 
     delete kanban.boards[kanban.selectedBoard];
     const boards = Object.keys(kanban.boards);
@@ -70,7 +70,7 @@ const addBoard = async (board: string): Promise<void> => {
     if (!user) throw new Error("there's no user");
 
     const resKanban = await getDoc(doc(db, 'users', user.id, 'data', 'kanban'));
-    let kanban = resKanban.data() as KanbanType;
+    let kanban = resKanban.data() as KanbanT;
 
     kanban.boards[board] = [];
     kanban.selectedBoard = board;
@@ -89,7 +89,7 @@ const setSelectedBoard = async (board: string): Promise<void> => {
     if (!user) throw new Error("there's no user");
 
     const resKanban = await getDoc(doc(db, 'users', user.id, 'data', 'kanban'));
-    let kanban = resKanban.data() as KanbanType;
+    let kanban = resKanban.data() as KanbanT;
 
     kanban.selectedBoard = board;
 

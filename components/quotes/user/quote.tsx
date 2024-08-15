@@ -1,8 +1,8 @@
 import FavouriteButton from '@/components/quotes/user/favourite-button';
 import { Card } from '@/components/ui/card';
-import { QuoteType } from '@/types';
+import { QuoteT } from '@/lib/types/quote';
 
-export default function Quote({ quote }: { quote: QuoteType }) {
+export default function Quote({ quote }: { quote: QuoteT }) {
   return (
     <Card className="rounded-md p-2 shadow-md">
       <blockquote className="text-xl font-medium">&quot;{quote.content}&quot;</blockquote>

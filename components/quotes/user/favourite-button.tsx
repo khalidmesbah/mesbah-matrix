@@ -1,11 +1,11 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { useQuotesMutate, useQuotesQuery } from '@/lib/hooks/use-quotes-query';
-import { QuoteType } from '@/types';
+import { useQuotesMutate, useQuotesQuery } from '@/hooks/use-quotes';
+import { QuoteT } from '@/types/quote';
 import { Star } from 'lucide-react';
 
-export default function FavouriteButton({ quote }: { quote: QuoteType }) {
+export default function FavouriteButton({ quote }: { quote: QuoteT }) {
   const { data: quotes } = useQuotesQuery();
   const { mutate } = useQuotesMutate();
 

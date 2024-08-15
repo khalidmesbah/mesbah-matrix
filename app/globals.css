@@ -404,7 +404,7 @@
 /* particle loader*/
 
 .pl-container {
-  --uib-size: 45px;
+  --uib-size: 100px;
   --uib-color: hsl(var(--primary));
   --uib-speed: 1.75s;
   position: relative;

@@ -1,6 +1,6 @@
 'use server';
 
-import { db } from '@/lib/firebase/init';
+import { db } from '@/firebase/init';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { TLSessionStateSnapshot, TLStoreSnapshot } from 'tldraw';

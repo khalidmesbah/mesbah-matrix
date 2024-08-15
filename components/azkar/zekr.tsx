@@ -4,22 +4,22 @@ import CopyToClipboard from '@/components/copy-to-clipboard';
 import ShareButton from '@/components/share-button';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import useMySound from '@/lib/hooks/use-my-sound';
-import useAzkarStore from '@/lib/stores/azkar-store';
-import { ZekrType } from '@/types';
+import useMySound from '@/hooks/use-my-sound';
+import useAzkarStore from '@/stores/azkar';
+import { ZekrT } from '@/types/azkar';
 import { Check, RotateCcw } from 'lucide-react';
 
 // FIX: share button
 // TODO: add description button
 //  => if there's none say "no description yet"
 
-export default function Zekr({ zekr }: { zekr: ZekrType }) {
+export default function Zekr({ zekr }: { zekr: ZekrT }) {
   const { categories, finishZekr, increaseCount, resetCount } = useAzkarStore((state) => state);
   const [play] = useMySound('/sounds/transition-chord-.wav', { volume: 0.5 });
 
   return (
     <Card
-      className={`p-2 space-y-2 ${zekr.count === zekr.maximumCount && 'opacity-50'}`}
+      className={`space-y-2 p-2 ${zekr.count === zekr.maximumCount && 'opacity-50'}`}
       id={zekr.Id.toString()}
     >
       <CardContent>
@@ -31,7 +31,7 @@ export default function Zekr({ zekr }: { zekr: ZekrType }) {
           {zekr.zekr}
         </p>
       </CardContent>
-      <CardFooter className="flex items-center justify-center gap-2 !p-1 bg-border rounded">
+      <CardFooter className="flex items-center justify-center gap-2 rounded bg-border !p-1">
         <ShareButton
           url={`${process.env.NEXT_PUBLIC_MESBAH_MATRIX_URL}/azkar/${zekr.categoryId}/#${zekr.Id}`}
           title={`${categories[zekr.categoryId]}: ${zekr.zekr}`}

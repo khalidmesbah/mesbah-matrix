@@ -25,7 +25,7 @@ export default function ModeSelect() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="w-full">
-              <div className="flex-1 flex items-center gap-2">
+              <div className="flex flex-1 items-center gap-2">
                 {resolvedTheme === 'light' && (
                   <Sun className="size-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
                 )}

@@ -1,16 +1,16 @@
-import { QuoteType } from '@/types';
+import { QuoteT } from '@/types/quote';
 import { create } from 'zustand';
 
 interface QuotesStore {
-  favouriteQuotes: QuoteType[];
-  toggleFavouriteState: ({ quote }: { quote: QuoteType }) => void;
+  favouriteQuotes: QuoteT[];
+  toggleFavouriteState: ({ quote }: { quote: QuoteT }) => void;
 }
 
-const favouriteQuotes: QuoteType[] = [];
+const favouriteQuotes: QuoteT[] = [];
 
 const useQuotesStore = create<QuotesStore>()((set) => ({
   favouriteQuotes,
-  toggleFavouriteState: ({ quote }: { quote: QuoteType }) => {
+  toggleFavouriteState: ({ quote }: { quote: QuoteT }) => {
     return set((state) => {
       const isFavourite = state.favouriteQuotes.map((q) => q._id).includes(quote._id);
       let newFavouriteQuotes = [...state.favouriteQuotes];

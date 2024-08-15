@@ -1,25 +1,12 @@
-import { create } from 'zustand';
-import { _setMatrix } from '../server-actions/the-matrix-actions';
+'use server';
 
-export interface TaskType {
-  id: string;
-  text: string;
-  done: boolean;
-}
+import { db } from '@/firebase/init';
+import { MatrixType } from '@/stores/the-matrix';
+import { ActionResponseT } from '@/types/globals';
+import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
-export interface ColumnType {
-  id: string;
-  title: string;
-  taskIds: string[];
-}
-
-export interface MatrixType {
-  tasks: { [key: string]: TaskType };
-  columns: { [key: string]: ColumnType };
-  columnOrder: string[];
-}
-
-let initialMatrix: MatrixType = {
+const initialMatrix: MatrixType = {
   tasks: {
     'task-1': {
       id: 'task-1',
@@ -126,19 +113,41 @@ let initialMatrix: MatrixType = {
   columnOrder: ['column-1', 'column-2', 'column-3', 'column-4'],
 };
 
-interface MatrixStore {
-  matrix: MatrixType;
-  setMatrix: (matrix: MatrixType) => void;
-}
+const _getMatrix = async () => {
+  try {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
 
-const useMatrixStore = create<MatrixStore>()((set) => ({
-  matrix: initialMatrix,
-  setMatrix: (newMatrix: MatrixType) => {
-    _setMatrix(newMatrix);
-    return set((state) => {
-      return { ...state, matrix: newMatrix };
-    });
-  },
-}));
+    if (user) {
+      const res = await getDoc(doc(db, 'users', user.id, 'data', 'the-matrix'));
+      const newMatrix = res.data() as MatrixType;
+      return newMatrix;
+    } else {
+      return initialMatrix;
+    }
+  } catch (error) {
+    console.error(error);
+    return initialMatrix;
+  }
+};
 
-export default useMatrixStore;
+const _setMatrix = async (newMatrix: MatrixType): Promise<ActionResponseT> => {
+  try {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+
+    if (!user) throw "there's no user";
+
+    await setDoc(doc(db, 'users', user.id, 'data', 'the-matrix'), newMatrix);
+
+    return {
+      success: true,
+      message: 'the matrix has been added successfully',
+    };
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: error as string };
+  }
+};
+
+export { _getMatrix, _setMatrix };

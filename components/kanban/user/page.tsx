@@ -47,8 +47,8 @@ import {
   useKanbanQuery,
   useSetCardsMutate,
   useSetSelectedBoardMutate,
-} from '@/lib/hooks/use-kanban-query';
-import { CardType } from '@/types';
+} from '@/hooks/use-kanban';
+import { CardT } from '@/types/kanban';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { motion } from 'framer-motion';
 import { Plus, Trash, Trash2 } from 'lucide-react';
@@ -67,7 +67,7 @@ interface CardProps {
   title: string;
   id: string;
   column: string;
-  handleDragStart: (e: React.DragEvent, card: CardType) => void;
+  handleDragStart: (e: React.DragEvent, card: CardT) => void;
 }
 
 interface DropIndicatorProps {
@@ -82,7 +82,6 @@ interface AddCardProps {
 export default function UserKanbanPage() {
   const { data: kanban, isLoading, isError } = useKanbanQuery();
 
-  console.log(kanban);
   if (isLoading) return <h1>loading</h1>;
   if (isError) return <h1>error</h1>;
 
@@ -115,7 +114,7 @@ const Column = ({ title, headingColor, column }: ColumnProps) => {
   if (!kanban) kanban = { boards: {}, selectedBoard: '' };
   const cards = kanban?.boards[kanban?.selectedBoard];
 
-  const handleDragStart = (e: React.DragEvent, card: CardType) => {
+  const handleDragStart = (e: React.DragEvent, card: CardT) => {
     e.dataTransfer.setData('cardId', card.id);
   };
 
@@ -212,7 +211,7 @@ const Column = ({ title, headingColor, column }: ColumnProps) => {
     setActive(false);
   };
 
-  const filteredCards = cards?.filter((c) => c.column === column);
+  const filteredCards = cards?.filter((c: CardT) => c.column === column);
 
   return (
     <div className="w-56 shrink-0">
@@ -226,7 +225,7 @@ const Column = ({ title, headingColor, column }: ColumnProps) => {
         onDragLeave={handleDragLeave}
         className={`h-full w-full transition-colors ${active ? 'bg-card' : 'bg-card/0'}`}
       >
-        {filteredCards?.map((c) => {
+        {filteredCards?.map((c: CardT) => {
           return <Card key={c.id} {...c} handleDragStart={handleDragStart} />;
         })}
         <DropIndicator beforeId={null} column={column} />
@@ -291,7 +290,7 @@ const BurnBarrel = () => {
 
   const handleDragEnd = (e: React.DragEvent) => {
     const cardId = e.dataTransfer.getData('cardId');
-    const newCards = cards.filter((c) => c.id !== cardId);
+    const newCards = cards.filter((c: CardT) => c.id !== cardId);
 
     setCards(newCards);
 
@@ -329,7 +328,7 @@ const AddCard = ({ column }: AddCardProps) => {
 
     if (!text.trim().length) return;
 
-    const newCard: CardType = {
+    const newCard: CardT = {
       column,
       title: text.trim(),
       id: Math.random().toString(),
@@ -562,7 +561,7 @@ function KanbanHeader() {
   const boards = Object.keys(kanban.boards);
   const { mutate: setSelectedBoard } = useSetSelectedBoardMutate();
   return (
-    <div className="mb-2 hidden sm:flex items-center justify-between gap-2 rounded-md bg-secondary p-2">
+    <div className="mb-2 hidden items-center justify-between gap-2 rounded-md bg-secondary p-2 sm:flex">
       <div className="flex items-center gap-2">
         <h1 className="min-w-fit">Board:</h1>
         <Select onValueChange={(value) => setSelectedBoard(value)} value={kanban.selectedBoard}>

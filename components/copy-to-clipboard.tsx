@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { SizeType, VariantType } from '@/types';
+import { SizeT, VariantT } from '@/lib/types/globals';
 import { Clipboard, ClipboardCheck } from 'lucide-react';
 import { useState } from 'react';
 
@@ -12,8 +12,8 @@ export default function CopyToClipboard({
   text,
 }: {
   className?: string;
-  variant?: VariantType;
-  size?: SizeType;
+  variant?: VariantT;
+  size?: SizeT;
   text: string;
 }) {
   const [copied, setCopiedState] = useState(false);

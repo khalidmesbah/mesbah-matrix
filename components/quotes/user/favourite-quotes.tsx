@@ -1,10 +1,11 @@
 'use client';
 
 import NoFavouriteQuotes from '@/components/quotes/no-favourite-quotes';
+import QuoteSkeleton from '@/components/quotes/quote-skeleton';
 import Quote from '@/components/quotes/user/quote';
-import { useQuotesQuery } from '@/lib/hooks/use-quotes-query';
+import { useQuotesQuery } from '@/hooks/use-quotes';
+import { QuoteT } from '@/types/quote';
 import { Masonry } from 'react-plock';
-import QuoteSkeleton from '../quote-skeleton';
 
 export default function UserFavouriteQuotesPage() {
   const { isLoading, data: quotes, isError } = useQuotesQuery();
@@ -29,7 +30,7 @@ export default function UserFavouriteQuotesPage() {
         gap: [8, 8, 8],
         media: [600, 850, 1024],
       }}
-      render={(item) => <Quote quote={item} key={item._id} />}
+      render={(item: QuoteT) => <Quote quote={item} key={item._id} />}
     />
   );
 }

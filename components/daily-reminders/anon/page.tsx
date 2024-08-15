@@ -33,10 +33,10 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { Textarea } from '@/components/ui/textarea';
-import useMySound from '@/lib/hooks/use-my-sound';
-import useDailyRemindersStore from '@/lib/stores/daily-reminders-store';
+import useMySound from '@/hooks/use-my-sound';
 import { startFireworks } from '@/lib/utils';
-import { DailyReminderType } from '@/types';
+import useDailyRemindersStore from '@/stores/daily-reminders';
+import { DailyReminderT } from '@/types/daily';
 import { DragDropContext, Draggable, DropResult, Droppable } from '@hello-pangea/dnd';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Badge, BadgeCheck, CalendarIcon, Edit, PartyPopperIcon, XSquare } from 'lucide-react';
@@ -86,10 +86,10 @@ function PractiseReminders() {
             }}
             render={(reminder) => (
               <Card key={reminder.id} className="p-2">
-                <CardContent className="select-none break-all text-2xl font-semibold p-0">
+                <CardContent className="select-none break-all p-0 text-2xl font-semibold">
                   {reminder.text}
                 </CardContent>
-                <CardFooter className="p-0 mt-2">
+                <CardFooter className="mt-2 p-0">
                   <Button
                     onClick={() => {
                       if (order.length === 1) {
@@ -115,10 +115,10 @@ function PractiseReminders() {
 function DailyReminderHeader() {
   const { current, setCurrent } = useDailyRemindersStore((state) => state);
   return (
-    <div className="mb-2 sm:flex items-center justify-between gap-2 rounded-md bg-secondary p-2 xs:flex-row hidden">
+    <div className="mb-2 hidden items-center justify-between gap-2 rounded-md bg-secondary p-2 xs:flex-row sm:flex">
       <h1 className="text-2xl">Daily Reminders</h1>
 
-      <div className="flex justify-between items-center gap-2">
+      <div className="flex items-center justify-between gap-2">
         {current === 'practise' ? (
           <Button onClick={() => setCurrent('browse')}>Browse Reminders</Button>
         ) : (
@@ -145,7 +145,7 @@ function DailyReminderHeaderWithSheet() {
           <SheetTitle>daily reminders</SheetTitle>
           <SheetDescription className="sr-only">Manage your Kanban Board</SheetDescription>
         </SheetHeader>
-        <div className="flex flex-col justify-stretch gap-2 my-2">
+        <div className="my-2 flex flex-col justify-stretch gap-2">
           {current === 'practise' ? (
             <Button onClick={() => setCurrent('browse')}>Browse Reminders</Button>
           ) : (
@@ -253,7 +253,7 @@ function BrowseReminders() {
                 <Draggable index={index} draggableId={id} key={id}>
                   {(provided) => (
                     <div
-                      className="my-[2px] flex items-center gap-1 border border-white bg-card p-1 rounded-md"
+                      className="my-[2px] flex items-center gap-1 rounded-md border border-white bg-card p-1"
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
                       ref={provided.innerRef}
@@ -306,7 +306,7 @@ function BrowseReminders() {
   );
 }
 
-const EditReminder = ({ reminder }: { reminder: DailyReminderType }) => {
+const EditReminder = ({ reminder }: { reminder: DailyReminderT }) => {
   const { dailyReminders, setDailyReminders } = useDailyRemindersStore((state) => state);
 
   const editReminder = (id: string, newText: string) => {
@@ -348,7 +348,7 @@ const EditReminder = ({ reminder }: { reminder: DailyReminderType }) => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Textarea placeholder="Type a reminder" className="resize-none" {...field} />
+                    <Textarea placeholder="T a reminder" className="resize-none" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

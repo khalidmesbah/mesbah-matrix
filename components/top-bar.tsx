@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import useTopBarStore from '@/lib/stores/top-bar-store';
+import useTopBarStore from '@/stores/top-bar';
 import { CircleAlertIcon, XIcon } from 'lucide-react';
 
 export default function TopBar() {
