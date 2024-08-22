@@ -22,7 +22,6 @@ export default function AddAyahToFavourites(props: AddAyahToFavouritesType) {
 
   const { data: quran } = useGetQuranQuery();
   const { mutate: toggleAyahFavouriteState, isPending } = useToggleFavouriteAyahsMutate();
-  console.log(`quran from add to fav`, quran);
   const favouriteAyahs = quran?.favouriteAyahs as FavouriteAyahsT;
   const isFavourite = favouriteAyahs
     ? favouriteAyahs[surahEnglishName]

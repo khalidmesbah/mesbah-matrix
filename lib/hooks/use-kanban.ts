@@ -1,17 +1,17 @@
 import {
-  addBoard,
-  deleteSelectedBoard,
-  getKanban,
-  setCards,
-  setSelectedBoard,
+  addBoardAction,
+  deleteSelectedBoardAction,
+  getKanbanAction,
+  setBoardAction,
+  setSelectedBoardAction,
 } from '@/actions/kanban';
-import { CardT, KanbanT } from '@/types/kanban';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { BoardT, KanbanT } from '../types/kanban';
 
 export const useKanbanQuery = () =>
   useQuery({
     queryKey: ['kanban'],
-    queryFn: () => getKanban(),
+    queryFn: () => getKanbanAction(),
     staleTime: Infinity,
     refetchOnWindowFocus: false,
   });
@@ -19,7 +19,7 @@ export const useKanbanQuery = () =>
 export const useAddBoardMutate = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (board: string) => addBoard(board),
+    mutationFn: async (board: string) => addBoardAction(board),
     onMutate: async (board) => {
       await queryClient.cancelQueries({ queryKey: ['kanban'] });
 
@@ -27,7 +27,11 @@ export const useAddBoardMutate = () => {
 
       queryClient.setQueryData(['kanban'], (old: KanbanT) => {
         const newKanban = structuredClone(old);
-        newKanban.boards[board] = [];
+        newKanban.boards[board] = {
+          cards: {},
+          lists: {},
+          listsOrder: [],
+        };
         newKanban.selectedBoard = board;
         return newKanban;
       });
@@ -46,7 +50,7 @@ export const useAddBoardMutate = () => {
 export const useSetSelectedBoardMutate = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (board: string) => setSelectedBoard(board),
+    mutationFn: async (board: string) => setSelectedBoardAction(board),
     onMutate: async (board) => {
       await queryClient.cancelQueries({ queryKey: ['kanban'] });
 
@@ -72,7 +76,7 @@ export const useSetSelectedBoardMutate = () => {
 export const useDeleteSelectedBoardMutate = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async () => deleteSelectedBoard(),
+    mutationFn: async () => deleteSelectedBoardAction(),
     onMutate: async () => {
       await queryClient.cancelQueries({ queryKey: ['kanban'] });
 
@@ -97,18 +101,18 @@ export const useDeleteSelectedBoardMutate = () => {
   });
 };
 
-export const useSetCardsMutate = () => {
+export const useSetKanbanMutate = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (cards: CardT[]) => setCards(cards),
-    onMutate: async (cards) => {
+    mutationFn: async (board: BoardT) => setBoardAction(board),
+    onMutate: async (board) => {
       await queryClient.cancelQueries({ queryKey: ['kanban'] });
 
       const previousKanban = queryClient.getQueryData(['kanban']);
 
       queryClient.setQueryData(['kanban'], (old: KanbanT) => {
         const newKanban = structuredClone(old);
-        newKanban.boards[newKanban.selectedBoard] = cards;
+        newKanban.boards[newKanban.selectedBoard] = board;
         return newKanban;
       });
 

@@ -41,14 +41,21 @@ export default function Navbar() {
 
   return (
     <div className="border-r-1 flex h-dvh w-[56px] min-w-[56px] flex-col items-center border-r border-r-primary p-2">
-      <Icon name={routes[0].name} icon={routes[0].icon} link={routes[0].link} />
+      <Icon
+        name={routes[0].name}
+        icon={routes[0].icon}
+        link={routes[0].link}
+        isActive={pathname === routes[0].link}
+      />
 
       <Separator className="mt-2" />
 
       <ScrollArea className="">
         <div className="flex flex-col gap-2 p-2">
           {routes.slice(1, routes.length - 1).map(({ name, icon, link }, i) => {
-            return <Icon key={i} name={name} icon={icon} link={link} />;
+            return (
+              <Icon key={i} name={name} icon={icon} link={link} isActive={pathname === link} />
+            );
           })}
         </div>
       </ScrollArea>
@@ -57,7 +64,12 @@ export default function Navbar() {
 
       <div className="mb-2">
         {isAuthenticated ? (
-          <Icon name={'Account'} link={'/account'} icon={<SquareUser />} />
+          <Icon
+            name={'Account'}
+            link={'/account'}
+            icon={<SquareUser />}
+            isActive={pathname === '/account'}
+          />
         ) : (
           <TooltipProvider>
             <Tooltip delayDuration={300}>
@@ -84,6 +96,7 @@ export default function Navbar() {
         name={routes[routes.length - 1].name}
         icon={routes[routes.length - 1].icon}
         link={routes[routes.length - 1].link}
+        isActive={pathname === routes[routes.length - 1].link}
       />
     </div>
   );
@@ -93,17 +106,16 @@ type IconProps = {
   name: string;
   icon: ReactNode;
   link: string;
+  isActive: boolean;
 };
 
-function Icon({ link, name, icon }: IconProps) {
+function Icon({ link, name, icon, isActive }: IconProps) {
+  const variant = isActive ? 'default' : 'outline';
   return (
     <TooltipProvider>
       <Tooltip delayDuration={300}>
         <TooltipTrigger asChild>
-          <Link
-            className={`${buttonVariants({ variant: 'outline', size: 'icon' })} min-h-10 min-w-10`}
-            href={link}
-          >
+          <Link className={`${buttonVariants({ variant, size: 'icon' })} min-size-10`} href={link}>
             {icon}
           </Link>
         </TooltipTrigger>

@@ -50,9 +50,7 @@ export default function Icon({
             {loading ? <Loader2 className="animate-spin" /> : icon}
           </Button>
         </TooltipTrigger>
-        <TooltipContent>
-          <p>{description}</p>
-        </TooltipContent>
+        <TooltipContent>{description}</TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );
