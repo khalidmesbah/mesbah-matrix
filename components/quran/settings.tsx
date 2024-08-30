@@ -69,7 +69,7 @@ export default function Settings() {
           <Icon description="Settings" icon={<SettingsIcon />} />
         </div>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Settings</DialogTitle>
           <DialogDescription>Configure your settings</DialogDescription>
