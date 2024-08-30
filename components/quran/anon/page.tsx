@@ -1,7 +1,7 @@
 'use client';
 
 import CopyToClipboard from '@/components/copy-to-clipboard';
-import { ParticlesLoader } from '@/components/particles-loader';
+import ParticlesLoader from '@/components/particles-loader';
 import Options from '@/components/quran/anon/options';
 import Ayah from '@/components/quran/ayah';
 import AyahUnavailable from '@/components/quran/ayah-unavailable';

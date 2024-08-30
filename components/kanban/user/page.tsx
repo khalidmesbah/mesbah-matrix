@@ -3,7 +3,7 @@
 import { KanbanHeader, KanbanHeaderWithSheet } from '@/components/kanban/kanban-header';
 import List from '@/components/kanban/list';
 import NoBoards from '@/components/kanban/no-boards';
-import { ParticlesLoader } from '@/components/particles-loader';
+import ParticlesLoader from '@/components/particles-loader';
 import { useKanbanQuery } from '@/lib/hooks/use-kanban';
 import useKanbanStore from '@/stores/kanban';
 import { DragDropContext, DropResult, Droppable } from '@hello-pangea/dnd';

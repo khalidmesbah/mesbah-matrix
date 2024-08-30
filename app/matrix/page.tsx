@@ -1,6 +1,7 @@
 'use client';
 
 import { _getMatrix } from '@/actions/the-matrix';
+import ParticlesLoader from '@/components/particles-loader';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -137,7 +138,12 @@ export default function MatrixPage() {
     setMatrix(newState);
   };
 
-  if (isLoading) return <h1>Loading</h1>;
+  if (isLoading)
+    return (
+      <div className="flex h-full w-full items-center justify-center">
+        <ParticlesLoader />
+      </div>
+    );
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>

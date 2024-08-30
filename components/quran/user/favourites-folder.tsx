@@ -1,7 +1,7 @@
 'use client';
 
 import Icon from '@/components/icon';
-import { ParticlesLoader } from '@/components/particles-loader';
+import ParticlesLoader from '@/components/particles-loader';
 import FailedToFetchFavouriteAyahs from '@/components/quran/failed-to-fetch-favourite-ayahs';
 import FavouriteAyahsNotFound from '@/components/quran/favourite-ayahs-not-found';
 import {
