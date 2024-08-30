@@ -44,6 +44,7 @@ export default function AddCard({ listId, headerColor }: AddCardProps) {
     addCard(listId, data.text);
     toast.success('The card has been added successfully.');
     setOpen(false);
+    form.reset();
   }
 
   return (
