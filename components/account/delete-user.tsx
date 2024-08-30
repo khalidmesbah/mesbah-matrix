@@ -1,17 +1,33 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import { Button, buttonVariants } from '@/components/ui/button';
+import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 
-export default function DeleteUser() {
+export default function DeleteUser({ id }: { id: string }) {
+  console.clear();
+  const client = useKindeBrowserClient();
+
+  console.log(process.env.NEXT_PUBLIC_KINDE_MANAGEMENT_API, client);
+
   const deleteUser = async () => {
     const headers = {
       Accept: 'application/json',
-      Authorization: 'Bearer {access-token}',
+      Authorization: `Bearer ${client.accessTokenEncoded}`,
     };
 
-    const res = await fetch('https://{your_subdomain}.kinde.com/api/v1/user?id=string', {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_KINDE_MANAGEMENT_API}/v1/user?id=${id}`, {
       method: 'DELETE',
-
       headers: headers,
     })
       .then(function (res) {
@@ -27,22 +43,21 @@ export default function DeleteUser() {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="destructive">Delete account</Button>
+        <Button variant="ghost">Delete account</Button>
       </AlertDialogTrigger>
 
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle>We are sorry</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your card and remove it from
-            our servers.
+            Deleting your account is not available at the moment.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
             color="destructive"
-            onClick={deleteUser}
+            disabled={true}
             className={`${buttonVariants({ variant: 'destructive' })}`}
           >
             Continue
@@ -52,16 +67,3 @@ export default function DeleteUser() {
     </AlertDialog>
   );
 }
-
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-import { buttonVariants } from '@/components/ui/button';

@@ -36,8 +36,10 @@ export default async function AccountPage() {
         </div>
       </div>
 
-      <LogoutLink className={buttonVariants({ variant: 'destructive' })}>Log out</LogoutLink>
-      <DeleteUser />
+      <div className="flex gap-2">
+        <LogoutLink className={buttonVariants({ variant: 'destructive' })}>Log out</LogoutLink>
+        <DeleteUser id={user.id} />
+      </div>
     </div>
   );
 }
