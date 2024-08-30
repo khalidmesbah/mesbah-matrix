@@ -1,9 +1,9 @@
+import TopBar from '@/components/top-bar';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
-// TODO: use @
-import TopBar from './top-bar';
 
 export default async function TopBarAuthWrapper() {
-  const { isAuthenticated } = getKindeServerSession();
+  const { isAuthenticated: getIsAuthenticated } = getKindeServerSession();
+  const isAuthenticated = await getIsAuthenticated();
 
-  return (await isAuthenticated()) ? null : <TopBar />;
+  return isAuthenticated ? null : <TopBar />;
 }

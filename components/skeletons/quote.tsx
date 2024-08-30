@@ -1,7 +1,6 @@
+import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { randomString } from '@/lib/utils';
-// TODO: use @
-import { Card } from '../ui/card';
 
 export default function QuoteSkeleton() {
   const quote = randomString(125, 200);

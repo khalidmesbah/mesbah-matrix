@@ -1,8 +1,7 @@
 'use client';
 
+import QuoteSkeleton from '@/components/quotes/quote-skeleton';
 import { Masonry } from 'react-plock';
-// TODO: use @
-import QuoteSkeleton from './quote-skeleton';
 
 export default function QuotesMasonary() {
   return (
