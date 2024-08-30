@@ -54,7 +54,13 @@ export default function Navbar() {
         <div className="flex flex-col gap-2 p-2">
           {routes.slice(1, routes.length - 1).map(({ name, icon, link }, i) => {
             return (
-              <Icon key={i} name={name} icon={icon} link={link} isActive={pathname === link} />
+              <Icon
+                key={i}
+                name={name}
+                icon={icon}
+                link={link}
+                isActive={pathname.includes(link)}
+              />
             );
           })}
         </div>
@@ -68,7 +74,7 @@ export default function Navbar() {
             name={'Account'}
             link={'/account'}
             icon={<SquareUser />}
-            isActive={pathname === '/account'}
+            isActive={pathname.includes('/account')}
           />
         ) : (
           <TooltipProvider>
@@ -96,7 +102,7 @@ export default function Navbar() {
         name={routes[routes.length - 1].name}
         icon={routes[routes.length - 1].icon}
         link={routes[routes.length - 1].link}
-        isActive={pathname === routes[routes.length - 1].link}
+        isActive={pathname.includes(routes[routes.length - 1].link)}
       />
     </div>
   );

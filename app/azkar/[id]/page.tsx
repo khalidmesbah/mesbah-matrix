@@ -22,11 +22,11 @@ export default function CategoryPage({ params: { id } }: { params: { id: string 
 
   return (
     <div>
-      <h2 className="mb-2 flex flex-col items-center justify-between gap-2 rounded-md bg-secondary p-2 xs:flex-row">
+      <h2 className="mb-2 flex flex-col items-center justify-between gap-2 rounded-md bg-primary p-2 xs:flex-row">
         <p>{categories[id].en}</p>
         <p dir="rtl">{(categories as AzkarCategoriesT)[id].ar}</p>
       </h2>
-      <div className="mx-auto flex max-w-[500px] flex-col items-stretch gap-2">
+      <div className="mx-auto flex max-w-[500px] flex-col items-stretch gap-8">
         {azkar[id].map((zekr: ZekrT, i) => {
           return <Zekr zekr={zekr} key={i} />;
         })}

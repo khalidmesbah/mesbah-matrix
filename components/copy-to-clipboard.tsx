@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { SizeT, VariantT } from '@/lib/types/globals';
 import { Clipboard, ClipboardCheck } from 'lucide-react';
 import { useState } from 'react';
@@ -10,30 +11,39 @@ export default function CopyToClipboard({
   variant,
   size,
   text,
+  description,
 }: {
   className?: string;
   variant?: VariantT;
   size?: SizeT;
   text: string;
+  description?: string;
 }) {
   const [copied, setCopiedState] = useState(false);
 
   return (
-    <Button
-      variant={variant || 'ghost'}
-      size={size || 'icon'}
-      className={className}
-      onClick={() => {
-        if (copied) return;
-        navigator.clipboard.writeText(text);
+    <TooltipProvider>
+      <Tooltip delayDuration={300}>
+        <TooltipTrigger asChild>
+          <Button
+            variant={variant || 'ghost'}
+            size={size || 'icon'}
+            className={className}
+            onClick={() => {
+              if (copied) return;
+              navigator.clipboard.writeText(text);
 
-        setCopiedState(true);
-        setTimeout(() => {
-          setCopiedState(false);
-        }, 1000);
-      }}
-    >
-      {copied ? <ClipboardCheck /> : <Clipboard />}
-    </Button>
+              setCopiedState(true);
+              setTimeout(() => {
+                setCopiedState(false);
+              }, 1000);
+            }}
+          >
+            {copied ? <ClipboardCheck /> : <Clipboard />}
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>{description}</TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }

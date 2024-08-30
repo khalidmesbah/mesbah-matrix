@@ -2,12 +2,13 @@
 
 import CopyToClipboard from '@/components/copy-to-clipboard';
 import ShareButton from '@/components/share-button';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import useMySound from '@/hooks/use-my-sound';
+import { AmiriFont } from '@/lib/fonts/fonts';
 import useAzkarStore from '@/stores/azkar';
 import { ZekrT } from '@/types/azkar';
 import { Check, RotateCcw } from 'lucide-react';
+import Icon from '../icon';
 
 // FIX: share button
 // TODO: add description button
@@ -19,25 +20,33 @@ export default function Zekr({ zekr }: { zekr: ZekrT }) {
 
   return (
     <Card
-      className={`space-y-2 p-2 ${zekr.count === zekr.maximumCount && 'opacity-50'}`}
+      className={`p-2 ${zekr.count === zekr.maximumCount && 'opacity-50'} relative`}
       id={zekr.Id.toString()}
     >
-      <CardContent>
+      <CardContent className="p-0 pb-4">
         <p
           dir="rtl"
           lang="ar"
-          className={`${zekr.count === zekr.maximumCount && 'line-through'} {AmiriFont.className} flex-1`}
+          className={`${zekr.count === zekr.maximumCount ? 'line-through' : ''} ${AmiriFont.className} flex-1 pb-4 pt-2 text-xl/[2.5rem]`}
         >
           {zekr.zekr}
         </p>
       </CardContent>
-      <CardFooter className="flex items-center justify-center gap-2 rounded bg-border !p-1">
+      <CardFooter className="absolute -bottom-5 left-4 right-4 flex items-center justify-center gap-2 rounded-md bg-border !p-1">
         <ShareButton
+          description="Share this Zekr"
+          variant="ghost"
           url={`${process.env.NEXT_PUBLIC_MESBAH_MATRIX_URL}/azkar/${zekr.categoryId}/#${zekr.Id}`}
           title={`${categories[zekr.categoryId]}: ${zekr.zekr}`}
         />
-        <CopyToClipboard text={zekr.zekr} />
-        <Button
+        <CopyToClipboard text={zekr.zekr} description="Copy Zekr" />
+        <Icon
+          description="Increase count"
+          icon={
+            <span>
+              {zekr.count}/{zekr.maximumCount}
+            </span>
+          }
           variant={'ghost'}
           size={'icon'}
           onClick={() => {
@@ -47,24 +56,26 @@ export default function Zekr({ zekr }: { zekr: ZekrT }) {
             increaseCount(zekr);
           }}
           className="flex-1"
-        >
-          {zekr.count}/{zekr.maximumCount}
-        </Button>
-        <Button variant={'ghost'} size={'icon'} onClick={() => resetCount(zekr)}>
-          <RotateCcw />
-        </Button>
-        <Button
-          variant={'ghost'}
-          size={'icon'}
+        />
+        <Icon
+          description="Reset count"
+          icon={<RotateCcw />}
+          variant="ghost"
+          size="icon"
+          onClick={() => resetCount(zekr)}
+        />
+        <Icon
+          description="Finish Zekr"
+          icon={<Check />}
+          variant="ghost"
+          size="icon"
           onClick={() => {
             if (zekr.count !== zekr.maximumCount) {
               play();
             }
             finishZekr(zekr);
           }}
-        >
-          <Check />
-        </Button>
+        />
       </CardFooter>
     </Card>
   );

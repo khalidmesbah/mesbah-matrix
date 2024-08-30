@@ -1,5 +1,6 @@
 'use client';
 
+import { AmiriFont } from '@/lib/fonts/fonts';
 import useAzkarStore from '@/stores/azkar';
 import Link from 'next/link';
 
@@ -14,7 +15,9 @@ export default function AzkarPage() {
             href={`/azkar/${id}`}
             key={i}
           >
-            <p>{categories[id].ar}</p>
+            <p dir="rtl" lang="ar" className={`${AmiriFont.className} pt-2 text-xl/[2.5rem]`}>
+              {categories[id].ar}
+            </p>
             <p dir="ltr">{categories[id].en}</p>
           </Link>
         );

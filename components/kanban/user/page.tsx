@@ -104,33 +104,33 @@ export default function UserKanbanPage() {
       <KanbanHeaderWithSheet />
       <KanbanHeader />
       {isLoading ? (
-        <ParticlesLoader />
+        <div className="fc flex h-screen max-h-screen w-screen flex-col overflow-hidden">
+          <ParticlesLoader />
+        </div>
       ) : Object.keys(kanban.boards).length === 0 ? (
         <NoBoards />
       ) : (
         <DragDropContext onDragEnd={onDragEnd}>
-          <div className="flex flex-1 overflow-auto">
-            <Droppable droppableId={kanban.selectedBoard} direction="horizontal" type="list">
-              {(provided) => (
-                <div
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                  className="flex flex-1 overflow-auto"
-                >
-                  {kanban.boards[kanban.selectedBoard].listsOrder.map((listId, index) => {
-                    const list = kanban.boards[kanban.selectedBoard].lists[listId];
-                    const cards = list.cardIds.map(
-                      (cardId) => kanban.boards[kanban.selectedBoard].cards[cardId],
-                    );
-                    return <List key={listId} list={list} cards={cards} index={index} />;
-                  })}
+          <Droppable droppableId={kanban.selectedBoard} direction="horizontal" type="list">
+            {(provided) => (
+              <div
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+                className="flex flex-1 overflow-auto"
+              >
+                {kanban.boards[kanban.selectedBoard].listsOrder.map((listId, index) => {
+                  const list = kanban.boards[kanban.selectedBoard].lists[listId];
+                  const cards = list.cardIds.map(
+                    (cardId) => kanban.boards[kanban.selectedBoard].cards[cardId],
+                  );
+                  return <List key={listId} list={list} cards={cards} index={index} />;
+                })}
 
-                  {provided.placeholder}
-                  <AddList />
-                </div>
-              )}
-            </Droppable>
-          </div>
+                {provided.placeholder}
+                <AddList />
+              </div>
+            )}
+          </Droppable>
         </DragDropContext>
       )}
     </div>
