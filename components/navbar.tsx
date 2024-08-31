@@ -10,6 +10,7 @@ import {
   BellRing,
   Bolt,
   BookHeart,
+  ChartNoAxesCombined,
   Feather,
   Grid2X2,
   Home,
@@ -32,6 +33,7 @@ const routes = [
   { name: 'Azkar', link: '/azkar', icon: <Feather /> },
   { name: 'Quran', link: '/quran', icon: <BookHeart /> },
   { name: 'Kanban', link: '/kanban', icon: <SquareKanban /> },
+  { name: 'Analytics', link: '/analytics', icon: <ChartNoAxesCombined /> },
   { name: 'Settings', link: '/settings', icon: <Bolt /> },
 ];
 
