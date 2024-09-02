@@ -15,6 +15,7 @@ export default function Page() {
     data: analytics,
     isLoading,
     isError,
+    error,
   } = useQuery({
     queryKey: ['analytics'],
     queryFn: () => getAnalytics(),
@@ -29,7 +30,8 @@ export default function Page() {
       </div>
     );
 
-  if (!analytics || isError) return <div>Not Analytics</div>;
+  if (isError || !analytics) return <div>No Analytics, ${JSON.stringify(error)}</div>;
+  console.log(analytics);
 
   return (
     <div>

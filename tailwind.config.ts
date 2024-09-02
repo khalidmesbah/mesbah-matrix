@@ -24,6 +24,7 @@ const config = {
       gridTemplateColumns: {
         fill: 'repeat(auto-fill, minmax(250px, 1fr))',
         fit: 'repeat(auto-fit, minmax(250px, 1fr))',
+        'fit-analytics': 'repeat(auto-fit, minmax(150px, 1fr))',
       },
       colors: {
         border: 'hsl(var(--border))',

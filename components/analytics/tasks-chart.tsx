@@ -16,14 +16,27 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { AnalyticsT, AnalyticsTypeT } from '@/lib/types/analytics';
+import {
+  getDayName,
+  getLast7Days,
+  getLast7Months,
+  getLast7Weeks,
+  getMonthName,
+  getOrdinalSuffix,
+} from '@/lib/utils/analytics';
+import { CircleCheckBig } from 'lucide-react';
 import { useState } from 'react';
-import { CartesianGrid, Line, LineChart, XAxis } from 'recharts';
+import { Area, AreaChart, CartesianGrid, ReferenceArea, XAxis, YAxis } from 'recharts';
 
-export const description = 'A line chart';
+export const description = 'A monotone area chart';
 
+const last7Days = getLast7Days();
+const last7Weeks = getLast7Weeks();
+const last7Months = getLast7Months();
 const chartConfig = {
-  desktop: {
+  tasks: {
     label: 'Tasks',
+    icon: CircleCheckBig,
     color: 'hsl(var(--chart-1))',
   },
 } satisfies ChartConfig;
@@ -31,25 +44,49 @@ const chartConfig = {
 export default function TasksChart({ analytics }: { analytics: AnalyticsT }) {
   const [type, setType] = useState<AnalyticsTypeT>('day');
 
-  const chartData = Object.keys(analytics)
-    .filter((key) => key.slice(-5, -3) === '08')
-    .map((key) => {
-      return {
-        day: key.slice(-2),
-        tasks: analytics[key].finishedTasks,
-      };
-    })
-    .sort((a, b) => +a.day - +b.day);
+  const dayChartData = last7Days.map((day) => ({
+    day: getDayName(new Date(day).getDay().toString()),
+    tasks: analytics.find((a) => a.date === day)?.finishedTasks || 0,
+  }));
 
-  console.log(chartData);
+  const weekChartData = last7Weeks.map((w, idx) => {
+    const today = new Date();
+    const startDate = new Date(last7Weeks[idx]);
+    const isThisWeek = idx + 1 === last7Weeks.length;
+    const endDate = !isThisWeek ? new Date(last7Weeks[idx + 1]) : today;
+
+    return {
+      week: getOrdinalSuffix(+w.slice(-2)),
+      tasks: analytics
+        .filter((item) => {
+          const itemDate = new Date(item.date);
+          if (isThisWeek) {
+            return itemDate >= startDate && itemDate <= endDate;
+          }
+          return itemDate >= startDate && itemDate < endDate;
+        })
+        .reduce((acc, cur) => acc + (cur.finishedTasks || 0), 0),
+    };
+  });
+
+  const monthChartData = last7Months.map((month) => {
+    const tasks = analytics
+      .filter((a) => a.date.slice(5, 7) === month)
+      .reduce((acc, cur) => acc + (cur.finishedTasks || 0), 0);
+
+    return {
+      month: getMonthName(month),
+      tasks,
+    };
+  });
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center justify-between gap-2 text-base">
-          <span>Recent Completed Tasks</span>
+        <CardTitle className="flex items-center justify-between gap-2">
+          <h2>Recent Completed Tasks</h2>
           <Select value={type} onValueChange={(value) => setType(value as AnalyticsTypeT)}>
-            <SelectTrigger className="h-min w-min rounded-full px-2 py-1 text-xs">
+            <SelectTrigger className="h-min w-min rounded-full py-2 pl-3 pr-2 text-xs">
               <SelectValue placeholder="Select a type" />
             </SelectTrigger>
             <SelectContent className="!text-sm">
@@ -61,36 +98,36 @@ export default function TasksChart({ analytics }: { analytics: AnalyticsT }) {
             </SelectContent>
           </Select>
         </CardTitle>
-        <CardDescription className="sr-only">January - June 2024</CardDescription>
+        <CardDescription>Tasks completed in the last 7 {type}s</CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="pl-0">
         <ChartContainer config={chartConfig}>
-          <LineChart
+          <AreaChart
             accessibilityLayer
-            data={chartData}
-            margin={{
-              left: 12,
-              right: 12,
-            }}
+            data={type === 'day' ? dayChartData : type === 'week' ? weekChartData : monthChartData}
+            margin={{ top: 0, right: 10, left: 0, bottom: 0 }}
           >
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="day"
-              tickLine={true}
-              axisLine={true}
+              dataKey={type}
+              tickLine={false}
+              axisLine={false}
               tickMargin={8}
               tickFormatter={(value) => value}
-              minTickGap={32}
+              minTickGap={16}
             />
-            <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-            <Line
+            <YAxis />
+            <ChartTooltip cursor={true} content={<ChartTooltipContent indicator="dot" />} />
+            <Area
               dataKey="tasks"
-              type="natural"
-              stroke="var(--color-desktop)"
-              strokeWidth={2}
-              dot={false}
+              type="monotone"
+              fill="var(--color-tasks)"
+              fillOpacity={0.4}
+              stroke="var(--color-tasks)"
             />
-          </LineChart>
+
+            <ReferenceArea x1={150} x2={180} y1={200} y2={300} stroke="red" strokeOpacity={0.3} />
+          </AreaChart>
         </ChartContainer>
       </CardContent>
     </Card>

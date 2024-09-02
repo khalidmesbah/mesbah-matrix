@@ -1,16 +1,24 @@
-type DailyAnalyticsT = {
+import {
+  ANALYTICS__FINISHED_AZKAR,
+  ANALYTICS_AYAHS_READ,
+  ANALYTICS_FINISHED_DAILY_REMEMBERS,
+  ANALYTICS_FINISHED_TASKS,
+} from '@/lib/constants';
+
+export type AnalyticT = {
+  date: string;
   ayahsRead?: number;
   finishedAzkar?: number;
-  finishedTasks?: number;
   finishedDailyRemembers?: number;
+  finishedTasks?: number;
 };
 
-export type AnalyticsT = Record<string, DailyAnalyticsT>;
+export type AnalyticsT = AnalyticT[];
 
 export type IncreaseAnalyticsT =
-  | 'finishedDailyRemembers'
-  | 'finishedAzkar'
-  | 'finishedTasks'
-  | 'ayahsRead';
+  | typeof ANALYTICS_FINISHED_TASKS
+  | typeof ANALYTICS_AYAHS_READ
+  | typeof ANALYTICS_FINISHED_DAILY_REMEMBERS
+  | typeof ANALYTICS__FINISHED_AZKAR;
 
 export type AnalyticsTypeT = 'day' | 'week' | 'month';
