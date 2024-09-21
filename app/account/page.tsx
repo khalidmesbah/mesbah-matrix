@@ -2,7 +2,13 @@ import DeleteUser from '@/components/account/delete-user';
 import { buttonVariants } from '@/components/ui/button';
 import { LogoutLink } from '@kinde-oss/kinde-auth-nextjs/components';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
+import type { Metadata } from 'next';
 import Image from 'next/image';
+
+export const metadata: Metadata = {
+  title: 'Account',
+  description: 'Your account',
+};
 
 export default async function AccountPage() {
   const { getUser } = getKindeServerSession();

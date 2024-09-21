@@ -10,8 +10,8 @@ import { Suspense } from 'react';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Mesbah Matrix',
-  description: 'Live better',
+  title: 'Workspaces',
+  description: 'Manage and take control of your workspaces',
 };
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

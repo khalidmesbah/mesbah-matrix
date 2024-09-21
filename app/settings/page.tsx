@@ -1,6 +1,12 @@
 import ModeSelect from '@/components/settings/mode-select';
 import SoundSwitch from '@/components/settings/sound-switch';
 
+import type { Metadata } from 'next';
+export const metadata: Metadata = {
+  title: 'Settings',
+  description: 'Configure your preferred settings for a personalized experience.',
+};
+
 export default function SettingsPage() {
   return (
     <div className="grid gap-8 p-2">
