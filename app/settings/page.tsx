@@ -1,3 +1,4 @@
+import ColorSelect from '@/components/settings/color-select';
 import ModeSelect from '@/components/settings/mode-select';
 import SoundSwitch from '@/components/settings/sound-switch';
 
@@ -16,6 +17,7 @@ export default function SettingsPage() {
       </div>
       <div className="grid grid-cols-fit gap-4">
         <ModeSelect />
+        <ColorSelect />
         <SoundSwitch />
       </div>
     </div>

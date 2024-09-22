@@ -14,13 +14,17 @@ import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 
 export default function ModeSelect() {
-  const { setTheme: setMode, theme: mode, resolvedTheme: resolvedMode } = useTheme();
+  const { setTheme, resolvedTheme } = useTheme();
 
   const [hasmounted, sethasmounted] = useState(false);
 
   useEffect(() => sethasmounted(true), []);
 
   if (!hasmounted) return null;
+
+  let [color = 'green', mode = 'dark'] = resolvedTheme
+    ? resolvedTheme.split('-')
+    : ['green', 'dark'];
 
   return (
     <Card>
@@ -33,10 +37,10 @@ export default function ModeSelect() {
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="w-full">
               <div className="flex flex-1 items-center gap-2">
-                {resolvedMode === 'light' && (
+                {mode === 'light' && (
                   <Sun className="size-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
                 )}
-                {resolvedMode === 'dark' && (
+                {mode === 'dark' && (
                   <Moon className="size-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
                 )}
                 <p className="capitalize">{mode}</p>
@@ -46,14 +50,23 @@ export default function ModeSelect() {
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuRadioGroup value={mode}>
-              <DropdownMenuRadioItem onClick={() => setMode('light')} value="light">
+              <DropdownMenuRadioItem
+                onClick={() => {
+                  setTheme(`${color}-light`);
+                  document.getElementsByTagName('html')[0].dataset.mode = 'light';
+                }}
+                value="light"
+              >
                 Light
               </DropdownMenuRadioItem>
-              <DropdownMenuRadioItem onClick={() => setMode('dark')} value="dark">
+              <DropdownMenuRadioItem
+                onClick={() => {
+                  setTheme(`${color}-dark`);
+                  document.getElementsByTagName('html')[0].dataset.mode = 'dark';
+                }}
+                value="dark"
+              >
                 Dark
-              </DropdownMenuRadioItem>
-              <DropdownMenuRadioItem onClick={() => setMode('system')} value="system">
-                System
               </DropdownMenuRadioItem>
             </DropdownMenuRadioGroup>
           </DropdownMenuContent>
