@@ -11,41 +11,48 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { ChevronDownIcon, Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
+import { useEffect, useState } from 'react';
 
 export default function ModeSelect() {
-  const { setTheme, theme, resolvedTheme } = useTheme();
+  const { setTheme: setMode, theme: mode, resolvedTheme: resolvedMode } = useTheme();
+
+  const [hasmounted, sethasmounted] = useState(false);
+
+  useEffect(() => sethasmounted(true), []);
+
+  if (!hasmounted) return null;
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Theme</CardTitle>
-        <CardDescription>Choose the theme for the website.</CardDescription>
+        <CardTitle>Mode</CardTitle>
+        <CardDescription>Choose A Mode.</CardDescription>
       </CardHeader>
       <CardContent>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="w-full">
               <div className="flex flex-1 items-center gap-2">
-                {resolvedTheme === 'light' && (
+                {resolvedMode === 'light' && (
                   <Sun className="size-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
                 )}
-                {resolvedTheme === 'dark' && (
+                {resolvedMode === 'dark' && (
                   <Moon className="size-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
                 )}
-                <p className="capitalize">{theme}</p>
+                <p className="capitalize">{mode}</p>
               </div>
               <ChevronDownIcon className="size-5" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuRadioGroup value={theme}>
-              <DropdownMenuRadioItem onClick={() => setTheme('light')} value="light">
+            <DropdownMenuRadioGroup value={mode}>
+              <DropdownMenuRadioItem onClick={() => setMode('light')} value="light">
                 Light
               </DropdownMenuRadioItem>
-              <DropdownMenuRadioItem onClick={() => setTheme('dark')} value="dark">
+              <DropdownMenuRadioItem onClick={() => setMode('dark')} value="dark">
                 Dark
               </DropdownMenuRadioItem>
-              <DropdownMenuRadioItem onClick={() => setTheme('system')} value="system">
+              <DropdownMenuRadioItem onClick={() => setMode('system')} value="system">
                 System
               </DropdownMenuRadioItem>
             </DropdownMenuRadioGroup>

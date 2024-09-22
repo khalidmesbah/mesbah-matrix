@@ -11,7 +11,7 @@ export default function SoundSwitch() {
     <Card>
       <CardHeader>
         <CardTitle>Sounds</CardTitle>
-        <CardDescription>Turn on or off the sounds in the website.</CardDescription>
+        <CardDescription>Turn on or off the sounds.</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="flex items-center justify-between">
