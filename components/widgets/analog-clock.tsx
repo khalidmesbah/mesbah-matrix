@@ -1,7 +1,7 @@
 'use client';
 
 import styles from '@/styles/analog-clock.module.scss';
-import { useEffect, useRef } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 
 const scale = (child: HTMLDivElement | null): number => {
   if (!child) return 1;
@@ -19,7 +19,18 @@ export default function AnalogClock() {
   const hoursHand = useRef<HTMLDivElement>(null);
   const clockRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    console.log('useLayoutEffect');
+    const child = clockRef.current;
+    const parent = child?.parentElement;
+    if (!child || !parent) return;
+    const childWidth = child.offsetWidth;
+    const parentWidth = parent.offsetWidth;
+    console.log(childWidth, parentWidth);
+    child.style.setProperty('scale', `${parentWidth / childWidth}`);
+  }, [clockRef, clockRef.current?.parentElement]);
+
+  useLayoutEffect(() => {
     const updateTime = () => {
       const d = new Date();
       let milliSecondsHandRotation = d.getMilliseconds() / 1000;
@@ -42,7 +53,7 @@ export default function AnalogClock() {
 
   return (
     <div
-      className={clockRef.current ? `${styles.clock} bg-primary/50` : 'hidden'}
+      className={`${styles.clock} bg-primary/50`}
       ref={clockRef}
       style={{ scale: scale(clockRef.current) }}
     >
