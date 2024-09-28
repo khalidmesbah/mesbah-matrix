@@ -1,8 +1,9 @@
 'use client';
 
 import ChangeCalendar from '@/components/calendar/anon/change-calendar';
-import Tutorial from '@/components/calendar/anon/tutorial';
+import PublicUrlInput from '@/components/calendar/anon/public-url-input';
 import Calendar from '@/components/calendar/calendar';
+import Tutorial from '@/components/calendar/tutorial';
 import useCalendarStore from '@/lib/stores/calendar';
 
 export default function Page() {
@@ -16,7 +17,9 @@ export default function Page() {
           <ChangeCalendar src={src} />
         </>
       ) : (
-        <Tutorial />
+        <Tutorial>
+          <PublicUrlInput />
+        </Tutorial>
       )}
     </div>
   );

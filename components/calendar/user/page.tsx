@@ -1,8 +1,9 @@
 'use client';
 
 import Calendar from '@/components/calendar/calendar';
+import Tutorial from '@/components/calendar/tutorial';
 import ChangeCalendar from '@/components/calendar/user/change-calendar';
-import Tutorial from '@/components/calendar/user/tutorial';
+import PublicUrlInput from '@/components/calendar/user/public-url-input';
 import { useCalendarQuery } from '@/lib/hooks/use-calendar';
 
 export default function Page() {
@@ -20,7 +21,9 @@ export default function Page() {
           <ChangeCalendar src={src} />
         </>
       ) : (
-        <Tutorial />
+        <Tutorial>
+          <PublicUrlInput />
+        </Tutorial>
       )}
     </div>
   );
