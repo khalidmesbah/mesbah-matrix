@@ -10,6 +10,7 @@ import {
   BellRing,
   Bolt,
   BookHeart,
+  CalendarDays,
   ChartNoAxesCombined,
   Feather,
   Grid2X2,
@@ -27,6 +28,7 @@ import { ReactNode } from 'react';
 const routes = [
   { name: 'Home', link: '/', icon: <Home /> },
   { name: 'The Matrix', link: '/matrix', icon: <Grid2X2 /> },
+  { name: 'Calendar', link: '/calendar', icon: <CalendarDays /> },
   { name: 'Focus', link: '/focus', icon: <ScanEye /> },
   { name: 'Daily Reminders', link: '/daily-reminders', icon: <BellRing /> },
   { name: 'Quotes', link: '/quotes', icon: <Quote /> },
