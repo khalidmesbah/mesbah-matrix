@@ -10,7 +10,7 @@ import {
   TLBaseShape,
   TLClickEvent,
   TLDefaultColorStyle,
-  TLOnResizeHandler,
+  TLResizeInfo,
   createShapePropsMigrationIds,
   createShapePropsMigrationSequence,
   getDefaultColorTheme,
@@ -122,7 +122,10 @@ export class DigitalClockShapeUtil extends ShapeUtil<IDigitalClockShape> {
     return <rect width={shape.props.w} height={shape.props.h} />;
   }
 
-  override onResize: TLOnResizeHandler<IDigitalClockShape> = (shape, info) => {
+  override onResize = (
+    shape: IDigitalClockShape,
+    info: TLResizeInfo<IDigitalClockShape>,
+  ): IDigitalClockShape => {
     return resizeBox(shape, info);
   };
 }

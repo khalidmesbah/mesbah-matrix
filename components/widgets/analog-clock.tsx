@@ -20,17 +20,17 @@ export default function AnalogClock() {
   const clockRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
-    console.log('useLayoutEffect');
-    const child = clockRef.current;
-    const parent = child?.parentElement;
-    if (!child || !parent) return;
-    const childWidth = child.offsetWidth;
-    const parentWidth = parent.offsetWidth;
-    console.log(childWidth, parentWidth);
-    child.style.setProperty('scale', `${parentWidth / childWidth}`);
-  }, [clockRef, clockRef.current?.parentElement]);
+    setTimeout(() => {
+      const child = clockRef.current;
+      const parent = child?.parentElement;
+      if (!child || !parent) return;
 
-  useLayoutEffect(() => {
+      const childWidth = child.offsetWidth;
+      const parentWidth = parent.offsetWidth;
+
+      child.style.setProperty('scale', `${parentWidth / childWidth}`);
+    }, 0);
+
     const updateTime = () => {
       const d = new Date();
       let milliSecondsHandRotation = d.getMilliseconds() / 1000;
@@ -53,7 +53,7 @@ export default function AnalogClock() {
 
   return (
     <div
-      className={`${styles.clock} bg-primary/50`}
+      className={`${styles.clock} bg-primary/50 transition-all duration-200`}
       ref={clockRef}
       style={{ scale: scale(clockRef.current) }}
     >

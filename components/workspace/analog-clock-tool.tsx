@@ -10,7 +10,7 @@ import {
   TLBaseShape,
   TLClickEvent,
   TLDefaultColorStyle,
-  TLOnResizeHandler,
+  TLResizeInfo,
   createShapePropsMigrationIds,
   createShapePropsMigrationSequence,
   resizeBox,
@@ -115,7 +115,7 @@ export class AnalogClockUtil extends ShapeUtil<IAnalogClock> {
   }
 
   // [8]
-  override onResize: TLOnResizeHandler<IAnalogClock> = (shape, info) => {
+  override onResize = (shape: IAnalogClock, info: TLResizeInfo<IAnalogClock>): IAnalogClock => {
     return resizeBox(shape, info);
   };
 }

@@ -45,6 +45,7 @@ import {
   Tldraw,
   TldrawUiMenuGroup,
   TldrawUiMenuItem,
+  TldrawUiMenuSubmenu,
   computed,
   getSnapshot,
   loadSnapshot,
@@ -123,50 +124,94 @@ function CustomMainMenu() {
   const editor = useEditor();
   return (
     <DefaultMainMenu>
-      <div>
-        <TldrawUiMenuGroup id="example">
-          <TldrawUiMenuItem
-            id="clear"
-            label="Clear Canvas"
-            onSelect={() => {
-              editor.selectAll().deleteShapes(editor.getSelectedShapeIds());
-            }}
-          />
-          <TldrawUiMenuItem
-            id="save"
-            label="Save"
-            onSelect={async () => {
-              const { document, session } = getSnapshot(editor.store);
-              const res = await setWorkspaces({
-                document,
-                session,
-              });
-              if (res) {
-                toast.success('Workspace saved successfully!');
-              } else {
-                toast.error('Failed to save the workspace. Please try again.');
-              }
-            }}
-          />
-          <TldrawUiMenuItem
-            id="restore"
-            label="Restore"
-            icon="archive-restore"
-            onSelect={async () => {
-              const res = await getWorkspaces();
-              if (!res) return;
-              const { document, session } = res;
-              editor.setCurrentTool('select');
-              loadSnapshot(editor.store, { document, session });
-              if (res) {
-                toast.success('Workspace restored successfully!');
-              } else {
-                toast.error('Failed to restore the workspace. Please try again.');
-              }
-            }}
-          />
-        </TldrawUiMenuGroup>
-      </div>
+      <TldrawUiMenuSubmenu
+        id="file"
+        label="File"
+        children={
+          <>
+            <TldrawUiMenuItem
+              id="open-file"
+              label="Open file"
+              onSelect={() => {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = '.tldr';
+
+                input.onchange = async (event: Event) => {
+                  const target = event.target as HTMLInputElement;
+                  const file = target.files?.[0];
+                  if (!file) return;
+
+                  const reader = new FileReader();
+                  reader.onload = (e) => {
+                    const data = JSON.parse(e.target?.result as string);
+                    loadSnapshot(editor.store, data);
+                    toast.success('Workspace loaded successfully!');
+                  };
+                  reader.readAsText(file);
+                };
+
+                input.click();
+              }}
+            />
+            <TldrawUiMenuItem
+              id="save-a-copy"
+              label="Save a copy"
+              onSelect={() => {
+                const { document: TldrawDocument, session } = getSnapshot(editor.store);
+                const blob = new Blob([JSON.stringify({ document: TldrawDocument, session })], {
+                  type: 'application/json',
+                });
+                const url = URL.createObjectURL(blob);
+
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'Untitled.tldr';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                toast.success('Workspace saved as .tldr file!');
+              }}
+            />
+          </>
+        }
+      />
+      <TldrawUiMenuGroup id="custom">
+        <TldrawUiMenuItem
+          id="save"
+          label="Save"
+          onSelect={async () => {
+            const { document, session } = getSnapshot(editor.store);
+            const res = await setWorkspaces({
+              document,
+              session,
+            });
+            if (res) {
+              toast.success('Workspace saved successfully!');
+            } else {
+              toast.error('Failed to save the workspace. Please try again.');
+            }
+          }}
+        />
+        <TldrawUiMenuItem
+          id="restore"
+          label="Restore last saved"
+          icon="archive-restore"
+          onSelect={async () => {
+            const res = await getWorkspaces();
+            if (!res) return;
+            const { document, session } = res;
+            editor.setCurrentTool('select');
+            loadSnapshot(editor.store, { document, session });
+            if (res) {
+              toast.success('Workspace restored successfully!');
+            } else {
+              toast.error('Failed to restore the workspace. Please try again.');
+            }
+          }}
+        />
+      </TldrawUiMenuGroup>
       <DefaultMainMenuContent />
     </DefaultMainMenu>
   );
@@ -334,7 +379,7 @@ export default function Home() {
 
   return (
     <Tldraw
-      inferDarkMode={resolvedTheme === 'dark'}
+      inferDarkMode={resolvedTheme?.includes('dark')}
       persistenceKey="persist"
       tools={customTools}
       overrides={customUiOverrides}
