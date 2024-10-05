@@ -15,16 +15,18 @@ import { useEffect, useState } from 'react';
 
 export default function ModeSelect() {
   const { setTheme, resolvedTheme } = useTheme();
+  const [color, setColor] = useState('green');
+  const [mode, setMode] = useState('dark');
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  const [hasmounted, sethasmounted] = useState(false);
-
-  useEffect(() => sethasmounted(true), []);
-
-  if (!hasmounted) return null;
-
-  let [color = 'green', mode = 'dark'] = resolvedTheme
-    ? resolvedTheme.split('-')
-    : ['green', 'dark'];
+  useEffect(() => {
+    if (resolvedTheme) {
+      const [themeColor, themeMode] = resolvedTheme.split('-');
+      setColor(themeColor);
+      setMode(themeMode);
+      setIsLoaded(true);
+    }
+  }, [resolvedTheme]);
 
   return (
     <Card>
@@ -37,13 +39,11 @@ export default function ModeSelect() {
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="w-full">
               <div className="flex flex-1 items-center gap-2">
-                {mode === 'light' && (
-                  <Sun className="size-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                )}
-                {mode === 'dark' && (
-                  <Moon className="size-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                )}
-                <p className="capitalize">{mode}</p>
+                <div className="relative size-5">
+                  <Sun className="absolute size-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                  <Moon className="absolute size-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                </div>
+                <p className="capitalize">{isLoaded ? mode : '...'}</p>
               </div>
               <ChevronDownIcon className="size-5" />
             </Button>
@@ -53,7 +53,6 @@ export default function ModeSelect() {
               <DropdownMenuRadioItem
                 onClick={() => {
                   setTheme(`${color}-light`);
-                  document.getElementsByTagName('html')[0].dataset.mode = 'light';
                 }}
                 value="light"
               >
@@ -62,7 +61,6 @@ export default function ModeSelect() {
               <DropdownMenuRadioItem
                 onClick={() => {
                   setTheme(`${color}-dark`);
-                  document.getElementsByTagName('html')[0].dataset.mode = 'dark';
                 }}
                 value="dark"
               >

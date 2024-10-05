@@ -29,17 +29,19 @@ const colors = [
 ];
 
 export default function ColorSelect() {
-  const { setTheme, theme, resolvedTheme } = useTheme();
+  const { setTheme, resolvedTheme } = useTheme();
+  const [color, setColor] = useState('green');
+  const [mode, setMode] = useState('dark');
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  const [hasmounted, sethasmounted] = useState(false);
-
-  useEffect(() => sethasmounted(true), []);
-
-  if (!hasmounted) return null;
-
-  const [color = 'green', mode = 'dark'] = resolvedTheme
-    ? resolvedTheme.split('-')
-    : ['green', 'dark'];
+  useEffect(() => {
+    if (resolvedTheme) {
+      const [themeColor, themeMode] = resolvedTheme.split('-');
+      setColor(themeColor);
+      setMode(themeMode);
+      setIsLoaded(true);
+    }
+  }, [resolvedTheme]);
 
   return (
     <Card>
@@ -52,7 +54,7 @@ export default function ColorSelect() {
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="w-full">
               <div className="flex flex-1 items-center gap-2">
-                <p className="capitalize">{color}</p>
+                <p className="capitalize">{isLoaded ? color : '...'}</p>
               </div>
               <ChevronDownIcon className="size-5" />
             </Button>
@@ -62,7 +64,9 @@ export default function ColorSelect() {
               {colors.map((color) => (
                 <DropdownMenuRadioItem
                   key={color}
-                  onClick={() => setTheme(`${color}-${mode}`)}
+                  onClick={() => {
+                    setTheme(`${color}-${mode}`);
+                  }}
                   value={color}
                   className="capitalize"
                 >

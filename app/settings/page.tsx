@@ -13,7 +13,7 @@ export default function SettingsPage() {
     <div className="grid gap-8 p-2">
       <div className="grid gap-2">
         <h1 className="text-3xl font-bold">Settings</h1>
-        <p className="text-muted-foreground">Customize your account and preferences.</p>
+        <p className="text-muted-foreground">Customize your preferences.</p>
       </div>
       <div className="grid grid-cols-fit gap-4">
         <ModeSelect />
