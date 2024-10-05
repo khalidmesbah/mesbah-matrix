@@ -52,11 +52,7 @@ export default function ChangeCalendar({ src }: { src: string }) {
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
-        <Button
-          variant="link"
-          size={'sm'}
-          className="absolute left-[50%] top-4 -translate-x-[50%] text-black"
-        >
+        <Button variant="link" size={'sm'} className="absolute -top-[8px] right-0 text-foreground">
           Change
         </Button>
       </SheetTrigger>

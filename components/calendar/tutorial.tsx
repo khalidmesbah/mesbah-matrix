@@ -70,7 +70,7 @@ export default function Tutorial({ children }: { children: React.ReactNode }) {
             Video Tutorial
           </h3>
           <div className="aspect-video">
-            <YouTubeEmbed videoid="fqPXx03Rl2Y" height={400} params="controls=0" />
+            <YouTubeEmbed videoid="fqPXx03Rl2Y" params="controls=0" />
           </div>
           <p className="text-sm text-muted-foreground">
             This video tutorial provides a visual guide to help you through the process of obtaining
