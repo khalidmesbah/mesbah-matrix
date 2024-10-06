@@ -98,7 +98,7 @@ export default function UserKanbanPage() {
     };
     setBoard(newState);
   };
-
+  // TODO: merge the kanban header with the sheet header
   return (
     <div className="flex h-screen max-h-screen flex-col overflow-hidden">
       <KanbanHeaderWithSheet />

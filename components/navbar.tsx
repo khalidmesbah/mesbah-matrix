@@ -16,6 +16,7 @@ import {
   Grid2X2,
   Home,
   LogIn,
+  PencilRuler,
   Quote,
   ScanEye,
   SquareCheckBig,
@@ -28,6 +29,7 @@ import { ReactNode } from 'react';
 
 const routes = [
   { name: 'Home', link: '/', icon: <Home /> },
+  { name: 'Canvas', link: '/canvas', icon: <PencilRuler /> },
   { name: 'The Matrix', link: '/matrix', icon: <Grid2X2 /> },
   { name: 'Tasks', link: '/tasks', icon: <SquareCheckBig /> },
   { name: 'Calendar', link: '/calendar', icon: <CalendarDays /> },
