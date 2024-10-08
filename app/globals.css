@@ -12,27 +12,6 @@
   @apply flex items-center justify-center;
 }
 
-/* start for gridstack */
-.grid-stack-item {
-  background-color: hsl(var(--foreground));
-  color: hsl(var(--background));
-  border: 1px solid rgba(0, 100, 0, 0.125);
-  border-radius: 10px;
-  padding: 10px;
-}
-.grid-stack {
-  background-color: hsl(var(--background));
-  border: 1px solid rgba(200, 0, 0, 0.125);
-  border-radius: 10px;
-}
-.grid-stack-placeholder-custom {
-  background-color: hsl(var(--foreground));
-  color: hsl(var(--background));
-  border: 1px dashed rgba(0, 0, 100, 0.125);
-  border-radius: 10px;
-}
-/* end for gridstack */
-
 @layer base {
   /* default theme = green-dark */
   :root {
