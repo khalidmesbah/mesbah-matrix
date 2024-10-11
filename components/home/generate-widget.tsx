@@ -1,5 +1,6 @@
 import AnalogClock from '../widgets/analog-clock';
 import DigitalClock from '../widgets/digital-clock';
+import TimeSinceBirth from '../widgets/time-passed';
 
 type WidgetsT = {
   [key: string]: JSX.Element;
@@ -8,6 +9,7 @@ type WidgetsT = {
 const widgets: WidgetsT = {
   'analog-clock': <AnalogClock />,
   'digital-clock': <DigitalClock />,
+  'time-passed': <TimeSinceBirth birthDate="1990-01-01" />,
 };
 
 type GenerateWidgetT = {

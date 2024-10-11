@@ -1196,3 +1196,9 @@
     opacity: 0.65;
   }
 }
+
+/* react-grid-layout  */
+.react-grid-placeholder {
+  border-radius: var(--radius);
+  background-color: hsl(var(--card)) !important;
+}

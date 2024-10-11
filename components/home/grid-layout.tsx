@@ -1,56 +1,114 @@
 'use client';
 
-import { Component, Home, Lock, LockOpen, Plus, Settings2, X } from 'lucide-react'; // Importing Lucide icons
-import { useEffect, useState } from 'react';
+import { Component, Home, Lock, LockOpen, Move, Plus, Settings2, X } from 'lucide-react'; // Importing Lucide icons
+import { useCallback, useEffect, useState } from 'react';
 import { Layout, Layouts, Responsive, WidthProvider } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import FloatingDock from './floating-dock';
 import GenerateWidget from './generate-widget';
 
-type GridLayoutProps = {
-  domElements?: any[];
-};
-
 // TODO:
 //  - hangle on right click menu (on the grid and the cells)
 //  - add some default components if users first open time to the website
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
-export default function GridLayout({ domElements = [], ...props }: GridLayoutProps) {
-  const [mounted, setMounted] = useState(false);
-  const [layouts, setLayouts] = useState<{ [index: string]: any[] }>({
-    lg: Array.from({ length: 10 }, (_, index) => {
-      const y = Math.ceil(Math.random() * 4) + 1;
-      return {
-        i: `digital-clock-${index + 1}`,
-        x: (Math.floor(Math.random() * 6) * 2) % 12,
-        y: Math.floor(index / 6) * y,
-        w: 4,
-        h: y,
-        static: Math.random() < 0.0005,
-      };
-    }),
+function generateLayout() {
+  return Array.from({ length: 10 }, (_, index) => {
+    const y = Math.ceil(Math.random() * 40) + 10;
+    return {
+      x: (Math.floor(Math.random() * 60) * 20) % 12,
+      y: Math.floor(index / 60) * y,
+      w: 20,
+      h: y,
+      i: `analog-clock-${index + 1}`,
+      static: Math.random() < 0.9,
+    };
   });
-  const [currentBreakpoint, setCurrentBreakpoint] = useState<string>('lg');
-  const [compactType, setCompactType] = useState<'vertical' | 'horizontal' | null>(null);
-  const [toolbox, setToolbox] = useState<{ [index: string]: any[] }>({
-    lg: [],
-  });
+}
+
+type Breakpoint = 'xxs' | 'xs' | 'sm' | 'md' | 'lg';
+type CompactType = 'vertical' | 'horizontal' | null;
+
+export default function GridLayout({ ...props }) {
+  const [mounted, setMounted] = useState<boolean>(false);
+  const [layouts, setLayouts] = useState<Layouts>({ lg: generateLayout() });
+  const [currentBreakpoint, setCurrentBreakpoint] = useState<Breakpoint>('lg');
+  const [compactType, setCompactType] = useState<CompactType>(null);
   const [draggingItem, setDraggingItem] = useState<string>('');
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  useEffect(() => {
-    // console.clear();
-    // console.log(layouts);
-  });
+  // useEffect(() => {
+  //   console.clear();
+  //   console.log(layouts);
+  // });
 
-  if (!mounted) {
-    return null;
-  }
+  const generateDOM = useCallback(() => {
+    return layouts[currentBreakpoint].map((item: Layout) => {
+      const name = item.i.replace(/\d+/g, '').slice(0, -1);
+      const isLocked = item.static;
+      return (
+        <div
+          key={item.i}
+          className={`group overflow-hidden rounded-md bg-card shadow ${item.static ? 'border-2 border-blue-500' : ''}`}
+        >
+          <div
+            id="react-grid-item-handle"
+            className={`absolute z-[10] flex h-0 w-full cursor-move gap-1 overflow-hidden border-b-2 bg-card p-0 transition-all duration-200 group-hover:h-7 group-hover:p-1`}
+          >
+            <Move className={`${!item.isResizable && 'hidden'} size-5`} />
+
+            {isLocked ? (
+              <Lock
+                id="lock"
+                className="absolute left-1/2 size-5 -translate-x-1/2 transform cursor-pointer rounded-full bg-primary p-1 text-xl text-primary-foreground shadow-md transition-all duration-300 ease-in-out hover:scale-110 hover:bg-primary/90"
+                onClick={() => {
+                  setLayouts((layouts) => {
+                    const newLayouts = structuredClone(layouts);
+                    const newItem = newLayouts[currentBreakpoint].find(
+                      (prvItem) => prvItem.i === item.i,
+                    )!;
+                    newItem.static = false;
+                    return newLayouts;
+                  });
+                }}
+              />
+            ) : (
+              <LockOpen
+                id="lock-open"
+                className="absolute left-1/2 size-5 -translate-x-1/2 transform cursor-pointer rounded-full bg-secondary p-1 text-xl text-secondary-foreground shadow-md transition-all duration-300 ease-in-out hover:scale-110 hover:bg-secondary/90"
+                onClick={() => {
+                  setLayouts((layouts) => {
+                    const newLayouts = structuredClone(layouts);
+                    const newItem = newLayouts[currentBreakpoint].find(
+                      (prvItem) => prvItem.i === item.i,
+                    )!;
+                    newItem.static = true;
+                    return newLayouts;
+                  });
+                }}
+              />
+            )}
+            <X
+              onClick={() => handleDeleteWidget(item.i)}
+              id="remove"
+              className="ml-auto size-5 cursor-pointer rounded-full bg-destructive p-1 text-xl text-white hover:bg-destructive/90"
+            />
+          </div>
+          <div className="h-full w-full overflow-auto">
+            <GenerateWidget name={name} />
+          </div>
+        </div>
+      );
+    });
+  }, [layouts, currentBreakpoint]);
+
+  const onBreakpointChange = useCallback((breakpoint: Breakpoint) => {
+    setCurrentBreakpoint(breakpoint);
+  }, []);
 
   const links = [
     {
@@ -72,18 +130,16 @@ export default function GridLayout({ domElements = [], ...props }: GridLayoutPro
             setDraggingItem('');
           }}
           onClick={() => {
-            const newIndex = layouts.lg.length + 1;
+            const newIndex = layouts[currentBreakpoint].length + 1;
             setLayouts((layouts) => {
               const newLayouts = structuredClone(layouts);
-              Object.keys(newLayouts).map((key) => {
-                newLayouts[key].push({
-                  x: 0,
-                  y: 0,
-                  w: 2,
-                  h: 2,
-                  i: `analog-clock-${newIndex}`,
-                  static: false,
-                });
+              newLayouts[currentBreakpoint].push({
+                x: 0,
+                y: 0,
+                w: 20,
+                h: 40,
+                i: `time-passed-${newIndex}`,
+                static: false,
               });
               return newLayouts;
             });
@@ -126,67 +182,57 @@ export default function GridLayout({ domElements = [], ...props }: GridLayoutPro
     });
   };
 
-  const onBreakpointChange = (breakpoint: any) => {
-    setCurrentBreakpoint(breakpoint);
-    setToolbox({
-      ...toolbox,
-      [breakpoint]: toolbox[breakpoint] || toolbox[currentBreakpoint] || [],
-    });
-  };
+  const onCompactTypeChange = useCallback(() => {
+    setCompactType((prevType) =>
+      prevType === 'horizontal' ? 'vertical' : prevType === 'vertical' ? null : 'horizontal',
+    );
+  }, []);
 
-  const onCompactTypeChange = () => {
-    let oldCompactType = '';
-
-    const compactType =
-      oldCompactType === 'horizontal'
-        ? 'vertical'
-        : oldCompactType === 'vertical'
-          ? null
-          : 'horizontal';
-    setCompactType(compactType);
-  };
-
-  const onLayoutChange = (layout: Layout[], layouts: Layouts) => {
-    setLayouts({ ...layouts });
-  };
+  const handleLayoutChange = useCallback((layout, layouts) => {
+    setLayouts(layouts);
+  }, []);
 
   const onDrop = (layout: Layout[], item: Layout, e: Event) => {
+    console.log(layout, item, `---`);
     if (draggingItem.trim() === '') {
       return;
     }
 
-    const newIndex = layouts[currentBreakpoint].length + 1;
+    const newIndex = layouts.lg.length + 1;
     setLayouts((layouts) => {
       const newLayouts = structuredClone(layouts);
-      Object.keys(newLayouts).map((key) => {
-        newLayouts[key].push({
-          x: item.x,
-          y: item.y,
-          w: item.w,
-          h: item.h,
-          i: `${draggingItem}-${newIndex}`,
-          static: false,
-        });
+      newLayouts.lg.push({
+        x: item.x,
+        y: item.y,
+        w: item.w,
+        h: item.h,
+        i: `${draggingItem}-${newIndex}`,
+        static: false,
       });
       return newLayouts;
     });
   };
 
+  if (!mounted) {
+    return null;
+  }
+
   return (
     <>
       <ResponsiveReactGridLayout
-        rowHeight={30}
+        rowHeight={0.01}
         autoSize={true}
-        cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
+        cols={{ lg: 48, md: 40, sm: 32, xs: 24, xxs: 16 }}
         breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
         containerPadding={[8, 8]}
         layouts={layouts}
         measureBeforeMount={false}
         useCSSTransforms={true}
         compactType={compactType}
-        draggableCancel="#remove"
+        draggableCancel={'#remove, #lock, #lock-open'}
+        draggableHandle={'#react-grid-item-handle'}
         preventCollision={!compactType}
-        onLayoutChange={onLayoutChange}
+        onLayoutChange={handleLayoutChange}
         onBreakpointChange={onBreakpointChange}
         onDropDragOver={() => {
           return { w: 4, h: 7 };
@@ -198,22 +244,13 @@ export default function GridLayout({ domElements = [], ...props }: GridLayoutPro
         isResizable={true}
         isDroppable={true}
         className={`min-h-[calc(100vh-16px)] overflow-auto rounded-md bg-primary`}
-        verticalCompact={false}
+        verticalCompact={undefined}
+        resizeHandle={
+          <div className="react-resizable-handle absolute bottom-1 right-1 size-5 cursor-se-resize mix-blend-difference after:!border-foreground" />
+        }
         {...props}
       >
-        {layouts[currentBreakpoint].map((item) => {
-          const name = item.i.replace(/\d+/g, '').slice(0, -1);
-          return (
-            <div key={item.i} data-grid={item} className="relative size-10 bg-card">
-              <X
-                id="remove"
-                onClick={() => handleDeleteWidget(item.i)}
-                className="absolute right-1 top-1 z-[10] size-5 cursor-pointer rounded-full bg-destructive p-1 text-xl text-white hover:bg-destructive/90"
-              />
-              <GenerateWidget name={name} />
-            </div>
-          );
-        })}
+        {generateDOM()}
       </ResponsiveReactGridLayout>
 
       <FloatingDock items={links} />
