@@ -1,12 +1,10 @@
 'use client';
 
-import _ from 'lodash';
 import { Component, Home, Lock, LockOpen, Plus, Settings2, X } from 'lucide-react'; // Importing Lucide icons
 import { useEffect, useState } from 'react';
-import { Responsive, WidthProvider } from 'react-grid-layout';
+import { Layout, Layouts, Responsive, WidthProvider } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
-import { Button } from '../ui/button';
 import FloatingDock from './floating-dock';
 import GenerateWidget from './generate-widget';
 
@@ -22,15 +20,15 @@ const ResponsiveReactGridLayout = WidthProvider(Responsive);
 export default function GridLayout({ domElements = [], ...props }: GridLayoutProps) {
   const [mounted, setMounted] = useState(false);
   const [layouts, setLayouts] = useState<{ [index: string]: any[] }>({
-    lg: _.map(_.range(0, 10), function (_item, index, list) {
-      var y = Math.ceil(Math.random() * 4) + 1;
+    lg: Array.from({ length: 10 }, (_, index) => {
+      const y = Math.ceil(Math.random() * 4) + 1;
       return {
         i: `digital-clock-${index + 1}`,
-        x: (_.random(0, 5) * 2) % 12,
+        x: (Math.floor(Math.random() * 6) * 2) % 12,
         y: Math.floor(index / 6) * y,
         w: 4,
         h: y,
-        static: Math.random() < 0.5,
+        static: Math.random() < 0.0005,
       };
     }),
   });
@@ -47,7 +45,7 @@ export default function GridLayout({ domElements = [], ...props }: GridLayoutPro
 
   useEffect(() => {
     // console.clear();
-    console.log(layouts);
+    // console.log(layouts);
   });
 
   if (!mounted) {
@@ -118,19 +116,15 @@ export default function GridLayout({ domElements = [], ...props }: GridLayoutPro
     },
   ];
 
-  // const handleDragStart = (layout, oldItem, newItem, placeholder, e, element) => {
-  //   console.log('Started dragging item with id:', oldItem.i);
-  // };
-  //
-  // const handleDragStop = (layout, oldItem, newItem, placeholder, e, element) => {
-  //   console.log('Stopped dragging item with id:', oldItem.i);
-  //   // Update the layout state or perform other actions
-  // };
-  //
-  // const handleResizeStop = (layout, oldItem, newItem, placeholder, e, element) => {
-  //   console.log('Resized item with id:', oldItem.i);
-  //   // Update the layout state or perform other actions
-  // };
+  const handleDeleteWidget = (i: string) => {
+    setLayouts((layouts) => {
+      const newLayouts = structuredClone(layouts);
+      Object.keys(newLayouts).forEach((key) => {
+        newLayouts[key] = newLayouts[key].filter((existingItem) => existingItem.i !== i);
+      });
+      return newLayouts;
+    });
+  };
 
   const onBreakpointChange = (breakpoint: any) => {
     setCurrentBreakpoint(breakpoint);
@@ -152,30 +146,24 @@ export default function GridLayout({ domElements = [], ...props }: GridLayoutPro
     setCompactType(compactType);
   };
 
-  const onLayoutChange = (layout: any, layouts: any) => {
-    setLayouts((prevLayouts) => {
-      // Only update if layouts have changed
-      return JSON.stringify(prevLayouts) !== JSON.stringify(layouts) ? { ...layouts } : prevLayouts;
-    });
+  const onLayoutChange = (layout: Layout[], layouts: Layouts) => {
+    setLayouts({ ...layouts });
   };
-  const onDrop = (layout, newElement, e) => {
-    // console.clear();
-    console.log('props are');
-    console.log(props);
 
+  const onDrop = (layout: Layout[], item: Layout, e: Event) => {
     if (draggingItem.trim() === '') {
       return;
     }
 
-    const newIndex = layouts.lg.length + 1;
+    const newIndex = layouts[currentBreakpoint].length + 1;
     setLayouts((layouts) => {
       const newLayouts = structuredClone(layouts);
       Object.keys(newLayouts).map((key) => {
         newLayouts[key].push({
-          x: newElement.x,
-          y: newElement.y,
-          w: newElement.w,
-          h: newElement.h,
+          x: item.x,
+          y: item.y,
+          w: item.w,
+          h: item.h,
           i: `${draggingItem}-${newIndex}`,
           static: false,
         });
@@ -184,26 +172,6 @@ export default function GridLayout({ domElements = [], ...props }: GridLayoutPro
     });
   };
 
-  const onDragOver = (...props: any) => {
-    console.log(`-------------`);
-    console.log(props);
-    console.log(`-------------`);
-    return { w: 4, h: 7 };
-  };
-
-  const handleDeleteWidget = (i: string) => {
-    setLayouts((prevLayouts) => {
-      // Create a new layouts object to avoid mutating the previous state directly
-      const newLayouts = structuredClone(prevLayouts);
-
-      // Filter out the widget with the matching identifier from each layout
-      Object.keys(newLayouts).forEach((key) => {
-        newLayouts[key] = newLayouts[key].filter((item) => item.i !== i);
-      });
-
-      return newLayouts;
-    });
-  };
   return (
     <>
       <ResponsiveReactGridLayout
@@ -215,17 +183,15 @@ export default function GridLayout({ domElements = [], ...props }: GridLayoutPro
         layouts={layouts}
         measureBeforeMount={false}
         useCSSTransforms={true}
-        // onDragStart={handleDragStart}
-        // onDragStop={handleDragStop}
-        // onResizeStop={handleResizeStop}
         compactType={compactType}
+        draggableCancel="#remove"
         preventCollision={!compactType}
         onLayoutChange={onLayoutChange}
         onBreakpointChange={onBreakpointChange}
-        onDropDragOver={onDragOver}
+        onDropDragOver={() => {
+          return { w: 4, h: 7 };
+        }}
         allowOverlap={false}
-        // onResize={handleResize}
-        // onWidthChange={handleWidthChange}
         onDrop={onDrop}
         isBounded={false}
         isDraggable={true}
@@ -235,14 +201,15 @@ export default function GridLayout({ domElements = [], ...props }: GridLayoutPro
         verticalCompact={false}
         {...props}
       >
-        {layouts.lg.map((item, index) => {
+        {layouts[currentBreakpoint].map((item) => {
           const name = item.i.replace(/\d+/g, '').slice(0, -1);
-          console.log(item.i, name);
           return (
             <div key={item.i} data-grid={item} className="relative size-10 bg-card">
-              <Button onClick={() => handleDeleteWidget(item.i)}>
-                <X />
-              </Button>
+              <X
+                id="remove"
+                onClick={() => handleDeleteWidget(item.i)}
+                className="absolute right-1 top-1 z-[10] size-5 cursor-pointer rounded-full bg-destructive p-1 text-xl text-white hover:bg-destructive/90"
+              />
               <GenerateWidget name={name} />
             </div>
           );
