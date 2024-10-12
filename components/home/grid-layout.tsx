@@ -1,6 +1,6 @@
 'use client';
 
-import { Component, Home, Lock, LockOpen, Move, Plus, Settings2, X } from 'lucide-react'; // Importing Lucide icons
+import { Component, FileText, Home, Lock, LockOpen, Move, Plus, Settings2, X } from 'lucide-react'; // Importing Lucide icons
 import { useCallback, useEffect, useState } from 'react';
 import { Layout, Layouts, Responsive, WidthProvider } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
@@ -21,8 +21,10 @@ function generateLayout() {
       y: Math.floor(index / 60) * y,
       w: 20,
       h: y,
+      minW: 5,
+      minH: 10,
       i: `analog-clock-${index + 1}`,
-      static: Math.random() < 0.9,
+      static: Math.random() < 0.5,
     };
   });
 }
@@ -41,25 +43,17 @@ export default function GridLayout({ ...props }) {
     setMounted(true);
   }, []);
 
-  // useEffect(() => {
-  //   console.clear();
-  //   console.log(layouts);
-  // });
-
   const generateDOM = useCallback(() => {
     return layouts[currentBreakpoint].map((item: Layout) => {
       const name = item.i.replace(/\d+/g, '').slice(0, -1);
       const isLocked = item.static;
       return (
-        <div
-          key={item.i}
-          className={`group overflow-hidden rounded-md bg-card shadow ${item.static ? 'border-2 border-blue-500' : ''}`}
-        >
+        <div key={item.i} className={`group relative overflow-hidden rounded-md bg-card shadow`}>
           <div
             id="react-grid-item-handle"
-            className={`absolute z-[10] flex h-0 w-full cursor-move gap-1 overflow-hidden border-b-2 bg-card p-0 transition-all duration-200 group-hover:h-7 group-hover:p-1`}
+            className={`absolute left-0 right-0 z-[10] flex h-0 w-full self-start ${!isLocked && 'cursor-move'} gap-1 overflow-hidden border-b-2 bg-card p-0 transition-all duration-200 group-hover:h-7 group-hover:p-1`}
           >
-            <Move className={`${!item.isResizable && 'hidden'} size-5`} />
+            <Move className={`${isLocked && 'hidden'} size-5`} />
 
             {isLocked ? (
               <Lock
@@ -97,8 +91,27 @@ export default function GridLayout({ ...props }) {
               id="remove"
               className="ml-auto size-5 cursor-pointer rounded-full bg-destructive p-1 text-xl text-white hover:bg-destructive/90"
             />
+            <FileText
+              id="fit-widget"
+              onClick={(e) => {
+                const itemEl = e.currentTarget.parentElement?.parentElement;
+                if (itemEl) {
+                  const child = itemEl.children[1].children[0];
+                  setLayouts((layouts) => {
+                    const newLayouts = structuredClone(layouts);
+                    const newItem = newLayouts[currentBreakpoint].find(
+                      (prvItem) => prvItem.i === item.i,
+                    )!;
+                    newItem.h = child.clientHeight / 11 + 1;
+                    newItem.w = child.clientWidth / 27;
+                    return newLayouts;
+                  });
+                }
+              }}
+              className="size-5 cursor-pointer rounded-full bg-destructive p-1 text-xl text-white hover:bg-destructive/90"
+            />
           </div>
-          <div className="h-full w-full overflow-auto">
+          <div className="absolute flex h-full w-full items-center justify-center overflow-auto">
             <GenerateWidget name={name} />
           </div>
         </div>
@@ -136,10 +149,12 @@ export default function GridLayout({ ...props }) {
               newLayouts[currentBreakpoint].push({
                 x: 0,
                 y: 0,
-                w: 20,
+                w: 40,
                 h: 40,
                 i: `time-passed-${newIndex}`,
                 static: false,
+                minW: 5,
+                minH: 10,
               });
               return newLayouts;
             });
@@ -188,8 +203,8 @@ export default function GridLayout({ ...props }) {
     );
   }, []);
 
-  const handleLayoutChange = useCallback((layout, layouts) => {
-    setLayouts(layouts);
+  const handleLayoutChange = useCallback((currentLayout: Layout[], allLayouts: Layouts) => {
+    setLayouts(allLayouts);
   }, []);
 
   const onDrop = (layout: Layout[], item: Layout, e: Event) => {
@@ -220,23 +235,21 @@ export default function GridLayout({ ...props }) {
   return (
     <>
       <ResponsiveReactGridLayout
-        rowHeight={0.01}
+        rowHeight={1}
+        maxRows={Infinity}
         autoSize={true}
         cols={{ lg: 48, md: 40, sm: 32, xs: 24, xxs: 16 }}
         breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
-        containerPadding={[8, 8]}
+        containerPadding={[4, 4]}
         layouts={layouts}
         measureBeforeMount={false}
         useCSSTransforms={true}
         compactType={compactType}
-        draggableCancel={'#remove, #lock, #lock-open'}
+        draggableCancel={'#remove, #lock, #lock-open, #fit-widget'}
         draggableHandle={'#react-grid-item-handle'}
         preventCollision={!compactType}
         onLayoutChange={handleLayoutChange}
         onBreakpointChange={onBreakpointChange}
-        onDropDragOver={() => {
-          return { w: 4, h: 7 };
-        }}
         allowOverlap={false}
         onDrop={onDrop}
         isBounded={false}

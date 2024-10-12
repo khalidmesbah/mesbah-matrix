@@ -1,4 +1,4 @@
-import AnalogClock from '@/components/widgets/analog-clock';
+import TimeSinceBirth from '@/components/widgets/time-passed';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 };
 
 export default function FocusPage() {
-  return <AnalogClock />;
+  return <TimeSinceBirth />;
 }
 
 // add the do quadrant here

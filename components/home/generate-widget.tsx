@@ -9,7 +9,7 @@ type WidgetsT = {
 const widgets: WidgetsT = {
   'analog-clock': <AnalogClock />,
   'digital-clock': <DigitalClock />,
-  'time-passed': <TimeSinceBirth birthDate="1990-01-01" />,
+  'time-passed': <TimeSinceBirth />,
 };
 
 type GenerateWidgetT = {

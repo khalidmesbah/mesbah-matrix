@@ -1,4 +1,16 @@
 'use client';
+
+import { Button } from '@/components/ui/button';
+
+import { Calendar } from '@/components/ui/calendar';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import {
   Select,
   SelectContent,
@@ -6,8 +18,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import DatePicker from '@/components/widgets/date-picker'; // Assuming DatePicker is imported from chadcn/ui
-import { useEffect, useState } from 'react';
+import { format } from 'date-fns';
+import { Calendar as CalendarIcon, Settings } from 'lucide-react';
+import { useCallback, useEffect, useState } from 'react';
 
 type TimePassed = {
   seconds: number;
@@ -23,20 +36,16 @@ type TimePassed = {
   falls: number;
 };
 
-type TimeSinceBirthProps = {
-  birthDate: string;
-};
-
-const TimeSinceBirth: React.FC<TimeSinceBirthProps> = ({ birthDate }) => {
+export default function TimeSinceBirth() {
   const [timePassed, setTimePassed] = useState<Partial<TimePassed>>({});
   const [selectedUnit, setSelectedUnit] = useState<string>(''); // Track the selected unit
 
   // Track the birth date input
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [date, setDate] = useState<Date>(new Date());
 
-  const calculateTimePassed = () => {
+  const calculateTimePassed = useCallback(() => {
     const now = new Date();
-    const birth = selectedDate || new Date(birthDate);
+    const birth: Date = date || new Date();
     const diff = now.getTime() - birth.getTime();
 
     // Calculate time in different units
@@ -67,15 +76,14 @@ const TimeSinceBirth: React.FC<TimeSinceBirthProps> = ({ birthDate }) => {
       summers,
       falls,
     });
-  };
+  }, []);
 
   useEffect(() => {
     calculateTimePassed();
-    const intervalId = setInterval(calculateTimePassed, 1000); // Update every second
-    return () => clearInterval(intervalId); // Cleanup on unmount
-  }, [birthDate, selectedDate]);
+    const intervalId = setInterval(calculateTimePassed, 1000);
+    return () => clearInterval(intervalId);
+  }, [date, calculateTimePassed]);
 
-  // Render selected unit's time value outside the select dropdown
   const getTimeValue = () => {
     if (selectedUnit && timePassed[selectedUnit as keyof TimePassed] !== undefined) {
       return `${timePassed[selectedUnit as keyof TimePassed]}`;
@@ -84,42 +92,76 @@ const TimeSinceBirth: React.FC<TimeSinceBirthProps> = ({ birthDate }) => {
   };
 
   return (
-    <div className="mx-auto max-w-md rounded-lg bg-white p-6 shadow-md">
-      <h2 className="mb-4 text-2xl font-bold text-gray-800">Time Passed Since Birth:</h2>
+    <div className="relative flex max-w-lg flex-col gap-2 rounded-md bg-card">
+      <Dialog>
+        <DialogTrigger asChild className="absolute right-2 top-2">
+          <Button variant="ghost" size="icon">
+            <Settings />
+          </Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Settings</DialogTitle>
+          </DialogHeader>
+          <div className="flex flex-col gap-4">
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant={'outline'}>
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {date ? format(date, 'PPP') : <span>Pick a date</span>}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0">
+                <Calendar
+                  captionLayout="dropdown-buttons"
+                  labels={{
+                    labelYearDropdown: () => 'Year ',
+                    labelMonthDropdown: () => 'Month ',
+                  }}
+                  classNames={{
+                    caption_label: 'hidden',
+                  }}
+                  fromYear={1900}
+                  initialFocus={true}
+                  selected={date}
+                  mode="single"
+                  footer={false}
+                  toYear={new Date().getFullYear()}
+                  onDayClick={(day) => {
+                    setDate(day);
+                  }}
+                />
+              </PopoverContent>
+            </Popover>
 
-      {/* Date picker input */}
-      <div className="mb-4">
-        <DatePicker value={selectedDate} onChange={(date) => setSelectedDate(date)} />
-      </div>
+            <Select onValueChange={setSelectedUnit}>
+              <SelectTrigger className="w-full rounded-lg border border-gray-300 p-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <SelectValue placeholder="Select time unit" />
+              </SelectTrigger>
+              <SelectContent className="rounded-lg border border-gray-200 shadow-lg">
+                <SelectItem value="seconds">Seconds</SelectItem>
+                <SelectItem value="minutes">Minutes</SelectItem>
+                <SelectItem value="hours">Hours</SelectItem>
+                <SelectItem value="days">Days</SelectItem>
+                <SelectItem value="weeks">Weeks</SelectItem>
+                <SelectItem value="months">Months</SelectItem>
+                <SelectItem value="years">Years</SelectItem>
+                <SelectItem value="winters">Winters</SelectItem>
+                <SelectItem value="springs">Springs</SelectItem>
+                <SelectItem value="summers">Summers</SelectItem>
+                <SelectItem value="falls">Falls</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </DialogContent>
+      </Dialog>
 
-      {/* Select for time units */}
-      <div className="mb-4">
-        <Select onValueChange={setSelectedUnit}>
-          <SelectTrigger className="w-full rounded-lg border border-gray-300 p-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <SelectValue placeholder="Select time unit" />
-          </SelectTrigger>
-          <SelectContent className="rounded-lg border border-gray-200 bg-white shadow-lg">
-            <SelectItem value="seconds">Seconds</SelectItem>
-            <SelectItem value="minutes">Minutes</SelectItem>
-            <SelectItem value="hours">Hours</SelectItem>
-            <SelectItem value="days">Days</SelectItem>
-            <SelectItem value="weeks">Weeks</SelectItem>
-            <SelectItem value="months">Months</SelectItem>
-            <SelectItem value="years">Years</SelectItem>
-            <SelectItem value="winters">Winters</SelectItem>
-            <SelectItem value="springs">Springs</SelectItem>
-            <SelectItem value="summers">Summers</SelectItem>
-            <SelectItem value="falls">Falls</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
-      {/* Display time value */}
-      <div className="rounded-lg bg-gray-100 p-4 text-center text-lg font-semibold text-gray-700">
-        {getTimeValue()}
+      <div className="rounded-lg bg-accent p-2 text-center text-lg font-bold text-primary">
+        <h2 className="font-bolder text-4xl">{getTimeValue()}</h2>
+        <span className="text-primary/90">
+          {selectedUnit.slice(0, 1).toUpperCase() + selectedUnit.slice(1)} Have Passed
+        </span>
       </div>
     </div>
   );
-};
-
-export default TimeSinceBirth;
+}
