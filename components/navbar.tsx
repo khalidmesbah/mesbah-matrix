@@ -31,7 +31,7 @@ const routes = [
   { name: 'Home', link: '/', icon: <Home /> },
   { name: 'Canvas', link: '/canvas', icon: <PencilRuler /> },
   { name: 'Mesbah Matrix', link: '/matrix', icon: <Grid2X2 /> },
-  { name: 'Task Manager', link: '/task', icon: <SquareCheckBig /> },
+  { name: 'Task Manager', link: '/tasks', icon: <SquareCheckBig /> },
   { name: 'Calendar', link: '/calendar', icon: <CalendarDays /> },
   { name: 'Focus', link: '/focus', icon: <ScanEye /> },
   { name: 'Daily', link: '/daily', icon: <BellRing /> },
