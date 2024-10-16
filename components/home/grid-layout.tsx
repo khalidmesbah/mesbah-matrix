@@ -1,6 +1,8 @@
 'use client';
 
-import { Component, FileText, Home, Lock, LockOpen, Move, Plus, Settings2, X } from 'lucide-react'; // Importing Lucide icons
+import useWidgetsStore from '@/lib/stores/widgets';
+import { BreakpointT } from '@/lib/types/widgets';
+import { FileText, Lock, LockOpen, Move, X } from 'lucide-react'; // Importing Lucide icons
 import { useCallback, useEffect, useState } from 'react';
 import { Layout, Layouts, Responsive, WidthProvider } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
@@ -8,66 +10,55 @@ import 'react-resizable/css/styles.css';
 import FloatingDock from './floating-dock';
 import GenerateWidget from './generate-widget';
 
-// TODO:
-//  - hangle on right click menu (on the grid and the cells)
-//  - add some default components if users first open time to the website
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
-
-function generateLayout() {
-  return Array.from({ length: 10 }, (_, index) => {
-    const y = Math.ceil(Math.random() * 40) + 10;
-    return {
-      x: (Math.floor(Math.random() * 60) * 20) % 12,
-      y: Math.floor(index / 60) * y,
-      w: 20,
-      h: y,
-      minW: 5,
-      minH: 10,
-      i: `analog-clock-${index + 1}`,
-      static: Math.random() < 0.5,
-    };
-  });
-}
-
-type Breakpoint = 'xxs' | 'xs' | 'sm' | 'md' | 'lg';
-type CompactType = 'vertical' | 'horizontal' | null;
 
 export default function GridLayout({ ...props }) {
   const [mounted, setMounted] = useState<boolean>(false);
-  const [layouts, setLayouts] = useState<Layouts>({ lg: generateLayout() });
-  const [currentBreakpoint, setCurrentBreakpoint] = useState<Breakpoint>('lg');
-  const [compactType, setCompactType] = useState<CompactType>(null);
-  const [draggingItem, setDraggingItem] = useState<string>('');
+  const {
+    layouts,
+    setDroppingItem,
+    currentBreakpoint,
+    compactType,
+    isLayoutLocked,
+    draggingItem,
+    droppingItem,
+    setLayouts,
+    setCurrentBreakpoint,
+    setIsLayoutLocked,
+  } = useWidgetsStore();
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  useEffect(() => {
+    console.log(layouts, currentBreakpoint);
+  });
+
   const generateDOM = useCallback(() => {
     return layouts[currentBreakpoint].map((item: Layout) => {
-      const name = item.i.replace(/\d+/g, '').slice(0, -1);
-      const isLocked = item.static;
+      const name = item.i.split('|')[0];
+      const isWidgetLocked = item.static || isLayoutLocked;
       return (
         <div key={item.i} className={`group relative overflow-hidden rounded-md bg-card shadow`}>
           <div
             id="react-grid-item-handle"
-            className={`absolute left-0 right-0 z-[10] flex h-0 w-full self-start ${!isLocked && 'cursor-move'} gap-1 overflow-hidden border-b-2 bg-card p-0 transition-all duration-200 group-hover:h-7 group-hover:p-1`}
+            className={`absolute left-0 right-0 z-[10] flex h-0 w-full self-start ${!isWidgetLocked && 'cursor-move'} gap-1 overflow-hidden border-b-2 bg-card p-0 transition-all duration-200 group-hover:h-7 group-hover:p-1`}
           >
-            <Move className={`${isLocked && 'hidden'} size-5`} />
+            <Move className={`${isWidgetLocked && 'hidden'} size-5`} />
 
-            {isLocked ? (
+            {isWidgetLocked ? (
               <Lock
                 id="lock"
                 className="absolute left-1/2 size-5 -translate-x-1/2 transform cursor-pointer rounded-full bg-primary p-1 text-xl text-primary-foreground shadow-md transition-all duration-300 ease-in-out hover:scale-110 hover:bg-primary/90"
                 onClick={() => {
-                  setLayouts((layouts) => {
-                    const newLayouts = structuredClone(layouts);
-                    const newItem = newLayouts[currentBreakpoint].find(
-                      (prvItem) => prvItem.i === item.i,
-                    )!;
-                    newItem.static = false;
-                    return newLayouts;
-                  });
+                  const newLayouts = structuredClone(layouts);
+                  const newItem = newLayouts[currentBreakpoint].find(
+                    (prvItem) => prvItem.i === item.i,
+                  )!;
+                  newItem.static = false;
+                  setIsLayoutLocked(false);
+                  setLayouts(newLayouts);
                 }}
               />
             ) : (
@@ -75,14 +66,12 @@ export default function GridLayout({ ...props }) {
                 id="lock-open"
                 className="absolute left-1/2 size-5 -translate-x-1/2 transform cursor-pointer rounded-full bg-secondary p-1 text-xl text-secondary-foreground shadow-md transition-all duration-300 ease-in-out hover:scale-110 hover:bg-secondary/90"
                 onClick={() => {
-                  setLayouts((layouts) => {
-                    const newLayouts = structuredClone(layouts);
-                    const newItem = newLayouts[currentBreakpoint].find(
-                      (prvItem) => prvItem.i === item.i,
-                    )!;
-                    newItem.static = true;
-                    return newLayouts;
-                  });
+                  const newLayouts = structuredClone(layouts);
+                  const newItem = newLayouts[currentBreakpoint].find(
+                    (prvItem) => prvItem.i === item.i,
+                  )!;
+                  newItem.static = true;
+                  setLayouts(newLayouts);
                 }}
               />
             )}
@@ -94,18 +83,18 @@ export default function GridLayout({ ...props }) {
             <FileText
               id="fit-widget"
               onClick={(e) => {
+                if (isWidgetLocked) return;
                 const itemEl = e.currentTarget.parentElement?.parentElement;
                 if (itemEl) {
                   const child = itemEl.children[1].children[0];
-                  setLayouts((layouts) => {
-                    const newLayouts = structuredClone(layouts);
-                    const newItem = newLayouts[currentBreakpoint].find(
-                      (prvItem) => prvItem.i === item.i,
-                    )!;
-                    newItem.h = child.clientHeight / 11 + 1;
-                    newItem.w = child.clientWidth / 27;
-                    return newLayouts;
-                  });
+
+                  const newLayouts = structuredClone(layouts);
+                  const newItem = newLayouts[currentBreakpoint].find(
+                    (prvItem) => prvItem.i === item.i,
+                  )!;
+                  newItem.h = child.clientHeight / 11 + 1;
+                  newItem.w = child.clientWidth / 27;
+                  setLayouts(newLayouts);
                 }
               }}
               className="size-5 cursor-pointer rounded-full bg-destructive p-1 text-xl text-white hover:bg-destructive/90"
@@ -119,113 +108,57 @@ export default function GridLayout({ ...props }) {
     });
   }, [layouts, currentBreakpoint]);
 
-  const onBreakpointChange = useCallback((breakpoint: Breakpoint) => {
+  const onBreakpointChange = useCallback((breakpoint: BreakpointT) => {
     setCurrentBreakpoint(breakpoint);
   }, []);
 
-  const links = [
-    {
-      title: 'Home',
-      icon: <Home className="h-full w-full text-neutral-500 dark:text-neutral-300" />,
-      href: '#',
-    },
-    {
-      title: 'Add',
-      icon: (
-        <div
-          draggable
-          unselectable="on"
-          className="bg-red-500"
-          onDragStart={() => {
-            setDraggingItem('digital-clock');
-          }}
-          onDragEnd={() => {
-            setDraggingItem('');
-          }}
-          onClick={() => {
-            const newIndex = layouts[currentBreakpoint].length + 1;
-            setLayouts((layouts) => {
-              const newLayouts = structuredClone(layouts);
-              newLayouts[currentBreakpoint].push({
-                x: 0,
-                y: 0,
-                w: 40,
-                h: 40,
-                i: `time-passed-${newIndex}`,
-                static: false,
-                minW: 5,
-                minH: 10,
-              });
-              return newLayouts;
-            });
-          }}
-        >
-          <Plus className="h-full w-full text-neutral-500 dark:text-neutral-300" />
-        </div>
-      ),
-      href: '#',
-    },
-    {
-      title: 'Components',
-      icon: <Component className="h-full w-full text-neutral-500 dark:text-neutral-300" />,
-      href: '#',
-    },
-    {
-      title: 'Lock',
-      icon: <Lock className="h-full w-full text-neutral-500 dark:text-neutral-300" />,
-      href: '#',
-    },
-    {
-      title: 'Lock Open',
-      icon: <LockOpen className="h-full w-full text-neutral-500 dark:text-neutral-300" />,
-      href: '#',
-    },
-    {
-      title: 'Settings',
-      icon: <Settings2 className="h-full w-full text-neutral-500 dark:text-neutral-300" />,
-      href: '#',
-    },
-  ];
-
   const handleDeleteWidget = (i: string) => {
-    setLayouts((layouts) => {
-      const newLayouts = structuredClone(layouts);
-      Object.keys(newLayouts).forEach((key) => {
-        newLayouts[key] = newLayouts[key].filter((existingItem) => existingItem.i !== i);
-      });
-      return newLayouts;
+    const newLayouts = structuredClone(layouts);
+    Object.keys(newLayouts).forEach((key) => {
+      newLayouts[key] = newLayouts[key].filter((existingItem) => existingItem.i !== i);
     });
+    setLayouts(newLayouts);
   };
-
-  const onCompactTypeChange = useCallback(() => {
-    setCompactType((prevType) =>
-      prevType === 'horizontal' ? 'vertical' : prevType === 'vertical' ? null : 'horizontal',
-    );
-  }, []);
 
   const handleLayoutChange = useCallback((currentLayout: Layout[], allLayouts: Layouts) => {
     setLayouts(allLayouts);
   }, []);
 
   const onDrop = (layout: Layout[], item: Layout, e: Event) => {
-    console.log(layout, item, `---`);
-    if (draggingItem.trim() === '') {
-      return;
-    }
+    console.log('ondrop');
+    console.log(layout, item, e);
+    const newLayouts = structuredClone(layouts);
 
-    const newIndex = layouts.lg.length + 1;
-    setLayouts((layouts) => {
-      const newLayouts = structuredClone(layouts);
-      newLayouts.lg.push({
-        x: item.x,
-        y: item.y,
-        w: item.w,
-        h: item.h,
-        i: `${draggingItem}-${newIndex}`,
-        static: false,
-      });
-      return newLayouts;
+    Object.keys(newLayouts).map((key: string) => {
+      const newItem = newLayouts[key].find((prvItem) => prvItem.i === item.i);
+
+      if (newItem) {
+        newItem.isResizable = true;
+        newItem.isDraggable = true;
+        newItem.minW = 50;
+        newItem.minH = 50;
+        newItem.x = item.x;
+        newItem.y = item.y;
+        newItem.w = item.w;
+        newItem.h = item.h;
+        newItem.static = false;
+      } else {
+        let NItem: Layout = {
+          isResizable: true,
+          isDraggable: true,
+          minW: 50,
+          minH: 50,
+          x: item.x,
+          y: item.y,
+          w: item.w,
+          h: item.h,
+          static: false,
+          i: item.i,
+        };
+        newLayouts[key].push(NItem);
+      }
     });
+    setLayouts(newLayouts);
   };
 
   if (!mounted) {
@@ -253,8 +186,9 @@ export default function GridLayout({ ...props }) {
         allowOverlap={false}
         onDrop={onDrop}
         isBounded={false}
-        isDraggable={true}
-        isResizable={true}
+        droppingItem={droppingItem}
+        isDraggable={!isLayoutLocked}
+        isResizable={!isLayoutLocked}
         isDroppable={true}
         className={`min-h-[calc(100vh-16px)] overflow-auto rounded-md bg-primary`}
         verticalCompact={undefined}
@@ -266,7 +200,7 @@ export default function GridLayout({ ...props }) {
         {generateDOM()}
       </ResponsiveReactGridLayout>
 
-      <FloatingDock items={links} />
+      <FloatingDock />
     </>
   );
 }
