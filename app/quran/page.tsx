@@ -1,7 +1,7 @@
-import AnonQuranPage from '@/components/quran/anon/page';
-import UserQuranPage from '@/components/quran/user/page';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import type { Metadata } from 'next';
+import AnonQuranPage from './_components/anon/page';
+import UserQuranPage from './_components/user/page';
 
 export const metadata: Metadata = {
   title: 'Quran',

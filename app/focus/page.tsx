@@ -1,4 +1,3 @@
-import TimeSinceBirth from '@/components/widgets/time-passed';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -7,7 +6,7 @@ export const metadata: Metadata = {
 };
 
 export default function FocusPage() {
-  return <TimeSinceBirth />;
+  return <div>Focus</div>;
 }
 
 // add the do quadrant here

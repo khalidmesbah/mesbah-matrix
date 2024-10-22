@@ -1,14 +1,14 @@
 'use client';
 
-import AyahsChart from '@/components/analytics/ayahs-chart';
-import AzkarChart from '@/components/analytics/azkar-chart';
-import DailyRemindersChart from '@/components/analytics/daily-reminders-chart';
-import TasksChart from '@/components/analytics/tasks-chart';
 import ParticlesLoader from '@/components/particles-loader';
 import { Button } from '@/components/ui/button';
 import { getAnalytics, increaseAnalytics } from '@/lib/server-actions/analytics';
 import { Separator } from '@radix-ui/react-separator';
 import { useQuery } from '@tanstack/react-query';
+import AyahsChart from './_components/ayahs-chart';
+import AzkarChart from './_components/azkar-chart';
+import DailyRemindersChart from './_components/daily-reminders-chart';
+import TasksChart from './_components/tasks-chart';
 
 export default function Page() {
   const {

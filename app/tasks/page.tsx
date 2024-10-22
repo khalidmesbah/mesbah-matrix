@@ -1,7 +1,7 @@
-import AnonTasksPage from '@/components/tasks/anon/page';
-import UserTasksPage from '@/components/tasks/user/page';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import type { Metadata } from 'next';
+import AnonTasksPage from './_components/anon/page';
+import UserTasksPage from './_components/user/page';
 
 export const metadata: Metadata = {
   title: 'Tasks',

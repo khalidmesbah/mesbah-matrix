@@ -1,5 +1,5 @@
-import AnonKanbanPage from '@/components/kanban/anon/page';
-import UserKanbanPage from '@/components/kanban/user/page';
+import AnonKanbanPage from '@/app/kanban/_components/anon/page';
+import UserKanbanPage from '@/app/kanban/_components/user/page';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import type { Metadata } from 'next';
 

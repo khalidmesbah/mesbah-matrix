@@ -1,7 +1,7 @@
-import AnonDailyRemindersPage from '@/components/daily-reminders/anon/page';
-import UserDailyRemindersPage from '@/components/daily-reminders/user/page';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import type { Metadata } from 'next';
+import AnonDailyRemindersPage from './_components//anon/page';
+import UserDailyRemindersPage from './_components/user/page';
 
 export const metadata: Metadata = {
   title: 'Daily Reminders',

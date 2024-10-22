@@ -2,13 +2,6 @@
 
 import { getWorkspaces, setWorkspaces } from '@/actions/workspace';
 import '@/app/index.css';
-import { AnalogClockTool, AnalogClockUtil } from '@/components/canvas/analog-clock-tool';
-import { SlideShapeTool } from '@/components/canvas/slide-show/SlideShapeTool';
-import { SlideShapeUtil } from '@/components/canvas/slide-show/SlideShapeUtil';
-import { SlidesPanel } from '@/components/canvas/slide-show/SlidesPanel';
-import '@/components/canvas/slide-show/slides.css';
-import { $currentSlide, getSlides, moveToSlide } from '@/components/canvas/slide-show/useSlides';
-import { StickerTool } from '@/components/canvas/sticker-tool-util';
 import { useTheme } from 'next-themes';
 import { toast } from 'sonner';
 import {
@@ -54,6 +47,13 @@ import {
   useRelevantStyles,
   useTools,
 } from 'tldraw';
+import { AnalogClockTool, AnalogClockUtil } from './_components/analog-clock-tool';
+import { SlideShapeTool } from './_components/slide-show/SlideShapeTool';
+import { SlideShapeUtil } from './_components/slide-show/SlideShapeUtil';
+import { SlidesPanel } from './_components/slide-show/SlidesPanel';
+import './_components/slide-show/slides.css';
+import { $currentSlide, getSlides, moveToSlide } from './_components/slide-show/useSlides';
+import { StickerTool } from './_components/sticker-tool-util';
 
 //------------------
 

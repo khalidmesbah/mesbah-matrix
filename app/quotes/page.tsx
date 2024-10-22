@@ -1,7 +1,7 @@
-import AnonQuotesPage from '@/components/quotes/anon/page';
-import UserQuotesPage from '@/components/quotes/user/page';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import type { Metadata } from 'next';
+import AnonQuotesPage from './_components/anon/page';
+import UserQuotesPage from './_components/user/page';
 
 export const metadata: Metadata = {
   title: 'Quotes',

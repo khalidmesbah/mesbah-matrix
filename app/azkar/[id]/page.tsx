@@ -1,10 +1,10 @@
 'use client';
 
-import Zekr from '@/components/azkar/zekr';
 import useMySound from '@/hooks/use-my-sound';
 import { startFireworks } from '@/lib/utils';
 import useAzkarStore from '@/stores/azkar';
 import { AzkarCategoriesT, ZekrT } from '@/types/azkar';
+import Zekr from '../_components/zekr';
 
 export default function CategoryPage({ params: { id } }: { params: { id: string } }) {
   const { azkar, categories, wasCompleted, setWasCompleted } = useAzkarStore((state) => state);
