@@ -4,6 +4,8 @@ import { AmiriFont } from '@/lib/fonts/fonts';
 import useAzkarStore from '@/stores/azkar';
 import Link from 'next/link';
 
+export const dynamic = 'force-static';
+
 export default function AzkarPage() {
   const { categories } = useAzkarStore((state) => state);
   return (

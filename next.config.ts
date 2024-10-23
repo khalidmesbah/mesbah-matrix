@@ -1,11 +1,18 @@
 const nextConfig = {
-  reactStrictMode: false,
+  reactStrictMode: true,
   logging: {
     fetches: {
       fullUrl: true,
     },
   },
+  devIndicators: {
+    appIsrStatus: false,
+    buildActivityPosition: 'bottom-right',
+  },
   experimental: {
+    // staleTimes: {
+    //   dynamic: 30,
+    // },
     turbo: {
       rules: {
         '*.scss': {
