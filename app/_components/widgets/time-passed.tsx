@@ -76,7 +76,7 @@ export default function TimeSinceBirth() {
       summers,
       falls,
     });
-  }, []);
+  }, [date]);
 
   useEffect(() => {
     calculateTimePassed();
@@ -113,7 +113,7 @@ export default function TimeSinceBirth() {
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0">
                 <Calendar
-                  captionLayout="dropdown-buttons"
+                  captionLayout="dropdown"
                   labels={{
                     labelYearDropdown: () => 'Year ',
                     labelMonthDropdown: () => 'Month ',
@@ -121,12 +121,9 @@ export default function TimeSinceBirth() {
                   classNames={{
                     caption_label: 'hidden',
                   }}
-                  fromYear={1900}
-                  initialFocus={true}
                   selected={date}
                   mode="single"
                   footer={false}
-                  toYear={new Date().getFullYear()}
                   onDayClick={(day) => {
                     setDate(day);
                   }}

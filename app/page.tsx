@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     'A customizable and interactive grid-based dashboard where users can drag, drop, lock, resize, and remove widgets. The interface allows for flexible layout management with smooth drag-and-drop functionality.',
 };
 
-export default async function TasksPage() {
+export default async function GridPage() {
   const { isAuthenticated: getIsAuthenticated } = getKindeServerSession();
   const isAuthenticated = await getIsAuthenticated();
 

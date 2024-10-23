@@ -106,10 +106,12 @@ export default function GridLayout({ ...props }) {
         </div>
       );
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [layouts, currentBreakpoint]);
 
   const onBreakpointChange = useCallback((breakpoint: BreakpointT) => {
     setCurrentBreakpoint(breakpoint);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleDeleteWidget = (i: string) => {
@@ -122,6 +124,7 @@ export default function GridLayout({ ...props }) {
 
   const handleLayoutChange = useCallback((currentLayout: Layout[], allLayouts: Layouts) => {
     setLayouts(allLayouts);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onDrop = (layout: Layout[], item: Layout, e: Event) => {
