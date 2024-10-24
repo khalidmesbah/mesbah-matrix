@@ -95,7 +95,7 @@ export default function Navbar() {
                     size: 'icon',
                   })}
                 >
-                  <LogIn />
+                  <LogIn className="!size-6" />
                 </LoginLink>
               </TooltipTrigger>
               <TooltipContent side="right">
