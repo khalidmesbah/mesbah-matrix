@@ -129,9 +129,11 @@ function Icon({ link, name, icon, isActive }: IconProps) {
     <TooltipProvider>
       <Tooltip delayDuration={300}>
         <TooltipTrigger asChild>
-          <Link className={`${buttonVariants({ variant, size: 'icon' })} min-size-10`} href={link}>
-            {icon}
-          </Link>
+          <Link
+            className={`${buttonVariants({ variant, size: 'icon' })} min-size-10 [&>*]:!size-6`}
+            href={link}
+            children={icon}
+          />
         </TooltipTrigger>
         <TooltipContent side="right">
           <p>{name}</p>
