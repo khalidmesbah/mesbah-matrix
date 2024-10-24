@@ -42,7 +42,7 @@ const useWidgetsStore = create<WidgetsStore>(
     currentBreakpoint: 'lg',
     compactType: null,
     isLayoutLocked: false,
-    layouts: { lg: [] },
+    layouts: { lg: [...generateLayout()] },
     draggingItem: '',
     droppingItem: undefined,
     setLayouts: (layouts) => set({ layouts }),
