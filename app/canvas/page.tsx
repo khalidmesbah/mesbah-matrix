@@ -41,7 +41,9 @@ import {
   TldrawUiMenuSubmenu,
   computed,
   getSnapshot,
+  hardReset,
   loadSnapshot,
+  refreshPage,
   useEditor,
   useIsToolSelected,
   useRelevantStyles,
@@ -129,6 +131,14 @@ function CustomMainMenu() {
         label="File"
         children={
           <>
+            <TldrawUiMenuItem
+              id="new-file"
+              label="New file"
+              onSelect={async () => {
+                refreshPage();
+                await hardReset();
+              }}
+            />
             <TldrawUiMenuItem
               id="open-file"
               label="Open file"
