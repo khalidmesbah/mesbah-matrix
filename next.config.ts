@@ -10,17 +10,17 @@ const nextConfig = {
     buildActivityPosition: 'bottom-right',
   },
   experimental: {
-    // staleTimes: {
-    //   dynamic: 30,
-    // },
-    turbo: {
-      rules: {
-        '*.scss': {
-          loaders: ['sass-loader'],
-          as: '*.css',
-        },
-      },
+    staleTimes: {
+      dynamic: 60,
     },
+    // turbo: {
+    //   rules: {
+    //     '*.scss': {
+    //       loaders: ['sass-loader'],
+    //       as: '*.css',
+    //     },
+    //   },
+    // },
   },
   images: {
     remotePatterns: [
