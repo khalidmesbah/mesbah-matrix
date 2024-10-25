@@ -1,5 +1,7 @@
 import AnalogClock from './widgets/analog-clock';
+import Ayah from './widgets/ayah';
 import DigitalClock from './widgets/digital-clock';
+import Pomodoro from './widgets/pomodoro';
 import TimeSinceBirth from './widgets/time-passed';
 
 type WidgetsT = {
@@ -10,6 +12,8 @@ const widgets: WidgetsT = {
   'analog-clock': <AnalogClock />,
   'digital-clock': <DigitalClock />,
   'time-passed': <TimeSinceBirth />,
+  ayah: <Ayah />,
+  pomodoro: <Pomodoro />,
 };
 
 type GenerateWidgetT = {

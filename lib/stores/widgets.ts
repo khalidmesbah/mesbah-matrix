@@ -4,17 +4,17 @@ import { v4 as uuidv4 } from 'uuid';
 import { create } from 'zustand';
 
 function generateLayout() {
-  return Array.from({ length: 5 }, (_, index) => {
-    const y = Math.ceil(Math.random() * 40) + 10;
-    const elements = ['analog-clock', 'digital-clock', 'time-passed'];
+  return Array.from({ length: 10 }, (_, index) => {
+    const y = Math.ceil(Math.random() * 20) + 10;
+    const elements = ['analog-clock', 'digital-clock', 'time-passed', 'pomodoro', 'ayah'];
     const randomElement = elements[Math.floor(Math.random() * elements.length)];
     return {
       x: (Math.floor(Math.random() * 60) * 20) % 12,
       y: Math.floor(index / 60) * y,
-      w: 20,
+      w: 15,
       h: y,
-      minW: 5,
-      minH: 10,
+      minW: 3,
+      minH: 6,
       i: `${randomElement}|${uuidv4()}`,
       static: Math.random() < 0.5,
     };
@@ -28,6 +28,8 @@ type WidgetsStore = {
   isLayoutLocked: boolean;
   draggingItem: string;
   droppingItem: DroppingItemT;
+  ayahText: string;
+  font: '__className_a12e74' | '__className_af25f8';
   setLayouts: (layouts: Layouts) => void;
   setCurrentBreakpoint: (breakpoint: BreakpointT) => void;
   setCompactType: (compactType: CompactTypeT) => void;
@@ -35,6 +37,8 @@ type WidgetsStore = {
   setDraggingItem: (newDraggingItem: string) => void;
   setDroppingItem: (newDroppingItem: DroppingItemT) => void;
   addWidget: (name: string) => void;
+  setAyahText: (newAyahText: string) => void;
+  setFont: (newFont: '__className_a12e74' | '__className_af25f8') => void;
 };
 
 const useWidgetsStore = create<WidgetsStore>(
@@ -45,6 +49,8 @@ const useWidgetsStore = create<WidgetsStore>(
     layouts: { lg: [...generateLayout()] },
     draggingItem: '',
     droppingItem: undefined,
+    font: '__className_af25f8',
+    ayahText: 'السلام عليكم ورحمة الله وبركاته وت',
     setLayouts: (layouts) => set({ layouts }),
     setCurrentBreakpoint: (breakpoint) => set({ currentBreakpoint: breakpoint }),
     setCompactType: (compactType) => set({ compactType }),
@@ -60,13 +66,15 @@ const useWidgetsStore = create<WidgetsStore>(
           h: 40,
           i: `${name}-${newIndex}`,
           static: false,
-          minW: 5,
-          minH: 10,
+          minW: 3,
+          minH: 6,
         });
         return { ...state, layouts: newLayouts };
       }),
     setDraggingItem: (newDraggingItem) => set({ draggingItem: newDraggingItem }),
     setDroppingItem: (newDraggingItem) => set({ droppingItem: newDraggingItem }),
+    setAyahText: (newAyahText) => set({ ayahText: newAyahText }),
+    setFont: (newFont) => set({ font: newFont }),
   }),
 );
 

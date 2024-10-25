@@ -2,7 +2,7 @@
 
 import useWidgetsStore from '@/lib/stores/widgets';
 import { BreakpointT } from '@/lib/types/widgets';
-import { FileText, Lock, LockOpen, Move, X } from 'lucide-react';
+import { Frame, Lock, LockOpen, Move, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Layout, Layouts, Responsive, WidthProvider } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
@@ -16,11 +16,9 @@ export default function GridLayout({ ...props }) {
   const [mounted, setMounted] = useState<boolean>(false);
   const {
     layouts,
-    setDroppingItem,
     currentBreakpoint,
     compactType,
     isLayoutLocked,
-    draggingItem,
     droppingItem,
     setLayouts,
     setCurrentBreakpoint,
@@ -42,7 +40,7 @@ export default function GridLayout({ ...props }) {
       <div key={item.i} className={`group relative overflow-hidden rounded-md bg-card shadow`}>
         <div
           id="react-grid-item-handle"
-          className={`absolute left-0 right-0 z-[10] flex h-0 w-full self-start ${!isWidgetLocked && 'cursor-move'} gap-1 overflow-hidden border-b-2 bg-card p-0 transition-all duration-200 group-hover:h-7 group-hover:p-1`}
+          className={`absolute left-0 right-0 z-[10] flex h-0 w-full self-start ${!isWidgetLocked && 'cursor-move'} gap-1 overflow-hidden bg-card p-0 transition-all duration-200 group-hover:h-7 group-hover:border-b-2 group-hover:p-1`}
         >
           <Move className={`${isWidgetLocked && 'hidden'} size-5`} />
 
@@ -79,7 +77,7 @@ export default function GridLayout({ ...props }) {
             id="remove"
             className="ml-auto size-5 cursor-pointer rounded-full bg-destructive p-1 text-xl text-white hover:bg-destructive/90"
           />
-          <FileText
+          <Frame
             id="fit-widget"
             onClick={(e) => {
               if (isWidgetLocked) return;
@@ -91,15 +89,21 @@ export default function GridLayout({ ...props }) {
                 const newItem = newLayouts[currentBreakpoint].find(
                   (prvItem) => prvItem.i === item.i,
                 )!;
-                newItem.h = child.clientHeight / 11 + 1;
-                newItem.w = child.clientWidth / 27;
+                const newH =
+                  (child.getBoundingClientRect().height * newItem.h) /
+                  child.parentElement?.getBoundingClientRect().height!;
+                const newW =
+                  (child.getBoundingClientRect().width * newItem.w) /
+                  child.parentElement?.getBoundingClientRect().width!;
+                newItem.h = Math.max(newH, 6);
+                newItem.w = Math.max(newW, 3);
                 setLayouts(newLayouts);
               }
             }}
-            className="size-5 cursor-pointer rounded-full bg-destructive p-1 text-xl text-white hover:bg-destructive/90"
+            className="size-5 cursor-pointer rounded-full bg-accent p-1 text-xl text-white hover:bg-accent/90"
           />
         </div>
-        <div className="absolute flex h-full w-full items-center justify-center overflow-auto">
+        <div className="absolute h-full w-full overflow-auto">
           <GenerateWidget name={name} />
         </div>
       </div>
@@ -132,8 +136,8 @@ export default function GridLayout({ ...props }) {
       const newItem = newLayouts[key].find((prvItem) => prvItem.i === item.i);
 
       if (newItem) {
-        newItem.minW = 5;
-        newItem.minH = 10;
+        newItem.minW = 3;
+        newItem.minH = 6;
         newItem.x = item.x;
         newItem.y = item.y;
         newItem.w = item.w;
@@ -141,8 +145,8 @@ export default function GridLayout({ ...props }) {
         newItem.isDraggable = undefined;
       } else {
         let NItem: Layout = {
-          minW: 5,
-          minH: 10,
+          minW: 3,
+          minH: 6,
           x: item.x,
           y: item.y,
           w: item.w,
@@ -168,7 +172,7 @@ export default function GridLayout({ ...props }) {
         autoSize={true}
         cols={{ lg: 48, md: 40, sm: 32, xs: 24, xxs: 16 }}
         breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
-        containerPadding={[4, 4]}
+        containerPadding={[8, 8]}
         layouts={layouts}
         measureBeforeMount={false}
         useCSSTransforms={true}
@@ -185,10 +189,11 @@ export default function GridLayout({ ...props }) {
         isDraggable={!isLayoutLocked}
         isResizable={!isLayoutLocked}
         isDroppable={true}
+        margin={[4, 4]}
         className={`min-h-[calc(100vh-16px)] overflow-auto rounded-md bg-primary`}
         verticalCompact={undefined}
         resizeHandle={
-          <div className="react-resizable-handle absolute bottom-1 right-1 size-5 cursor-se-resize mix-blend-difference after:!border-foreground" />
+          <div className="react-resizable-handle absolute bottom-0 right-0 size-5 cursor-se-resize mix-blend-difference after:!border-foreground" />
         }
         {...props}
         children={generatedDOM}
