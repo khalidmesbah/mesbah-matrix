@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { PdfEditor } from './PdfEditor';
-import { Pdf, PdfPicker } from './PdfPicker';
+import { PdfEditor } from './pdf-editor';
 import './pdf-editor.css';
+import { Pdf, PdfPicker } from './pdf-picker';
 
 type State =
   | {

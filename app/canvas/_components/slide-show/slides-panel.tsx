@@ -1,5 +1,5 @@
 import { TldrawUiButton, stopEventPropagation, track, useEditor, useValue } from 'tldraw';
-import { moveToSlide, useCurrentSlide, useSlides } from './useSlides';
+import { moveToSlide, useCurrentSlide, useSlides } from './use-slides';
 
 export const SlidesPanel = track(() => {
   const editor = useEditor();

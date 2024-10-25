@@ -12,8 +12,8 @@ import {
   track,
   useEditor,
 } from 'tldraw';
-import { ExportPdfButton } from './ExportPdfButton';
-import { Pdf } from './PdfPicker';
+import { ExportPdfButton } from './export-pdf-button';
+import { Pdf } from './pdf-picker';
 
 // TODO:
 // - prevent changing pages (create page, change page, move shapes to new page)

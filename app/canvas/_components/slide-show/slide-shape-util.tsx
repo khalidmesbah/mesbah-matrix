@@ -12,7 +12,7 @@ import {
   resizeBox,
   useValue,
 } from 'tldraw';
-import { moveToSlide, useSlides } from './useSlides';
+import { moveToSlide, useSlides } from './use-slides';
 
 export type SlideShape = TLBaseShape<
   'slide',

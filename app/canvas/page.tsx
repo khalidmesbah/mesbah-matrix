@@ -29,6 +29,7 @@ import {
   DefaultTopPanel,
   DefaultZoomMenu,
   DefaultZoomMenuContent,
+  Editor,
   TLComponents,
   TLUiAssetUrlOverrides,
   TLUiContextMenuProps,
@@ -44,20 +45,67 @@ import {
   hardReset,
   loadSnapshot,
   refreshPage,
+  useActions,
   useEditor,
   useIsToolSelected,
   useRelevantStyles,
   useTools,
 } from 'tldraw';
-import { AnalogClockTool, AnalogClockUtil } from './_components/analog-clock-tool';
-import { SlideShapeTool } from './_components/slide-show/SlideShapeTool';
-import { SlideShapeUtil } from './_components/slide-show/SlideShapeUtil';
-import { SlidesPanel } from './_components/slide-show/SlidesPanel';
+import { SlideShapeTool } from './_components/slide-show/slide-shape-tool';
+import { SlideShapeUtil } from './_components/slide-show/slide-shape-util';
+import { SlidesPanel } from './_components/slide-show/slides-panel';
 import './_components/slide-show/slides.css';
-import { $currentSlide, getSlides, moveToSlide } from './_components/slide-show/useSlides';
+import { $currentSlide, getSlides, moveToSlide } from './_components/slide-show/use-slides';
 import { StickerTool } from './_components/sticker-tool-util';
 
 //------------------
+// TODO: fix icons
+// TODO: add screenshot tool
+
+// [0]
+const saveFile = (editor: Editor) => {
+  const { document: TldrawDocument, session } = getSnapshot(editor.store);
+  const blob = new Blob([JSON.stringify({ document: TldrawDocument, session })], {
+    type: 'application/json',
+  });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'Untitled.tldr';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  toast.success('Workspace saved as .tldr file!');
+};
+
+const newFile = async () => {
+  refreshPage();
+  await hardReset();
+};
+
+const openFile = async (editor: Editor) => {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.tldr';
+
+  input.onchange = async (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    const file = target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const data = JSON.parse(e.target?.result as string);
+      loadSnapshot(editor.store, data);
+      toast.success('Workspace loaded successfully!');
+    };
+    reader.readAsText(file);
+  };
+
+  input.click();
+};
 
 //[1]
 
@@ -70,22 +118,11 @@ function CustomActionsMenu() {
 }
 //[2]
 function CustomContextMenu(props: TLUiContextMenuProps) {
-  const editor = useEditor();
+  const actions = useActions();
   return (
     <DefaultContextMenu {...props}>
       <TldrawUiMenuGroup id="example">
-        <div>
-          <TldrawUiMenuGroup id="example">
-            <TldrawUiMenuItem
-              id="clear"
-              label="Clear Canvas"
-              icon="bomb"
-              onSelect={() => {
-                editor.selectAll().deleteShapes(editor.getSelectedShapeIds());
-              }}
-            />
-          </TldrawUiMenuGroup>
-        </div>
+        <TldrawUiMenuItem {...actions['clear']} />
       </TldrawUiMenuGroup>
       <DefaultContextMenuContent />
     </DefaultContextMenu>
@@ -110,12 +147,19 @@ function CustomHelpMenu() {
 //[5]
 function CustomKeyboardShortcutsDialog(props: TLUiKeyboardShortcutsDialogProps) {
   const tools = useTools();
+  const actions = useActions();
+
   return (
     <DefaultKeyboardShortcutsDialog {...props}>
       <TldrawUiMenuGroup id="Components" label="Components">
         <TldrawUiMenuItem {...tools['slide']} />
-        <TldrawUiMenuItem {...tools['analog-clock']} />
         <TldrawUiMenuItem {...tools['sticker']} />
+      </TldrawUiMenuGroup>
+      <TldrawUiMenuGroup id="File" label="File">
+        <TldrawUiMenuItem {...actions['new-file']} />
+        <TldrawUiMenuItem {...actions['open-file']} />
+        <TldrawUiMenuItem {...actions['save-file']} />
+        <TldrawUiMenuItem {...actions['clear']} />
       </TldrawUiMenuGroup>
       <DefaultKeyboardShortcutsDialogContent />
     </DefaultKeyboardShortcutsDialog>
@@ -124,6 +168,7 @@ function CustomKeyboardShortcutsDialog(props: TLUiKeyboardShortcutsDialogProps) 
 //[6]
 function CustomMainMenu() {
   const editor = useEditor();
+  const actions = useActions();
   return (
     <DefaultMainMenu>
       <TldrawUiMenuSubmenu
@@ -131,59 +176,10 @@ function CustomMainMenu() {
         label="File"
         children={
           <>
-            <TldrawUiMenuItem
-              id="new-file"
-              label="New file"
-              onSelect={async () => {
-                refreshPage();
-                await hardReset();
-              }}
-            />
-            <TldrawUiMenuItem
-              id="open-file"
-              label="Open file"
-              onSelect={() => {
-                const input = document.createElement('input');
-                input.type = 'file';
-                input.accept = '.tldr';
-
-                input.onchange = async (event: Event) => {
-                  const target = event.target as HTMLInputElement;
-                  const file = target.files?.[0];
-                  if (!file) return;
-
-                  const reader = new FileReader();
-                  reader.onload = (e) => {
-                    const data = JSON.parse(e.target?.result as string);
-                    loadSnapshot(editor.store, data);
-                    toast.success('Workspace loaded successfully!');
-                  };
-                  reader.readAsText(file);
-                };
-
-                input.click();
-              }}
-            />
-            <TldrawUiMenuItem
-              id="save-a-copy"
-              label="Save a copy"
-              onSelect={() => {
-                const { document: TldrawDocument, session } = getSnapshot(editor.store);
-                const blob = new Blob([JSON.stringify({ document: TldrawDocument, session })], {
-                  type: 'application/json',
-                });
-                const url = URL.createObjectURL(blob);
-
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = 'Untitled.tldr';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-
-                toast.success('Workspace saved as .tldr file!');
-              }}
-            />
+            <TldrawUiMenuItem {...actions['new-file']} />
+            <TldrawUiMenuItem {...actions['open-file']} />
+            <TldrawUiMenuItem {...actions['save-file']} />
+            <TldrawUiMenuItem {...actions['clear']} />
           </>
         }
       />
@@ -256,7 +252,6 @@ function CustomStylePanel(props: TLUiStylePanelProps) {
 function CustomToolbar() {
   const tools = useTools();
   const isStickerSelected = useIsToolSelected(tools['sticker']);
-  const isAnalogClockSelected = useIsToolSelected(tools['analog-clock']);
   const isScreenshotSelected = useIsToolSelected(tools['rhombus-2']);
   const isSlideSelected = useIsToolSelected(tools['slide']);
 
@@ -265,7 +260,6 @@ function CustomToolbar() {
       <DefaultToolbarContent />
       <TldrawUiMenuItem {...tools['slide']} isSelected={isSlideSelected} />
       <TldrawUiMenuItem {...tools['rhombus-2']} isSelected={isScreenshotSelected} />
-      <TldrawUiMenuItem {...tools['analog-clock']} isSelected={isAnalogClockSelected} />
       <TldrawUiMenuItem {...tools['sticker']} isSelected={isStickerSelected} />
     </DefaultToolbar>
   );
@@ -281,8 +275,8 @@ function CustomZoomMenu() {
 //------------------
 
 // [1]
-const customTools = [StickerTool, AnalogClockTool, SlideShapeTool];
-const customShapeUtils = [AnalogClockUtil, SlideShapeUtil];
+const customTools = [StickerTool, SlideShapeTool];
+const customShapeUtils = [SlideShapeUtil];
 
 // [2]
 
@@ -321,6 +315,33 @@ const customUiOverrides: TLUiOverrides = {
           }
         },
       },
+      'new-file': {
+        id: 'new-file',
+        label: 'New file',
+        onSelect: () => newFile(),
+        kbd: '$c',
+      },
+      'open-file': {
+        id: 'open-file',
+        label: 'Open file',
+        onSelect: () => openFile(editor),
+        kbd: '$o',
+      },
+      'save-file': {
+        id: 'save-file',
+        label: 'Save file',
+        onSelect: () => saveFile(editor),
+        kbd: '$s',
+      },
+      clear: {
+        id: 'clear',
+        label: 'Clear Canvas',
+        icon: 'bomb',
+        onSelect: () => {
+          editor.selectAll().deleteShapes(editor.getSelectedShapeIds());
+        },
+        kbd: 'c',
+      },
     };
   },
 
@@ -329,28 +350,19 @@ const customUiOverrides: TLUiOverrides = {
       id: 'slide',
       icon: 'group',
       label: 'Slide',
-      kbd: 's',
+      kbd: 'S',
       onSelect: () => editor.setCurrentTool('slide'),
     };
 
-    (tools.sticker = {
+    tools.sticker = {
       id: 'sticker',
       icon: 'heart',
       label: 'Sticker',
-      kbd: 's',
+      kbd: 'A',
       onSelect: () => {
         editor.setCurrentTool('sticker');
       },
-    }),
-      (tools['analog-clock'] = {
-        id: 'analog-clock',
-        icon: 'analog-clock',
-        label: 'Analog Clock',
-        kbd: 'c',
-        onSelect: () => {
-          editor.setCurrentTool('analog-clock');
-        },
-      });
+    };
     return tools;
   },
 };
@@ -360,7 +372,6 @@ const customAssetUrls: TLUiAssetUrlOverrides = {
   icons: {
     heart: '/svgs/heart.svg',
     bomb: '/svgs/bomb.svg',
-    'analog-clock': '/svgs/analog-clock.svg',
     'archive-restore': '/svgs/archive-restore.svg',
   },
 };
@@ -369,7 +380,7 @@ const customComponents: TLComponents = {
   ActionsMenu: CustomActionsMenu,
   ContextMenu: CustomContextMenu,
   DebugMenu: CustomDebugMenu,
-  HelpMenu: CustomHelpMenu,
+  HelpMenu: null,
   KeyboardShortcutsDialog: CustomKeyboardShortcutsDialog,
   MainMenu: CustomMainMenu,
   NavigationPanel: CustomNavigationPanel,

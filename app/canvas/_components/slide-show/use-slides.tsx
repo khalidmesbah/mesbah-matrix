@@ -1,5 +1,5 @@
 import { EASINGS, Editor, atom, useEditor, useValue } from 'tldraw';
-import { SlideShape } from './SlideShapeUtil';
+import { SlideShape } from './slide-shape-util';
 
 export const $currentSlide = atom<SlideShape | null>('current slide', null);
 
