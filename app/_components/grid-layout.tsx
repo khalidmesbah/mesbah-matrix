@@ -189,7 +189,7 @@ export default function GridLayout({ ...props }) {
         isDraggable={!isLayoutLocked}
         isResizable={!isLayoutLocked}
         isDroppable={true}
-        margin={[4, 4]}
+        margin={[8, 8]}
         className={`min-h-[calc(100vh-16px)] overflow-auto rounded-md bg-primary`}
         verticalCompact={undefined}
         resizeHandle={

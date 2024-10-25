@@ -13,14 +13,6 @@ const nextConfig = {
     staleTimes: {
       dynamic: 60,
     },
-    // turbo: {
-    //   rules: {
-    //     '*.scss': {
-    //       loaders: ['sass-loader'],
-    //       as: '*.css',
-    //     },
-    //   },
-    // },
   },
   images: {
     remotePatterns: [

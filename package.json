@@ -90,8 +90,6 @@
     "prettier": "^3.3.3",
     "prettier-plugin-organize-imports": "^4.1.0",
     "prettier-plugin-tailwindcss": "^0.6.8",
-    "sass": "^1.80.3",
-    "sass-loader": "^16.0.2",
     "tailwindcss": "^3.4.14",
     "typescript": "^5.6.3"
   }
