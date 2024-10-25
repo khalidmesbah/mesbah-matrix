@@ -4,17 +4,17 @@ import { v4 as uuidv4 } from 'uuid';
 import { create } from 'zustand';
 
 function generateLayout() {
-  return Array.from({ length: 5 }, (_, index) => {
-    const y = Math.ceil(Math.random() * 40) + 10;
-    const elements = ['analog-clock', 'digital-clock', 'time-passed'];
+  return Array.from({ length: 10 }, (_, index) => {
+    const y = Math.ceil(Math.random() * 20) + 10;
+    const elements = ['analog-clock', 'digital-clock', 'time-passed', 'pomodoro'];
     const randomElement = elements[Math.floor(Math.random() * elements.length)];
     return {
       x: (Math.floor(Math.random() * 60) * 20) % 12,
       y: Math.floor(index / 60) * y,
-      w: 20,
+      w: 15,
       h: y,
-      minW: 5,
-      minH: 10,
+      minW: 3,
+      minH: 6,
       i: `${randomElement}|${uuidv4()}`,
       static: Math.random() < 0.5,
     };
@@ -60,8 +60,8 @@ const useWidgetsStore = create<WidgetsStore>(
           h: 40,
           i: `${name}-${newIndex}`,
           static: false,
-          minW: 5,
-          minH: 10,
+          minW: 3,
+          minH: 6,
         });
         return { ...state, layouts: newLayouts };
       }),

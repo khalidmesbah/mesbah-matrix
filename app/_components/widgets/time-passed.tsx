@@ -92,7 +92,7 @@ export default function TimeSinceBirth() {
   };
 
   return (
-    <div className="relative flex max-w-lg flex-col gap-2 rounded-md bg-card">
+    <div className="relative flex flex-col gap-2 rounded-md">
       <Dialog>
         <DialogTrigger asChild className="absolute right-2 top-2">
           <Button variant="ghost" size="icon">
