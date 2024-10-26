@@ -301,7 +301,7 @@ function BrowseReminders() {
     setDailyReminders(newDailyReminders);
   };
 
-  if (isLoading) return <h1>loding from browse reminders</h1>;
+  if (isLoading) return <h1>loading from browse reminders</h1>;
 
   if (dailyReminders?.order.length === 0) return <NoReminders />;
 
