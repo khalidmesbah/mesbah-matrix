@@ -23,12 +23,7 @@ export default function Page() {
     refetchOnWindowFocus: false,
   });
 
-  if (isLoading)
-    return (
-      <div className="fc flex h-screen max-h-screen w-screen flex-col overflow-hidden">
-        <ParticlesLoader />
-      </div>
-    );
+  if (isLoading) return <ParticlesLoader />;
 
   if (isError || !analytics) return <div>No Analytics, ${JSON.stringify(error)}</div>;
   console.log(analytics);

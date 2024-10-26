@@ -138,12 +138,7 @@ export default function MatrixPage() {
     setMatrix(newState);
   };
 
-  if (isLoading)
-    return (
-      <div className="flex h-full w-full items-center justify-center">
-        <ParticlesLoader />
-      </div>
-    );
+  if (isLoading) return <ParticlesLoader />;
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>

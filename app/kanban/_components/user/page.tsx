@@ -104,9 +104,7 @@ export default function UserKanbanPage() {
       <KanbanHeaderWithSheet />
       <KanbanHeader />
       {isLoading ? (
-        <div className="fc flex h-screen max-h-screen w-screen flex-col overflow-hidden">
-          <ParticlesLoader />
-        </div>
+        <ParticlesLoader />
       ) : Object.keys(kanban.boards).length === 0 ? (
         <NoBoards />
       ) : (

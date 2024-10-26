@@ -135,13 +135,8 @@ export default function AnonQuranPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ayah]);
 
+  if (isLoading || !ayah) return <ParticlesLoader />;
   if (isError) return <AyahUnavailable />;
-  if (isLoading || !ayah)
-    return (
-      <div className="fc h-full w-full">
-        <ParticlesLoader />
-      </div>
-    );
 
   return (
     <div className="flex flex-1 flex-col items-center justify-center gap-2">

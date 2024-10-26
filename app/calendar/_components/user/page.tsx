@@ -10,12 +10,7 @@ import PublicUrlInput from './public-url-input';
 export default function Page() {
   const { data, isLoading, isError, error } = useCalendarQuery();
 
-  if (isLoading)
-    return (
-      <div className="fc h-full w-full">
-        <ParticlesLoader />
-      </div>
-    );
+  if (isLoading) return <ParticlesLoader />;
   if (isError) return <div>Error: {error?.message}</div>;
   const src = data?.publicURL as string;
 
