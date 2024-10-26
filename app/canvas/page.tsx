@@ -1,6 +1,6 @@
 'use client';
 
-import { getWorkspaces, setWorkspaces } from '@/actions/workspace';
+import { getCanvas, setCanvas } from '@/actions/canvas';
 import '@/app/index.css';
 import { useTheme } from 'next-themes';
 import { toast } from 'sonner';
@@ -60,7 +60,7 @@ import { StickerTool } from './_components/sticker-tool-util';
 
 //------------------
 // TODO: fix icons
-// TODO: add screenshot tool
+// TODO: compare between the files downloaded from my canvas and the original one from tldraw.com to make my file run on the other one and vice versa
 
 // [0]
 const saveFile = (editor: Editor) => {
@@ -77,7 +77,7 @@ const saveFile = (editor: Editor) => {
   link.click();
   document.body.removeChild(link);
 
-  toast.success('Workspace saved as .tldr file!');
+  toast.success('Canvas saved as .tldr file!');
 };
 
 const newFile = async () => {
@@ -99,7 +99,7 @@ const openFile = async (editor: Editor) => {
     reader.onload = (e) => {
       const data = JSON.parse(e.target?.result as string);
       loadSnapshot(editor.store, data);
-      toast.success('Workspace loaded successfully!');
+      toast.success('Canvas loaded successfully!');
     };
     reader.readAsText(file);
   };
@@ -189,14 +189,14 @@ function CustomMainMenu() {
           label="Save"
           onSelect={async () => {
             const { document, session } = getSnapshot(editor.store);
-            const res = await setWorkspaces({
+            const res = await setCanvas({
               document,
               session,
             });
             if (res) {
-              toast.success('Workspace saved successfully!');
+              toast.success('Canvas saved successfully!');
             } else {
-              toast.error('Failed to save the workspace. Please try again.');
+              toast.error('Failed to save the canvas. Please try again.');
             }
           }}
         />
@@ -205,15 +205,15 @@ function CustomMainMenu() {
           label="Restore last saved"
           icon="archive-restore"
           onSelect={async () => {
-            const res = await getWorkspaces();
+            const res = await getCanvas();
             if (!res) return;
             const { document, session } = res;
             editor.setCurrentTool('select');
             loadSnapshot(editor.store, { document, session });
             if (res) {
-              toast.success('Workspace restored successfully!');
+              toast.success('Canvas restored successfully!');
             } else {
-              toast.error('Failed to restore the workspace. Please try again.');
+              toast.error('Failed to restore the canvas. Please try again.');
             }
           }}
         />
