@@ -20,12 +20,12 @@ const getLayouts = async (): Promise<Layouts | undefined> => {
 
     if (!user) throw 'there is no user';
 
-    const resLayouts = await getDoc(doc(db, 'users', user.id, 'data', 'aura', 'layouts', 'test'));
+    const resLayouts = await getDoc(doc(db, 'users', user.id, 'data', 'aura', 'others', 'layouts'));
     let layouts = resLayouts.data() as Layouts;
 
     if (!layouts) {
       layouts = { lg: [], md: [], sm: [], xs: [], xxs: [] };
-      await setDoc(doc(db, 'users', user.id, 'data', 'aura', 'layouts', 'test'), layouts);
+      await setDoc(doc(db, 'users', user.id, 'data', 'aura', 'others', 'layouts'), layouts);
     }
 
     return layouts;
@@ -42,7 +42,7 @@ const setLayouts = async (newLayouts: Layouts): Promise<void> => {
     if (!user) throw 'there is no user';
 
     const res = await setDoc(
-      doc(db, 'users', user.id, 'data', 'aura', 'layouts', 'test'),
+      doc(db, 'users', user.id, 'data', 'aura', 'others', 'layouts'),
       newLayouts,
     );
 

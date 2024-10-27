@@ -16,7 +16,6 @@ import { AmiriFont, AmiriQuranFont } from '@/lib/fonts/fonts';
 import { getWidgetData, setWidgetData } from '@/lib/server-actions/widgets';
 import { AyahWidgetFontT, AyahWidgetT } from '@/lib/types/widgets';
 import { cn } from '@/lib/utils';
-import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 import { DialogClose } from '@radix-ui/react-dialog';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Settings2 } from 'lucide-react';
@@ -28,14 +27,17 @@ const DEFAULT_AYAH_DATA: AyahWidgetT = {
   font: '__className_af25f8',
 };
 
-export default function Ayah({ id = 'none' }: { id?: string }) {
+export default function Ayah({
+  id = 'none',
+  isAuthenticated,
+}: {
+  id?: string;
+  isAuthenticated: boolean;
+}) {
   const [open, setOpen] = useState(false);
   const [localAyahData, setLocalAyahData] = useState<AyahWidgetT>(DEFAULT_AYAH_DATA);
-  let { isAuthenticated } = useKindeBrowserClient();
   const [text, setText] = useState(DEFAULT_AYAH_DATA.text);
   const [font, setFont] = useState(DEFAULT_AYAH_DATA.font);
-
-  isAuthenticated = isAuthenticated || false;
 
   const queryClient = useQueryClient();
   const {
@@ -46,6 +48,8 @@ export default function Ayah({ id = 'none' }: { id?: string }) {
     queryKey: ['ayah', id],
     queryFn: () => getWidgetData(id) as Promise<AyahWidgetT>,
     enabled: isAuthenticated,
+    // staleTime: Infinity,
+    // refetchOnWindowFocus: false,
   });
 
   // TODO: Fix this mutation (setQueryData)
@@ -53,7 +57,7 @@ export default function Ayah({ id = 'none' }: { id?: string }) {
     mutationFn: (newWidgetData: AyahWidgetT) => setWidgetData(id, newWidgetData),
     onSuccess: (newData) => {
       queryClient.invalidateQueries({ queryKey: ['ayah', id] });
-      queryClient.setQueryData(['ayah', id], newData);
+      // queryClient.setQueryData(['ayah', id], newData);
       setOpen(false);
     },
   });
@@ -68,9 +72,9 @@ export default function Ayah({ id = 'none' }: { id?: string }) {
     }
   };
 
-  if ((isAuthenticated && isLoading) || !queryData) return <WidgetLoader />;
+  if ((isAuthenticated && isLoading) || (isLoading && !queryData)) return <WidgetLoader />;
   if (isAuthenticated && error) return <div>Error: {error.message}</div>;
-  const data = isAuthenticated ? queryData : localAyahData;
+  const data = isAuthenticated ? (queryData as AyahWidgetT) : localAyahData;
 
   return (
     <ScrollArea className="max-h-52 w-full rounded-md border">

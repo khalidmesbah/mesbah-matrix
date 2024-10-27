@@ -10,15 +10,16 @@ type WidgetsT = {
 
 type WidgetT = {
   id: string;
+  isAuthenticated: boolean;
 };
 
-export default function Widget({ id }: WidgetT) {
+export default function Widget({ id, isAuthenticated }: WidgetT) {
   const name = id.split('|')[0] as keyof WidgetsT;
   const widgets: WidgetsT = {
     'analog-clock': <AnalogClock />,
     'digital-clock': <DigitalClock id={id} />,
     'time-passed': <TimeSinceBirth />,
-    ayah: <Ayah id={id} />,
+    ayah: <Ayah id={id} isAuthenticated={isAuthenticated} />,
     pomodoro: <Pomodoro />,
   };
 

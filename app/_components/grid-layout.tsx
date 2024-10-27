@@ -22,12 +22,11 @@ export default function GridLayout({ isAuthenticated }: { isAuthenticated: boole
     compactType,
     isLayoutLocked,
     droppingItem,
-    setLayouts: setLocalLayouts,
+    setLayouts,
     setCurrentBreakpoint,
     setIsLayoutLocked,
+    setDroppingItem,
   } = useWidgetsStore();
-  isAuthenticated = isAuthenticated || false;
-  // isAuthenticated = false;
 
   const {
     data: queryData,
@@ -36,28 +35,30 @@ export default function GridLayout({ isAuthenticated }: { isAuthenticated: boole
   } = useQuery({
     queryKey: ['layouts'],
     queryFn: () => getLayouts() as Promise<Layouts>,
+    initialData: undefined,
     enabled: isAuthenticated,
   });
 
   useEffect(() => {
     if (queryData && isAuthenticated) {
-      setLocalLayouts(queryData);
+      setLayouts(queryData);
     }
-  }, [queryData, isAuthenticated]);
-
-  useEffect(() => {
-    console.log('useEffect');
-  });
+  }, [queryData, isAuthenticated, setLayouts]); // Add setLayouts to dependencies
 
   if (isAuthenticated && error) return <div>Error: {error.message}</div>;
-  if ((isAuthenticated && isLoading) || !queryData) return <CloudLoader />;
+  if ((isAuthenticated && isLoading) || (isLoading && !queryData)) return <CloudLoader />;
 
-  // console.log(`isAuthenticated`, isAuthenticated);
-  // console.log(`queryData`, queryData);
-  // console.log(`layouts`, layouts);
+  console.log(`isAuthenticated`, isAuthenticated);
+  console.log(`queryData`, queryData);
+  console.log(`layouts`, layouts);
 
   const onLayoutChange = (currentLayout: Layout[], allLayouts: Layouts) => {
-    setLocalLayouts(allLayouts);
+    console.log(`currentLayout`, currentLayout);
+    const newLayouts = structuredClone(allLayouts);
+    Object.keys(newLayouts).forEach((key) => {
+      newLayouts[key] = newLayouts[key].filter((item) => item.i !== '__dropping-elem__');
+    });
+    setLayouts(newLayouts);
   };
 
   const onBreakpointChange = (breakpoint: BreakpointT) => {
@@ -65,16 +66,16 @@ export default function GridLayout({ isAuthenticated }: { isAuthenticated: boole
   };
 
   const handleDeleteWidget = (i: string) => {
+    console.log(`i`, i);
     const newLayouts = structuredClone(layouts);
     Object.keys(newLayouts).forEach((key) => {
       newLayouts[key] = newLayouts[key].filter((existingItem) => existingItem.i !== i);
     });
-    setLocalLayouts(newLayouts);
+    setLayouts(newLayouts);
   };
 
   const onDrop = (layout: Layout[], item: Layout, e: Event) => {
-    // console.log('ondrop');
-    // console.log(layout, item, e);
+    if (!item || item.i === '__dropping-elem__') return;
     const newLayouts = structuredClone(layouts);
     setIsLayoutLocked(false);
 
@@ -82,37 +83,36 @@ export default function GridLayout({ isAuthenticated }: { isAuthenticated: boole
       const newItem = newLayouts[key].find((prvItem) => prvItem.i === item.i);
 
       if (newItem) {
-        newItem.minW = 3;
-        newItem.minH = 6;
+        newItem.minW = 6;
+        newItem.minH = 12;
         newItem.x = item.x;
         newItem.y = item.y;
         newItem.w = item.w;
         newItem.h = item.h;
-        newItem.isDraggable = undefined;
       } else {
         let NItem: Layout = {
-          minW: 3,
-          minH: 6,
+          minW: 6,
+          minH: 12,
           x: item.x,
           y: item.y,
           w: item.w,
           h: item.h,
           i: item.i,
-          isDraggable: undefined,
         };
         newLayouts[key].push(NItem);
       }
     });
-    setLocalLayouts(newLayouts);
+    setLayouts(newLayouts);
   };
 
   return (
-    <>
+    <div className="h-full w-full overflow-auto rounded-md">
       <ResponsiveReactGridLayout
         rowHeight={1}
         maxRows={Infinity}
+        width={5000}
         autoSize={true}
-        cols={{ lg: 48, md: 40, sm: 32, xs: 24, xxs: 16 }}
+        cols={{ lg: 168, md: 160, sm: 152, xs: 144, xxs: 136 }}
         breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
         containerPadding={[8, 8]}
         margin={[8, 8]}
@@ -127,12 +127,15 @@ export default function GridLayout({ isAuthenticated }: { isAuthenticated: boole
         onBreakpointChange={onBreakpointChange}
         allowOverlap={false}
         onDrop={onDrop}
+        onDragStart={() => {
+          setDroppingItem(undefined);
+        }}
         isBounded={false}
         droppingItem={droppingItem}
         isDraggable={!isLayoutLocked}
         isResizable={!isLayoutLocked}
         isDroppable={true}
-        className={`min-h-[calc(100vh-16px)] overflow-auto rounded-md bg-primary`}
+        className={`h-full min-h-screen w-[5000px] rounded-md bg-primary`}
         verticalCompact={undefined}
         resizeHandle={
           <div className="react-resizable-handle absolute bottom-0 right-0 size-5 cursor-se-resize mix-blend-difference after:!border-foreground" />
@@ -162,7 +165,7 @@ export default function GridLayout({ isAuthenticated }: { isAuthenticated: boole
                       )!;
                       newItem.static = false;
                       setIsLayoutLocked(false);
-                      setLocalLayouts(newLayouts);
+                      setLayouts(newLayouts);
                     }}
                   />
                 ) : (
@@ -175,7 +178,7 @@ export default function GridLayout({ isAuthenticated }: { isAuthenticated: boole
                         (prvItem) => prvItem.i === item.i,
                       )!;
                       newItem.static = true;
-                      setLocalLayouts(newLayouts);
+                      setLayouts(newLayouts);
                     }}
                   />
                 )}
@@ -202,16 +205,16 @@ export default function GridLayout({ isAuthenticated }: { isAuthenticated: boole
                       const newW =
                         (child.getBoundingClientRect().width * newItem.w) /
                         child.parentElement?.getBoundingClientRect().width!;
-                      newItem.h = Math.max(newH, 6);
-                      newItem.w = Math.max(newW, 3);
-                      setLocalLayouts(newLayouts);
+                      newItem.h = Math.max(newH, 12);
+                      newItem.w = Math.max(newW, 6);
+                      setLayouts(newLayouts);
                     }
                   }}
                   className="size-5 cursor-pointer rounded-full bg-accent p-1 text-xl text-white hover:bg-accent/90"
                 />
               </div>
               <div className="absolute h-full w-full overflow-auto">
-                <Widget id={item.i} />
+                <Widget id={item.i} isAuthenticated={isAuthenticated} />
               </div>
             </div>
           );
@@ -219,6 +222,6 @@ export default function GridLayout({ isAuthenticated }: { isAuthenticated: boole
       </ResponsiveReactGridLayout>
 
       <FloatingDock />
-    </>
+    </div>
   );
 }
