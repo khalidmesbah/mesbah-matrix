@@ -4,9 +4,10 @@ import { v4 as uuidv4 } from 'uuid';
 import { create } from 'zustand';
 
 function generateLayout() {
-  return Array.from({ length: 10 }, (_, index) => {
+  return Array.from({ length: 4 }, (_, index) => {
     const y = Math.ceil(Math.random() * 20) + 10;
-    const elements = ['analog-clock', 'digital-clock', 'time-passed', 'pomodoro', 'ayah'];
+    // const elements = ['analog-clock', 'digital-clock', 'time-passed', 'pomodoro', 'ayah'];
+    const elements = ['ayah'];
     const randomElement = elements[Math.floor(Math.random() * elements.length)];
     return {
       x: (Math.floor(Math.random() * 60) * 20) % 12,

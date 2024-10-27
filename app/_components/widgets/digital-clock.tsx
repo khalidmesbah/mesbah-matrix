@@ -1,11 +1,13 @@
 'use client';
 
+import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 import { Clock } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-export default function DigitalClock() {
+export default function DigitalClock({ id }: { id: string }) {
   const [time, setTime] = useState(new Date());
   const [is24Hour, setIs24Hour] = useState(false);
+  const { isAuthenticated } = useKindeBrowserClient();
 
   useEffect(() => {
     const timer = setInterval(() => {

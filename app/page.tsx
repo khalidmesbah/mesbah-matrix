@@ -2,8 +2,6 @@ import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import type { Metadata } from 'next';
 import GridLayout from './_components/grid-layout';
 
-export const dynamic = 'force-static';
-
 export const metadata: Metadata = {
   title: 'Dynamic Grid Dashboard',
   description:
@@ -14,5 +12,5 @@ export default async function GridPage() {
   const { isAuthenticated: getIsAuthenticated } = getKindeServerSession();
   const isAuthenticated = await getIsAuthenticated();
 
-  return <GridLayout />;
+  return <GridLayout isAuthenticated={isAuthenticated} />;
 }
