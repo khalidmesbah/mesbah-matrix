@@ -1,6 +1,7 @@
 'use client';
 
 import CloudLoader from '@/components/cloud-loader';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { getLayouts } from '@/lib/server-actions/widgets';
 import useWidgetsStore from '@/lib/stores/widgets';
 import { BreakpointT } from '@/lib/types/widgets';
@@ -106,7 +107,7 @@ export default function GridLayout({ isAuthenticated }: { isAuthenticated: boole
   };
 
   return (
-    <div className="h-full w-full overflow-auto rounded-md">
+    <ScrollArea className="size-full rounded-md">
       <ResponsiveReactGridLayout
         rowHeight={1}
         maxRows={Infinity}
@@ -222,6 +223,8 @@ export default function GridLayout({ isAuthenticated }: { isAuthenticated: boole
       </ResponsiveReactGridLayout>
 
       <FloatingDock />
-    </div>
+
+      <ScrollBar orientation="horizontal" />
+    </ScrollArea>
   );
 }

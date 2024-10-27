@@ -32,7 +32,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         <Providers>
           <main className="flex">
             <Navbar />
-            <div className="container flex h-dvh max-h-dvh flex-col gap-2 overflow-auto p-2">
+            <div className="container flex h-dvh max-h-dvh min-h-dvh flex-col gap-2 overflow-hidden p-2">
               <Suspense fallback={<TopBarSkeleton />}>
                 <TopBarAuthWrapper />
               </Suspense>
