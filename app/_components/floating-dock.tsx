@@ -36,20 +36,20 @@ export default function FloatingDock() {
       <WidgetsSlider />
       {isLayoutLocked ? (
         <Icon
-          key={'unlock'}
+          key={'unlocked'}
           icon={<LockOpen />}
           onClick={() => setIsLayoutLocked(false)}
           size="icon"
-          description={'Unlock'}
+          description={'Unlocked'}
           className="!size-10 rounded-full [&>svg]:!size-5"
         />
       ) : (
         <Icon
-          key={'lock'}
+          key={'locked'}
           icon={<Lock />}
           onClick={() => setIsLayoutLocked(true)}
           size="icon"
-          description={'Lock'}
+          description={'Locked'}
           className="!size-10 rounded-full [&>svg]:!size-5"
         />
       )}

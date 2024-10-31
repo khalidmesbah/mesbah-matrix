@@ -49,15 +49,10 @@ export default function WidgetsSlider() {
             <div
               draggable={true}
               className="no-swiping size-20 rounded-full bg-card transition-shadow hover:shadow-md hover:shadow-primary"
-              onDragStart={(e) => {
-                console.log('drag start');
+              onDragStart={() => {
                 const uuid = uuidv4();
                 setDroppingItem({ i: `ayah|${uuid}`, w: 10, h: 20, minW: 6, minH: 12 });
                 setIsWidgetsModalOpen(false);
-                e.dataTransfer.setData('text/plain', ''); // for firefox!! (check if it applies on the kanban board)
-              }}
-              onDragEnd={() => {
-                setDroppingItem(undefined);
               }}
               onClick={() => {
                 const uuid = uuidv4();

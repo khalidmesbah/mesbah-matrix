@@ -38,6 +38,8 @@ export default function GridLayout({ isAuthenticated }: { isAuthenticated: boole
     queryFn: () => getLayouts() as Promise<Layouts>,
     initialData: undefined,
     enabled: isAuthenticated,
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
   });
 
   useEffect(() => {
@@ -49,17 +51,9 @@ export default function GridLayout({ isAuthenticated }: { isAuthenticated: boole
   if (isAuthenticated && error) return <div>Error: {error.message}</div>;
   if ((isAuthenticated && isLoading) || (isLoading && !queryData)) return <CloudLoader />;
 
-  console.log(`isAuthenticated`, isAuthenticated);
-  console.log(`queryData`, queryData);
-  console.log(`layouts`, layouts);
-
-  const onLayoutChange = (currentLayout: Layout[], allLayouts: Layouts) => {
-    console.log(`currentLayout`, currentLayout);
-    const newLayouts = structuredClone(allLayouts);
-    Object.keys(newLayouts).forEach((key) => {
-      newLayouts[key] = newLayouts[key].filter((item) => item.i !== '__dropping-elem__');
-    });
-    setLayouts(newLayouts);
+  const onLayoutChange = (_currentLayout: Layout[], allLayouts: Layouts) => {
+    if (droppingItem) return;
+    setLayouts(allLayouts);
   };
 
   const onBreakpointChange = (breakpoint: BreakpointT) => {
@@ -67,7 +61,6 @@ export default function GridLayout({ isAuthenticated }: { isAuthenticated: boole
   };
 
   const handleDeleteWidget = (i: string) => {
-    console.log(`i`, i);
     const newLayouts = structuredClone(layouts);
     Object.keys(newLayouts).forEach((key) => {
       newLayouts[key] = newLayouts[key].filter((existingItem) => existingItem.i !== i);
@@ -75,35 +68,16 @@ export default function GridLayout({ isAuthenticated }: { isAuthenticated: boole
     setLayouts(newLayouts);
   };
 
-  const onDrop = (layout: Layout[], item: Layout, e: Event) => {
-    if (!item || item.i === '__dropping-elem__') return;
-    const newLayouts = structuredClone(layouts);
+  const onDrop = (layout: Layout[]) => {
+    if (!droppingItem || droppingItem.i === '__dropping-elem__') return;
+
+    setLayouts({ [currentBreakpoint]: layout });
     setIsLayoutLocked(false);
+    setDroppingItem(undefined);
+  };
 
-    Object.keys(newLayouts).map((key: string) => {
-      const newItem = newLayouts[key].find((prvItem) => prvItem.i === item.i);
-
-      if (newItem) {
-        newItem.minW = 6;
-        newItem.minH = 12;
-        newItem.x = item.x;
-        newItem.y = item.y;
-        newItem.w = item.w;
-        newItem.h = item.h;
-      } else {
-        let NItem: Layout = {
-          minW: 6,
-          minH: 12,
-          x: item.x,
-          y: item.y,
-          w: item.w,
-          h: item.h,
-          i: item.i,
-        };
-        newLayouts[key].push(NItem);
-      }
-    });
-    setLayouts(newLayouts);
+  const onResizeStop = (layout: Layout[]) => {
+    setLayouts({ [currentBreakpoint]: layout });
   };
 
   return (
@@ -128,18 +102,17 @@ export default function GridLayout({ isAuthenticated }: { isAuthenticated: boole
         onBreakpointChange={onBreakpointChange}
         allowOverlap={false}
         onDrop={onDrop}
-        onDragStart={() => {
-          setDroppingItem(undefined);
-        }}
+        transformScale={1}
+        onResizeStop={onResizeStop}
         isBounded={false}
         droppingItem={droppingItem}
         isDraggable={!isLayoutLocked}
         isResizable={!isLayoutLocked}
         isDroppable={true}
-        className={`h-full min-h-screen w-[5000px] rounded-md bg-primary`}
+        className={`h-full min-h-screen w-[5000px] rounded-md bg-accent`}
         verticalCompact={undefined}
         resizeHandle={
-          <div className="react-resizable-handle absolute bottom-0 right-0 size-5 cursor-se-resize mix-blend-difference after:!border-foreground" />
+          <div className="react-resizable-handle absolute bottom-1 right-1 size-5 cursor-se-resize mix-blend-difference after:!border-foreground" />
         }
       >
         {layouts[currentBreakpoint].map((item: Layout) => {
@@ -162,7 +135,7 @@ export default function GridLayout({ isAuthenticated }: { isAuthenticated: boole
                     onClick={() => {
                       const newLayouts = structuredClone(layouts);
                       const newItem = newLayouts[currentBreakpoint].find(
-                        (prvItem) => prvItem.i === item.i,
+                        (randomItem) => randomItem.i === item.i,
                       )!;
                       newItem.static = false;
                       setIsLayoutLocked(false);
