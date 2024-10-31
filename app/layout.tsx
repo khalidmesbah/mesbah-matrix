@@ -28,7 +28,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         <link rel="icon" href="favicon/favicon.ico" sizes="48x48" />
         <link rel="icon" href="favicon/favicon.svg" sizes="any" type="image/svg+xml" />
       </head>
-      <body className={`${GeistMono.className} antialiased`}>
+      <body className={`${GeistMono.className} overflow-hidden antialiased`}>
         <Providers>
           <main className="flex">
             <Navbar />

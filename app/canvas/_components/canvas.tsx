@@ -51,10 +51,10 @@ import {
   useRelevantStyles,
   useTools,
 } from 'tldraw';
-import './_components/slide-show/slides.css';
 import { SlideShapeTool } from './slide-show/slide-shape-tool';
 import { SlideShapeUtil } from './slide-show/slide-shape-util';
 import { SlidesPanel } from './slide-show/slides-panel';
+import './slide-show/slides.css';
 import { $currentSlide, getSlides, moveToSlide } from './slide-show/use-slides';
 import { StickerTool } from './sticker-tool-util';
 

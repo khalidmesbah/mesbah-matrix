@@ -44,7 +44,7 @@ export default function GridLayout({ isAuthenticated }: { isAuthenticated: boole
     if (queryData && isAuthenticated) {
       setLayouts(queryData);
     }
-  }, [queryData, isAuthenticated, setLayouts]); // Add setLayouts to dependencies
+  }, [queryData, isAuthenticated]);
 
   if (isAuthenticated && error) return <div>Error: {error.message}</div>;
   if ((isAuthenticated && isLoading) || (isLoading && !queryData)) return <CloudLoader />;
@@ -214,9 +214,7 @@ export default function GridLayout({ isAuthenticated }: { isAuthenticated: boole
                   className="size-5 cursor-pointer rounded-full bg-accent p-1 text-xl text-white hover:bg-accent/90"
                 />
               </div>
-              <div className="absolute h-full w-full overflow-auto">
-                <Widget id={item.i} isAuthenticated={isAuthenticated} />
-              </div>
+              <Widget id={item.i} isAuthenticated={isAuthenticated} />
             </div>
           );
         })}
