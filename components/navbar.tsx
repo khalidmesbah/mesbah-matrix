@@ -130,7 +130,7 @@ function Icon({ link, name, icon, isActive }: IconProps) {
       <Tooltip delayDuration={300}>
         <TooltipTrigger asChild>
           <Link
-            className={`${buttonVariants({ variant, size: 'icon' })} min-size-10 [&>*]:!size-6`}
+            className={`${buttonVariants({ variant, size: 'icon' })} min-h-10 min-w-10 [&>*]:!size-6`}
             href={link}
             children={icon}
           />

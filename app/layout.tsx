@@ -10,11 +10,13 @@ import { Suspense } from 'react';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Workspaces',
-  description: 'Manage and take control of your workspaces',
+  title: 'Mesbah Matrix',
+  description: 'Manage and take control of your life',
 };
 
-export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export const dynamic = 'force-dynamic';
+
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
