@@ -111,8 +111,13 @@ export default function GridLayout({ isAuthenticated }: { isAuthenticated: boole
         className={`h-full min-h-[calc(100vh-16px)] w-[5000px] rounded-md bg-primary/75`}
         verticalCompact={undefined}
         resizeHandle={
-          <div className="react-resizable-handle absolute bottom-0 right-0 z-10 cursor-se-resize !bg-none !p-1">
-            <div className="size-2 border-2 border-l-0 border-t-0 border-foreground" />
+          <div className="react-resizable-handle absolute bottom-0 right-0 !size-3 cursor-se-resize !bg-none !p-0 after:!hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="5 5 24 24">
+              <g fill="none" stroke="hsl(var(--primary))" strokeWidth={2}>
+                <path d="M10 20h10V10"></path>
+                <path d="M12 17h5v-5"></path>
+              </g>
+            </svg>
           </div>
         }
       >

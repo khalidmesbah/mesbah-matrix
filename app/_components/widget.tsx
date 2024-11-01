@@ -23,9 +23,5 @@ export default function Widget({ id, isAuthenticated }: WidgetT) {
     pomodoro: <Pomodoro />,
   };
 
-  return (
-    <div className="fc absolute size-full">
-      {name in widgets ? widgets[name] : 'widget not found'}
-    </div>
-  );
+  return <div className="fc size-full">{name in widgets ? widgets[name] : 'widget not found'}</div>;
 }
