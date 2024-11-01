@@ -1,6 +1,6 @@
 'use client';
 
-export default function WidgetLoader() {
+export default function HourGlassLoader() {
   return (
     <div className="flex h-full w-full items-center justify-center">
       <div className="hr-container">

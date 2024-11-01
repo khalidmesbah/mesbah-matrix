@@ -48,7 +48,7 @@ export default function WidgetsSlider() {
           <SwiperSlide className="p-2">
             <div
               draggable={true}
-              className="no-swiping size-20 rounded-full bg-card transition-shadow hover:shadow-md hover:shadow-primary"
+              className="no-swiping size-20 rounded-full bg-card transition-shadow hover:shadow-md"
               onDragStart={() => {
                 const uuid = uuidv4();
                 setDroppingItem({ i: `ayah|${uuid}`, w: 10, h: 20, minW: 6, minH: 12 });

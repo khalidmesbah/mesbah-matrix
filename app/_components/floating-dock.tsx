@@ -6,26 +6,24 @@ import useWidgetsStore from '@/lib/stores/widgets';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Lock, LockOpen, Save, Settings2 } from 'lucide-react'; // Importing Lucide icons
 import { Layouts } from 'react-grid-layout';
+import { toast } from 'sonner';
 import WidgetsSlider from './widgets-slider';
 
 export default function FloatingDock() {
   const { layouts, isLayoutLocked, setIsLayoutLocked } = useWidgetsStore();
   const queryClient = useQueryClient();
-
-  const mutatation = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: (newLayouts: Layouts) => setLayouts(newLayouts),
     onSuccess: () => {
-      console.log('success');
-      queryClient.invalidateQueries({ queryKey: ['layouts'] });
+      toast.success('The new layout has been saved successfully');
     },
     onError: (error) => {
-      console.log('error', error);
+      toast.error(`Something went wrong while saving the layouts ${JSON.stringify(error)}`);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['layouts'] });
     },
   });
-
-  const saveLayouts = () => {
-    mutatation.mutate(layouts);
-  };
 
   return (
     <div
@@ -56,7 +54,9 @@ export default function FloatingDock() {
       <Icon
         key={'save'}
         icon={<Save />}
-        onClick={saveLayouts}
+        onClick={() => mutate(layouts)}
+        disabled={isPending}
+        loading={isPending}
         size="icon"
         description={'Save'}
         className="!size-10 rounded-full [&>svg]:!size-5"

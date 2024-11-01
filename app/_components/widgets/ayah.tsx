@@ -1,5 +1,6 @@
 'use client';
 
+import InfinityLoader from '@/components/infinity-loader';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -10,7 +11,6 @@ import {
 } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { Textarea } from '@/components/ui/textarea';
 import { AmiriFont, AmiriQuranFont } from '@/lib/fonts/fonts';
 import { getWidgetData, setWidgetData } from '@/lib/server-actions/widgets';
@@ -20,7 +20,7 @@ import { DialogClose } from '@radix-ui/react-dialog';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Settings2 } from 'lucide-react';
 import { useState } from 'react';
-import WidgetLoader from './loader';
+import { toast } from 'sonner';
 
 const DEFAULT_AYAH_DATA: AyahWidgetT = {
   text: 'بِسْمِ اللَّـهِ الرَّحْمَـٰنِ الرَّحِيمِ',
@@ -52,13 +52,31 @@ export default function Ayah({
     refetchOnWindowFocus: false,
   });
 
-  // TODO: Fix this mutation (setQueryData)
   const mutation = useMutation({
-    mutationFn: (newWidgetData: AyahWidgetT) => setWidgetData(id, newWidgetData),
-    onSuccess: (newData) => {
+    mutationFn: async (newWidgetData: AyahWidgetT) => setWidgetData(id, newWidgetData),
+    onMutate: async (ayah) => {
+      await queryClient.cancelQueries({ queryKey: ['ayah', id] });
+
+      const previousAyah = queryClient.getQueryData(['ayah', id]);
+
+      queryClient.setQueryData(['ayah', id], (old: AyahWidgetT) => {
+        const newAyah = structuredClone(old);
+        newAyah.text = ayah.text;
+        newAyah.font = ayah.font;
+        return newAyah;
+      });
+
+      return { previousAyah };
+    },
+    onError: (_err, _old, context) => {
+      queryClient.setQueryData(['ayah', id], context?.previousAyah);
+      toast.error(`oops, something went wrong while saving the ayah`);
+    },
+    onSuccess: (_newData) => {
+      toast.success('The ayah been saved successfully');
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['ayah', id] });
-      // queryClient.setQueryData(['ayah', id], newData);
-      setOpen(false);
     },
   });
 
@@ -72,15 +90,15 @@ export default function Ayah({
     }
   };
 
-  if ((isAuthenticated && isLoading) || (isLoading && !queryData)) return <WidgetLoader />;
+  if ((isAuthenticated && isLoading) || (isLoading && !queryData)) return <InfinityLoader />;
   if (isAuthenticated && error) return <div>Error: {error.message}</div>;
   const data = isAuthenticated ? (queryData as AyahWidgetT) : localAyahData;
 
   return (
-    <ScrollArea className="group relative size-full rounded-md border">
+    <>
       <p
         className={cn(
-          `rounded-md bg-card px-2 text-center text-2xl/[3rem] ${
+          `break-words rounded-md bg-card px-2 text-center text-2xl/[3rem] ${
             data.font === '__className_af25f8' ? AmiriQuranFont.className : AmiriFont.className
           }`,
           {
@@ -143,7 +161,6 @@ export default function Ayah({
           </DialogContent>
         </Dialog>
       </div>
-      <ScrollBar orientation="horizontal" />
-    </ScrollArea>
+    </>
   );
 }
