@@ -1,3 +1,4 @@
+import { JSX } from 'react';
 import AnalogClock from './widgets/analog-clock';
 import Ayah from './widgets/ayah';
 import DigitalClock from './widgets/digital-clock';

@@ -36,7 +36,12 @@ export default function Providers({ children }: { children: ReactNode }) {
   const [queryClient] = useState(() => new QueryClient());
 
   return (
-    <ThemeProvider attribute="theme" defaultTheme="green-dark" themes={themes} enableColorScheme>
+    <ThemeProvider
+      attribute="data-theme"
+      defaultTheme="green-dark"
+      themes={themes}
+      enableColorScheme
+    >
       <QueryClientProvider client={queryClient}>
         {children}
         <ReactQueryDevtools />
