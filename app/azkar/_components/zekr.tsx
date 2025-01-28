@@ -32,7 +32,7 @@ export default function Zekr({ zekr }: { zekr: ZekrT }) {
           {zekr.zekr}
         </p>
       </CardContent>
-      <CardFooter className="absolute -bottom-5 left-4 right-4 flex items-center justify-center gap-2 rounded-md bg-border !p-1">
+      <CardFooter className="absolute -bottom-5 left-4 right-4 flex items-center justify-center gap-2 rounded-md bg-border p-1!">
         <ShareButton
           description="Share this Zekr"
           variant="ghost"

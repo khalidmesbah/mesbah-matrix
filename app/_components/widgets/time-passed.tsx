@@ -6,6 +6,7 @@ import { Calendar } from '@/components/ui/calendar';
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -20,9 +21,10 @@ import {
 } from '@/components/ui/select';
 import useWidgetsStore from '@/lib/stores/widgets';
 import { TimePassedWidgetT } from '@/lib/types/widgets';
+import { DialogClose } from '@radix-ui/react-dialog';
 import { format } from 'date-fns';
 import { Calendar as CalendarIcon, Settings } from 'lucide-react';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 
 type TimePassed = {
   seconds: number;
@@ -38,20 +40,22 @@ type TimePassed = {
   falls: number;
 };
 
-const DEFAULT_TIME_SINCE_BIRTH_DATA: TimePassedWidgetT = {
-  selectedUnit: 'seconds',
-  date: `${new Date()}`,
-};
-
 export default function TimeSinceBirth({ id }: { id: string }) {
+  const DEFAULT_TIME_SINCE_BIRTH_DATA: TimePassedWidgetT = {
+    selectedUnit: 'seconds',
+    date: `${new Date()}`,
+  };
   const { widgetStates, updateWidgetState } = useWidgetsStore((state) => state);
-
-  if (!widgetStates[id]) updateWidgetState(id, DEFAULT_TIME_SINCE_BIRTH_DATA);
-
-  const data = widgetStates[id] as TimePassedWidgetT;
   const [timePassed, setTimePassed] = useState<Partial<TimePassed>>({});
-  const [selectedUnit, setSelectedUnit] = useState<string>(data.selectedUnit);
-  const [date, setDate] = useState<Date>(new Date(data.date));
+  const [selectedUnit, setSelectedUnit] = useState<string>('seconds');
+  const [date, setDate] = useState<Date>(new Date());
+
+  useLayoutEffect(() => {
+    if (!widgetStates[id]) updateWidgetState(id, DEFAULT_TIME_SINCE_BIRTH_DATA);
+    const data = widgetStates[id] as TimePassedWidgetT;
+    setSelectedUnit(data.selectedUnit);
+    setDate(new Date(data.date));
+  }, []);
 
   const calculateTimePassed = useCallback(() => {
     const now = new Date();
@@ -104,7 +108,7 @@ export default function TimeSinceBirth({ id }: { id: string }) {
   return (
     <div className="relative flex flex-col gap-2 rounded-md">
       <Dialog>
-        <DialogTrigger asChild className="absolute right-2 top-2">
+        <DialogTrigger asChild className="absolute top-2 right-2">
           <Button variant="ghost" size="icon">
             <Settings />
           </Button>
@@ -142,7 +146,7 @@ export default function TimeSinceBirth({ id }: { id: string }) {
             </Popover>
 
             <Select onValueChange={setSelectedUnit} value={selectedUnit}>
-              <SelectTrigger className="w-full rounded-lg border border-gray-300 p-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <SelectTrigger className="w-full rounded-lg border border-gray-300 p-3 focus:ring-2 focus:ring-blue-500 focus:outline-hidden">
                 <SelectValue placeholder="Select time unit" />
               </SelectTrigger>
               <SelectContent className="rounded-lg border border-gray-200 shadow-lg">
@@ -160,10 +164,20 @@ export default function TimeSinceBirth({ id }: { id: string }) {
               </SelectContent>
             </Select>
           </div>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button
+                variant="outline"
+                onClick={() => updateWidgetState(id, { selectedUnit, date: `${date}` })}
+              >
+                save
+              </Button>
+            </DialogClose>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
 
-      <div className="rounded-lg bg-accent p-2 text-center text-lg font-bold text-primary">
+      <div className="bg-accent text-primary rounded-lg p-2 text-center text-lg font-bold">
         <h2 className="font-bolder text-4xl">{getTimeValue()}</h2>
         <span className="text-primary/90">
           {selectedUnit.slice(0, 1).toUpperCase() + selectedUnit.slice(1)} Have Passed

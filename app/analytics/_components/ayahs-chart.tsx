@@ -89,7 +89,7 @@ export default function AyahsChart({ analytics }: { analytics: AnalyticsT }) {
             <SelectTrigger className="h-min w-min rounded-full py-2 pl-3 pr-2 text-xs">
               <SelectValue placeholder="Select a type" />
             </SelectTrigger>
-            <SelectContent className="!text-sm">
+            <SelectContent className="text-sm!">
               <SelectGroup>
                 <SelectItem value="day">Day</SelectItem>
                 <SelectItem value="week">Week</SelectItem>

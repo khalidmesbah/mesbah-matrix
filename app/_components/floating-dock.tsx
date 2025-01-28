@@ -39,7 +39,7 @@ export default function FloatingDock() {
           onClick={() => setIsLayoutLocked(false)}
           size="icon"
           description={'Unlocked'}
-          className="!size-10 rounded-full [&>svg]:!size-5"
+          className="size-10! rounded-full [&>svg]:size-5!"
         />
       ) : (
         <Icon
@@ -48,7 +48,7 @@ export default function FloatingDock() {
           onClick={() => setIsLayoutLocked(true)}
           size="icon"
           description={'Locked'}
-          className="!size-10 rounded-full [&>svg]:!size-5"
+          className="size-10! rounded-full [&>svg]:size-5!"
         />
       )}
       <Icon
@@ -59,14 +59,14 @@ export default function FloatingDock() {
         loading={isPending}
         size="icon"
         description={'Save'}
-        className="!size-10 rounded-full [&>svg]:!size-5"
+        className="size-10! rounded-full [&>svg]:size-5!"
       />
       <Icon
         key={'settings'}
         icon={<Settings2 />}
         size="icon"
         description={'Settings'}
-        className="!size-10 rounded-full [&>svg]:!size-5"
+        className="size-10! rounded-full [&>svg]:size-5!"
       />
     </div>
   );

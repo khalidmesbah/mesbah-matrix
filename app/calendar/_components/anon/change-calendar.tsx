@@ -71,7 +71,7 @@ export default function ChangeCalendar({ src }: { src: string }) {
                 setPublicUrl(e.target.value);
                 setValidationError('');
               }}
-              className="flex-grow"
+              className="grow"
               type="url"
             />
           </div>

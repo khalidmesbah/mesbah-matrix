@@ -17,7 +17,7 @@ import { AyahWidgetFontT, AyahWidgetT } from '@/lib/types/widgets';
 import { cn } from '@/lib/utils';
 import { DialogClose } from '@radix-ui/react-dialog';
 import { Settings2 } from 'lucide-react';
-import { useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 
 const DEFAULT_AYAH_DATA: AyahWidgetT = {
   text: 'بِسْمِ اللَّـهِ الرَّحْمَـٰنِ الرَّحِيمِ',
@@ -26,22 +26,26 @@ const DEFAULT_AYAH_DATA: AyahWidgetT = {
 
 export default function Ayah({ id }: { id: string }) {
   const { widgetStates, updateWidgetState } = useWidgetsStore((state) => state);
-  if (!widgetStates[id]) updateWidgetState(id, DEFAULT_AYAH_DATA);
-  const data = widgetStates[id] as AyahWidgetT;
+  const [data, setData] = useState<AyahWidgetT>(DEFAULT_AYAH_DATA);
   const [open, setOpen] = useState(false);
   const [text, setText] = useState(data.text);
   const [font, setFont] = useState(data.font);
+
+  useLayoutEffect(() => {
+    if (!widgetStates[id]) updateWidgetState(id, DEFAULT_AYAH_DATA);
+    else setData(widgetStates[id] as AyahWidgetT);
+  }, []);
 
   return (
     <>
       <p
         className={cn(
-          `break-words rounded-md bg-card px-2 text-center text-2xl/[3rem] ${
+          `bg-card rounded-md px-2 text-center text-2xl/[3rem] break-words ${
             data.font === '__className_af25f8' ? AmiriQuranFont.className : AmiriFont.className
           }`,
           {
-            'pb-4 pt-6': data.font === '__className_a12e74',
-            'pb-6 pt-4': data.font === '__className_af25f8',
+            'pt-6 pb-4': data.font === '__className_a12e74',
+            'pt-4 pb-6': data.font === '__className_af25f8',
           },
         )}
         dir="rtl"
@@ -94,12 +98,13 @@ export default function Ayah({ id }: { id: string }) {
               </div>
               <DialogClose asChild>
                 <Button
-                  onClick={() =>
+                  onClick={() => {
                     updateWidgetState(id, {
                       text,
                       font,
-                    })
-                  }
+                    });
+                    setData({ text, font });
+                  }}
                 >
                   Save
                 </Button>

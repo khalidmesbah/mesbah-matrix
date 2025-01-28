@@ -365,7 +365,7 @@ function TaskSettings({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="link" className={`h-full !w-6 rounded-none !bg-none !p-1`}>
+        <Button variant="link" className={`h-full w-6! rounded-none bg-none! p-1!`}>
           <Icon icon={<Settings size={20} />} />
         </Button>
       </DropdownMenuTrigger>
@@ -400,7 +400,7 @@ function DeleteTask({
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-          <button className="flex !w-full items-center">
+          <button className="flex w-full! items-center">
             <BadgeX className="mr-2 h-4 w-4" />
             <span>Delete</span>
           </button>
@@ -466,7 +466,7 @@ function EditTask({
     <Dialog>
       <DialogTrigger asChild>
         <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-          <button className="flex !w-full items-center">
+          <button className="flex w-full! items-center">
             <Pencil className="mr-2 h-4 w-4" />
             <span>Edit</span>
           </button>
@@ -515,7 +515,7 @@ function EditTask({
 function Icon({ icon, ...props }: { icon: ReactNode }) {
   return (
     <div
-      className={`${buttonVariants({ variant: 'link' })} h-full !w-6 rounded-none !p-1`}
+      className={`${buttonVariants({ variant: 'link' })} h-full w-6! rounded-none p-1!`}
       {...props}
     >
       {icon}

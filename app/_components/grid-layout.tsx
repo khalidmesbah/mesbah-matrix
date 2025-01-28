@@ -121,7 +121,7 @@ export default function GridLayout({ isAuthenticated }: { isAuthenticated: boole
         className={`h-full min-h-[calc(100vh-16px)] w-[5000px] rounded-md bg-primary/75`}
         verticalCompact={undefined}
         resizeHandle={
-          <div className="react-resizable-handle absolute bottom-0 right-0 !size-3 cursor-se-resize !bg-none !p-0 after:!hidden">
+          <div className="react-resizable-handle absolute bottom-0 right-0 size-3! cursor-se-resize bg-none! p-0! after:hidden!">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="5 5 24 24">
               <g fill="none" stroke="hsl(var(--primary))" strokeWidth={2}>
                 <path d="M10 20h10V10"></path>
@@ -135,7 +135,7 @@ export default function GridLayout({ isAuthenticated }: { isAuthenticated: boole
           const isWidgetLocked = item.static || isLayoutLocked;
           return (
             <div key={item.i}>
-              <ScrollArea className={`fc group relative size-full rounded-md bg-card p-2 shadow`}>
+              <ScrollArea className={`fc group relative size-full rounded-md bg-card p-2 shadow-sm`}>
                 <div
                   id="react-grid-item-handle"
                   className={`absolute left-0 right-0 top-0 z-10 flex h-0 w-full ${!isWidgetLocked && 'cursor-move'} gap-1 overflow-hidden bg-card p-0 transition-all duration-200 group-hover:h-7 group-hover:border-b-2 group-hover:p-1`}

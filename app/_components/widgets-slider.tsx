@@ -29,7 +29,7 @@ export default function WidgetsSlider() {
           icon={<Component />}
           size="icon"
           description={'Widgets'}
-          className="!size-10 rounded-full [&>svg]:!size-5"
+          className="size-10! rounded-full [&>svg]:size-5!"
         />
       </DialogTrigger>
       <DialogContent>

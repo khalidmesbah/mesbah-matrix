@@ -46,7 +46,7 @@ export default function PublicUrlInput() {
             setPublicUrl(e.target.value);
             setValidationError('');
           }}
-          className="flex-grow"
+          className="grow"
           type="url"
         />
         <Button

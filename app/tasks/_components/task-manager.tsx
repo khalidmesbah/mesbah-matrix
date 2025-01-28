@@ -613,7 +613,7 @@ export default function TaskManager() {
           isSidebarOpen ? 'w-64' : 'w-0'
         } flex flex-col overflow-hidden bg-card transition-all duration-300 ease-in-out`}
       >
-        <nav className="flex-grow space-y-2 p-4">
+        <nav className="grow space-y-2 p-4">
           <Button
             variant="ghost"
             className="w-full justify-start"

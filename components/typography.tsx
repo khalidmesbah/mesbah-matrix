@@ -25,7 +25,7 @@ export function H4({ text, className }: { text: string; className?: string }) {
   );
 }
 export function P({ text, className }: { text: string; className?: string }) {
-  return <p className={`leading-7 [&:not(:first-child)]:mt-6 ${className}`}>{text}</p>;
+  return <p className={`leading-7 not-first:mt-6 ${className}`}>{text}</p>;
 }
 export function Blockquote({ quote, className }: { quote: string; className?: string }) {
   return <blockquote className={`mt-6 border-l-2 pl-6 italic ${className}`}>{quote}</blockquote>;
