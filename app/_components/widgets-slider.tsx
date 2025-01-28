@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/dialog';
 import useWidgetsStore from '@/lib/stores/widgets';
 import { ArcticonsAyah } from '@/public/svgs/arcticons-ayah';
-import { Component } from 'lucide-react';
+import { AlarmClockPlus, Clock1, Clock2, Component, Hourglass } from 'lucide-react';
 import { useState } from 'react';
 import 'swiper/css';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -46,21 +46,89 @@ export default function WidgetsSlider() {
           noSwipingClass="no-swiping"
         >
           <SwiperSlide className="p-2">
-            <div
-              draggable={true}
-              className="no-swiping size-20 rounded-full bg-card transition-shadow hover:shadow-md"
-              onDragStart={() => {
-                const uuid = uuidv4();
-                setDroppingItem({ i: `ayah|${uuid}`, w: 10, h: 20, minW: 6, minH: 12 });
-                setIsWidgetsModalOpen(false);
-              }}
-              onClick={() => {
-                const uuid = uuidv4();
-                addWidget(`ayah|${uuid}`);
-                setIsWidgetsModalOpen(false);
-              }}
-            >
-              <ArcticonsAyah className="size-full stroke-2" />
+            <div className="flex flex-wrap gap-2">
+              <div
+                draggable={true}
+                className="no-swiping size-20 rounded-full bg-card transition-shadow hover:shadow-md"
+                onDragStart={() => {
+                  const uuid = uuidv4();
+                  setDroppingItem({ i: `ayah|${uuid}`, w: 10, h: 20, minW: 6, minH: 12 });
+                  setIsWidgetsModalOpen(false);
+                }}
+                onClick={() => {
+                  const uuid = uuidv4();
+                  addWidget(`ayah|${uuid}`);
+                  setIsWidgetsModalOpen(false);
+                }}
+              >
+                <ArcticonsAyah className="size-full stroke-2" />
+              </div>
+              <div
+                draggable={true}
+                className="no-swiping size-20 rounded-full bg-card transition-shadow hover:shadow-md"
+                onDragStart={() => {
+                  const uuid = uuidv4();
+                  setDroppingItem({ i: `analog-clock|${uuid}`, w: 10, h: 20, minW: 6, minH: 12 });
+                  setIsWidgetsModalOpen(false);
+                }}
+                onClick={() => {
+                  const uuid = uuidv4();
+                  addWidget(`analog-clock|${uuid}`);
+                  setIsWidgetsModalOpen(false);
+                }}
+              >
+                <Clock1 className="size-full stroke-2" />
+              </div>
+              <div
+                draggable={true}
+                className="no-swiping size-20 rounded-full bg-card transition-shadow hover:shadow-md"
+                onDragStart={() => {
+                  const uuid = uuidv4();
+                  setDroppingItem({ i: `digital-clock|${uuid}`, w: 10, h: 20, minW: 6, minH: 12 });
+                  setIsWidgetsModalOpen(false);
+                }}
+                onClick={() => {
+                  const uuid = uuidv4();
+                  addWidget(`digital-clock|${uuid}`);
+                  setIsWidgetsModalOpen(false);
+                }}
+              >
+                <Clock2 className="size-full stroke-2" />
+              </div>
+
+              <div
+                draggable={true}
+                className="no-swiping size-20 rounded-full bg-card transition-shadow hover:shadow-md"
+                onDragStart={() => {
+                  const uuid = uuidv4();
+                  setDroppingItem({ i: `pomodoro|${uuid}`, w: 10, h: 20, minW: 6, minH: 12 });
+                  setIsWidgetsModalOpen(false);
+                }}
+                onClick={() => {
+                  const uuid = uuidv4();
+                  addWidget(`pomodoro|${uuid}`);
+                  setIsWidgetsModalOpen(false);
+                }}
+              >
+                <AlarmClockPlus className="size-full stroke-2" />
+              </div>
+
+              <div
+                draggable={true}
+                className="no-swiping size-20 rounded-full bg-card transition-shadow hover:shadow-md"
+                onDragStart={() => {
+                  const uuid = uuidv4();
+                  setDroppingItem({ i: `time-passed|${uuid}`, w: 10, h: 20, minW: 6, minH: 12 });
+                  setIsWidgetsModalOpen(false);
+                }}
+                onClick={() => {
+                  const uuid = uuidv4();
+                  addWidget(`time-passed|${uuid}`);
+                  setIsWidgetsModalOpen(false);
+                }}
+              >
+                <Hourglass className="size-full stroke-2" />
+              </div>
             </div>
           </SwiperSlide>
           <SwiperSlide>Slide 2</SwiperSlide>

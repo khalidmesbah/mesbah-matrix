@@ -1,4 +1,10 @@
-import { BreakpointT, CompactTypeT, DroppingItemT } from '@/lib/types/widgets';
+import {
+  BreakpointT,
+  CompactTypeT,
+  DroppingItemT,
+  WidgetStatesT,
+  WidgetT,
+} from '@/lib/types/widgets';
 import { Layouts } from 'react-grid-layout';
 import { v4 as uuidv4 } from 'uuid';
 import { create } from 'zustand';
@@ -29,11 +35,14 @@ type WidgetsStore = {
   isLayoutLocked: boolean;
   droppingItem: DroppingItemT;
   setLayouts: (layouts: Layouts) => void;
+  setWidgetStates: (states: WidgetStatesT) => void;
   setCurrentBreakpoint: (breakpoint: BreakpointT) => void;
   setCompactType: (compactType: CompactTypeT) => void;
   setIsLayoutLocked: (isLocked: boolean) => void;
   setDroppingItem: (newDroppingItem: DroppingItemT) => void;
   addWidget: (name: string) => void;
+  widgetStates: WidgetStatesT;
+  updateWidgetState: (id: string, newState: WidgetT) => void;
 };
 
 const useWidgetsStore = create<WidgetsStore>(
@@ -42,11 +51,22 @@ const useWidgetsStore = create<WidgetsStore>(
     compactType: null,
     isLayoutLocked: false,
     layouts: { lg: [] },
+    widgetStates: {},
     droppingItem: undefined,
     setLayouts: (layouts: Layouts) => set({ layouts }),
+    setWidgetStates: (states: WidgetStatesT) =>
+      set((state) => {
+        state.widgetStates = states;
+        return { ...state };
+      }),
     setCurrentBreakpoint: (breakpoint) => set({ currentBreakpoint: breakpoint }),
     setCompactType: (compactType) => set({ compactType }),
     setIsLayoutLocked: (isLocked) => set({ isLayoutLocked: isLocked }),
+    updateWidgetState: (id: string, newWidgetState: WidgetT) =>
+      set((state) => {
+        state.widgetStates[id] = newWidgetState;
+        return { ...state };
+      }),
     addWidget: (name: string) =>
       set((state) => {
         const newLayouts = structuredClone(state.layouts);

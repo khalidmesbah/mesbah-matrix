@@ -1,19 +1,19 @@
 'use client';
 
 import Icon from '@/components/icon';
-import { setLayouts } from '@/lib/server-actions/widgets';
+import { setWidgets } from '@/lib/server-actions/widgets';
 import useWidgetsStore from '@/lib/stores/widgets';
+import { WidgetsT } from '@/lib/types/widgets';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Lock, LockOpen, Save, Settings2 } from 'lucide-react'; // Importing Lucide icons
-import { Layouts } from 'react-grid-layout';
 import { toast } from 'sonner';
 import WidgetsSlider from './widgets-slider';
 
 export default function FloatingDock() {
-  const { layouts, isLayoutLocked, setIsLayoutLocked } = useWidgetsStore();
+  const { layouts, widgetStates, isLayoutLocked, setIsLayoutLocked } = useWidgetsStore();
   const queryClient = useQueryClient();
   const { mutate, isPending } = useMutation({
-    mutationFn: (newLayouts: Layouts) => setLayouts(newLayouts),
+    mutationFn: (newWidgets: WidgetsT) => setWidgets(newWidgets),
     onSuccess: () => {
       toast.success('The new layout has been saved successfully');
     },
@@ -21,7 +21,7 @@ export default function FloatingDock() {
       toast.error(`Something went wrong while saving the layouts ${JSON.stringify(error)}`);
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['layouts'] });
+      queryClient.invalidateQueries({ queryKey: ['widgets'] });
     },
   });
 
@@ -54,7 +54,7 @@ export default function FloatingDock() {
       <Icon
         key={'save'}
         icon={<Save />}
-        onClick={() => mutate(layouts)}
+        onClick={() => mutate({ layouts, states: widgetStates })}
         disabled={isPending}
         loading={isPending}
         size="icon"

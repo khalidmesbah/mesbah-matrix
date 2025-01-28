@@ -2,9 +2,9 @@
 
 import CloudLoader from '@/components/cloud-loader';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
-import { getLayouts } from '@/lib/server-actions/widgets';
+import { getWidgets } from '@/lib/server-actions/widgets';
 import useWidgetsStore from '@/lib/stores/widgets';
-import { BreakpointT } from '@/lib/types/widgets';
+import { BreakpointT, WidgetsT } from '@/lib/types/widgets';
 import { useQuery } from '@tanstack/react-query';
 import { Frame, Lock, LockOpen, Move, X } from 'lucide-react';
 import { useEffect } from 'react';
@@ -23,7 +23,9 @@ export default function GridLayout({ isAuthenticated }: { isAuthenticated: boole
     compactType,
     isLayoutLocked,
     droppingItem,
+    widgetStates,
     setLayouts,
+    setWidgetStates,
     setCurrentBreakpoint,
     setIsLayoutLocked,
     setDroppingItem,
@@ -34,16 +36,22 @@ export default function GridLayout({ isAuthenticated }: { isAuthenticated: boole
     isLoading,
     error,
   } = useQuery({
-    queryKey: ['layouts'],
-    queryFn: () => getLayouts() as Promise<Layouts>,
+    queryKey: ['widgets'],
+    queryFn: () => getWidgets() as Promise<WidgetsT>,
     enabled: isAuthenticated,
     staleTime: Infinity,
     refetchOnWindowFocus: false,
   });
+  useEffect(() => {
+    console.log(`-----------------------------`);
+    console.log(layouts, widgetStates);
+    console.log(`-----------------------------`);
+  });
 
   useEffect(() => {
     if (queryData && isAuthenticated) {
-      setLayouts(queryData);
+      setLayouts(queryData.layouts);
+      setWidgetStates(queryData.states);
     }
   }, [queryData, isAuthenticated]);
 
@@ -64,7 +72,9 @@ export default function GridLayout({ isAuthenticated }: { isAuthenticated: boole
     Object.keys(newLayouts).forEach((key) => {
       newLayouts[key] = newLayouts[key].filter((existingItem) => existingItem.i !== i);
     });
+    delete widgetStates[i];
     setLayouts(newLayouts);
+    setWidgetStates(widgetStates);
   };
 
   const onDrop = (layout: Layout[]) => {

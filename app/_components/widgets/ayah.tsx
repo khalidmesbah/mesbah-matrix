@@ -1,6 +1,5 @@
 'use client';
 
-import InfinityLoader from '@/components/infinity-loader';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -13,86 +12,25 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Textarea } from '@/components/ui/textarea';
 import { AmiriFont, AmiriQuranFont } from '@/lib/fonts/fonts';
-import { getWidgetData, setWidgetData } from '@/lib/server-actions/widgets';
+import useWidgetsStore from '@/lib/stores/widgets';
 import { AyahWidgetFontT, AyahWidgetT } from '@/lib/types/widgets';
 import { cn } from '@/lib/utils';
 import { DialogClose } from '@radix-ui/react-dialog';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Settings2 } from 'lucide-react';
 import { useState } from 'react';
-import { toast } from 'sonner';
 
 const DEFAULT_AYAH_DATA: AyahWidgetT = {
   text: 'بِسْمِ اللَّـهِ الرَّحْمَـٰنِ الرَّحِيمِ',
   font: '__className_af25f8',
 };
 
-export default function Ayah({
-  id = 'none',
-  isAuthenticated,
-}: {
-  id?: string;
-  isAuthenticated: boolean;
-}) {
+export default function Ayah({ id }: { id: string }) {
+  const { widgetStates, updateWidgetState } = useWidgetsStore((state) => state);
+  if (!widgetStates[id]) updateWidgetState(id, DEFAULT_AYAH_DATA);
+  const data = widgetStates[id] as AyahWidgetT;
   const [open, setOpen] = useState(false);
-  const [localAyahData, setLocalAyahData] = useState<AyahWidgetT>(DEFAULT_AYAH_DATA);
-  const [text, setText] = useState(DEFAULT_AYAH_DATA.text);
-  const [font, setFont] = useState(DEFAULT_AYAH_DATA.font);
-
-  const queryClient = useQueryClient();
-  const {
-    data: queryData,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ['ayah', id],
-    queryFn: () => getWidgetData(id) as Promise<AyahWidgetT>,
-    enabled: isAuthenticated,
-    staleTime: Infinity,
-    refetchOnWindowFocus: false,
-  });
-
-  const mutation = useMutation({
-    mutationFn: async (newWidgetData: AyahWidgetT) => setWidgetData(id, newWidgetData),
-    onMutate: async (ayah) => {
-      await queryClient.cancelQueries({ queryKey: ['ayah', id] });
-
-      const previousAyah = queryClient.getQueryData(['ayah', id]);
-
-      queryClient.setQueryData(['ayah', id], (old: AyahWidgetT) => {
-        const newAyah = structuredClone(old);
-        newAyah.text = ayah.text;
-        newAyah.font = ayah.font;
-        return newAyah;
-      });
-
-      return { previousAyah };
-    },
-    onError: (_err, _old, context) => {
-      queryClient.setQueryData(['ayah', id], context?.previousAyah);
-      toast.error(`oops, something went wrong while saving the ayah`);
-    },
-    onSuccess: (_newData) => {
-      toast.success('The ayah been saved successfully');
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['ayah', id] });
-    },
-  });
-
-  // Use either the query data or local state depending on whether there's a user
-
-  const handleData = () => {
-    if (isAuthenticated) {
-      mutation.mutate({ text, font });
-    } else {
-      setLocalAyahData({ text, font });
-    }
-  };
-
-  if ((isAuthenticated && isLoading) || (isLoading && !queryData)) return <InfinityLoader />;
-  if (isAuthenticated && error) return <div>Error: {error.message}</div>;
-  const data = isAuthenticated ? (queryData as AyahWidgetT) : localAyahData;
+  const [text, setText] = useState(data.text);
+  const [font, setFont] = useState(data.font);
 
   return (
     <>
@@ -155,7 +93,16 @@ export default function Ayah({
                 </RadioGroup>
               </div>
               <DialogClose asChild>
-                <Button onClick={handleData}>Save</Button>
+                <Button
+                  onClick={() =>
+                    updateWidgetState(id, {
+                      text,
+                      font,
+                    })
+                  }
+                >
+                  Save
+                </Button>
               </DialogClose>
             </div>
           </DialogContent>

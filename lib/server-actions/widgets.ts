@@ -1,10 +1,9 @@
 'use server';
 
 import { db } from '@/firebase/init';
-import { DefaultWidgetsStateT, WidgetT } from '@/types/widgets';
+import { DefaultWidgetsStateT, WidgetsT, WidgetT } from '@/types/widgets';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { Layouts } from 'react-grid-layout';
 
 const defaultWidgetsState: DefaultWidgetsStateT = {
   ayah: {
@@ -13,38 +12,40 @@ const defaultWidgetsState: DefaultWidgetsStateT = {
   },
 };
 
-const getLayouts = async (): Promise<Layouts | undefined> => {
+const getWidgets = async (): Promise<WidgetsT | undefined> => {
+  console.log('the widgets are');
   try {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
 
     if (!user) throw 'there is no user';
 
-    const resLayouts = await getDoc(doc(db, 'users', user.id, 'data', 'aura', 'others', 'layouts'));
-    let layouts = resLayouts.data() as Layouts;
+    const resWidgets = await getDoc(doc(db, 'users', user.id, 'data', 'widgets'));
+    let widgets = resWidgets.data() as WidgetsT;
+    console.log(widgets);
 
-    if (!layouts) {
-      layouts = { lg: [], md: [], sm: [], xs: [], xxs: [] };
-      await setDoc(doc(db, 'users', user.id, 'data', 'aura', 'others', 'layouts'), layouts);
+    if (!widgets) {
+      widgets = {
+        layouts: { lg: [], md: [], sm: [], xs: [], xxs: [] },
+        states: {},
+      };
+      await setDoc(doc(db, 'users', user.id, 'data', 'widgets'), widgets);
     }
 
-    return layouts;
+    return widgets;
   } catch (error) {
     console.error(error);
   }
 };
 
-const setLayouts = async (newLayouts: Layouts): Promise<void> => {
+const setWidgets = async (newWidgets: WidgetsT): Promise<void> => {
   try {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
 
     if (!user) throw 'there is no user';
 
-    const res = await setDoc(
-      doc(db, 'users', user.id, 'data', 'aura', 'others', 'layouts'),
-      newLayouts,
-    );
+    const res = await setDoc(doc(db, 'users', user.id, 'data', 'widgets'), newWidgets);
 
     return res;
   } catch (error) {
@@ -95,4 +96,4 @@ const setWidgetData = async (widgetId: string, newWidgetState: WidgetT): Promise
   }
 };
 
-export { getLayouts, getWidgetData, setLayouts, setWidgetData };
+export { getWidgetData, getWidgets, setWidgetData, setWidgets };

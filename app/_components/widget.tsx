@@ -19,8 +19,8 @@ export default function Widget({ id, isAuthenticated }: WidgetT) {
   const widgets: WidgetsT = {
     'analog-clock': <AnalogClock />,
     'digital-clock': <DigitalClock id={id} />,
-    'time-passed': <TimeSinceBirth />,
-    ayah: <Ayah id={id} isAuthenticated={isAuthenticated} />,
+    'time-passed': <TimeSinceBirth id={id} />,
+    ayah: <Ayah id={id} />,
     pomodoro: <Pomodoro />,
   };
 

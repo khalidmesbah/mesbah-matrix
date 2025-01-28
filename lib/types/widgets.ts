@@ -1,3 +1,5 @@
+import { Layouts } from 'react-grid-layout';
+
 export type BreakpointT = 'xxs' | 'xs' | 'sm' | 'md' | 'lg';
 export type CompactTypeT = 'vertical' | 'horizontal' | null;
 export type DroppingItemT =
@@ -21,6 +23,10 @@ export type DigitalClockWidgetT = {
   text: string;
   time: string;
 };
+export type TimePassedWidgetT = {
+  selectedUnit: string;
+  date: string;
+};
 
 export type DefaultWidgetsStateT = {
   ayah: AyahWidgetT;
@@ -28,7 +34,15 @@ export type DefaultWidgetsStateT = {
 
 export type AyahWidgetFontT = '__className_a12e74' | '__className_af25f8';
 
-export type WidgetT = AyahWidgetT | DigitalClockWidgetT | null;
-export type WidgetsT = WidgetT[];
+export type WidgetT = AyahWidgetT | DigitalClockWidgetT | TimePassedWidgetT | null;
+
+export type WidgetsT = {
+  layouts: Layouts;
+  states: WidgetStatesT;
+};
+
+export type WidgetStatesT = {
+  [key: string]: WidgetT;
+};
 
 // TODO: change to aura.ts

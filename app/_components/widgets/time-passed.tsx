@@ -18,6 +18,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import useWidgetsStore from '@/lib/stores/widgets';
+import { TimePassedWidgetT } from '@/lib/types/widgets';
 import { format } from 'date-fns';
 import { Calendar as CalendarIcon, Settings } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
@@ -36,12 +38,20 @@ type TimePassed = {
   falls: number;
 };
 
-export default function TimeSinceBirth() {
-  const [timePassed, setTimePassed] = useState<Partial<TimePassed>>({});
-  const [selectedUnit, setSelectedUnit] = useState<string>(''); // Track the selected unit
+const DEFAULT_TIME_SINCE_BIRTH_DATA: TimePassedWidgetT = {
+  selectedUnit: 'seconds',
+  date: `${new Date()}`,
+};
 
-  // Track the birth date input
-  const [date, setDate] = useState<Date>(new Date());
+export default function TimeSinceBirth({ id }: { id: string }) {
+  const { widgetStates, updateWidgetState } = useWidgetsStore((state) => state);
+
+  if (!widgetStates[id]) updateWidgetState(id, DEFAULT_TIME_SINCE_BIRTH_DATA);
+
+  const data = widgetStates[id] as TimePassedWidgetT;
+  const [timePassed, setTimePassed] = useState<Partial<TimePassed>>({});
+  const [selectedUnit, setSelectedUnit] = useState<string>(data.selectedUnit);
+  const [date, setDate] = useState<Date>(new Date(data.date));
 
   const calculateTimePassed = useCallback(() => {
     const now = new Date();
@@ -131,7 +141,7 @@ export default function TimeSinceBirth() {
               </PopoverContent>
             </Popover>
 
-            <Select onValueChange={setSelectedUnit}>
+            <Select onValueChange={setSelectedUnit} value={selectedUnit}>
               <SelectTrigger className="w-full rounded-lg border border-gray-300 p-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <SelectValue placeholder="Select time unit" />
               </SelectTrigger>
