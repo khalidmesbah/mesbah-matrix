@@ -34,7 +34,16 @@ export type DefaultWidgetsStateT = {
 
 export type AyahWidgetFontT = '__className_a12e74' | '__className_af25f8';
 
-export type WidgetT = AyahWidgetT | DigitalClockWidgetT | TimePassedWidgetT | null;
+export type ImageWidgetStateT = {
+  url: string;
+};
+
+export type WidgetT =
+  | AyahWidgetT
+  | DigitalClockWidgetT
+  | TimePassedWidgetT
+  | ImageWidgetStateT
+  | null;
 
 export type WidgetsT = {
   layouts: Layouts;

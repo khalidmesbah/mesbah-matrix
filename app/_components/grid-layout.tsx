@@ -118,10 +118,10 @@ export default function GridLayout({ isAuthenticated }: { isAuthenticated: boole
         isDraggable={!isLayoutLocked}
         isResizable={!isLayoutLocked}
         isDroppable={true}
-        className={`h-full min-h-[calc(100vh-16px)] w-[5000px] rounded-md bg-primary/75`}
+        className={`bg-primary/75 h-full min-h-[calc(100vh-16px)] w-[5000px] rounded-md`}
         verticalCompact={undefined}
         resizeHandle={
-          <div className="react-resizable-handle absolute bottom-0 right-0 size-3! cursor-se-resize bg-none! p-0! after:hidden!">
+          <div className="react-resizable-handle absolute right-0 bottom-0 size-3! cursor-se-resize bg-none! p-0! after:hidden!">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="5 5 24 24">
               <g fill="none" stroke="hsl(var(--primary))" strokeWidth={2}>
                 <path d="M10 20h10V10"></path>
@@ -135,17 +135,19 @@ export default function GridLayout({ isAuthenticated }: { isAuthenticated: boole
           const isWidgetLocked = item.static || isLayoutLocked;
           return (
             <div key={item.i}>
-              <ScrollArea className={`fc group relative size-full rounded-md bg-card p-2 shadow-sm`}>
+              <ScrollArea
+                className={`fc group bg-card relative size-full rounded-md p-2 shadow-sm`}
+              >
                 <div
                   id="react-grid-item-handle"
-                  className={`absolute left-0 right-0 top-0 z-10 flex h-0 w-full ${!isWidgetLocked && 'cursor-move'} gap-1 overflow-hidden bg-card p-0 transition-all duration-200 group-hover:h-7 group-hover:border-b-2 group-hover:p-1`}
+                  className={`absolute top-0 right-0 left-0 z-10 flex h-0 w-full ${!isWidgetLocked && 'cursor-move'} bg-card gap-1 overflow-hidden p-0 transition-all duration-200 group-hover:h-7 group-hover:border-b-2 group-hover:p-1`}
                 >
                   <Move className={`${isWidgetLocked && 'hidden'} size-5`} />
 
                   {isWidgetLocked ? (
                     <Lock
                       id="lock"
-                      className="absolute left-1/2 size-5 -translate-x-1/2 transform cursor-pointer rounded-full bg-primary p-1 text-xl text-primary-foreground shadow-md transition-all duration-300 ease-in-out hover:scale-110 hover:bg-primary/90"
+                      className="bg-primary text-primary-foreground hover:bg-primary/90 absolute left-1/2 size-5 -translate-x-1/2 transform cursor-pointer rounded-full p-1 text-xl shadow-md transition-all duration-300 ease-in-out hover:scale-110"
                       onClick={() => {
                         const newLayouts = structuredClone(layouts);
                         const newItem = newLayouts[currentBreakpoint].find(
@@ -159,7 +161,7 @@ export default function GridLayout({ isAuthenticated }: { isAuthenticated: boole
                   ) : (
                     <LockOpen
                       id="lock-open"
-                      className="absolute left-1/2 size-5 -translate-x-1/2 transform cursor-pointer rounded-full bg-secondary p-1 text-xl text-secondary-foreground shadow-md transition-all duration-300 ease-in-out hover:scale-110 hover:bg-secondary/90"
+                      className="bg-secondary text-secondary-foreground hover:bg-secondary/90 absolute left-1/2 size-5 -translate-x-1/2 transform cursor-pointer rounded-full p-1 text-xl shadow-md transition-all duration-300 ease-in-out hover:scale-110"
                       onClick={() => {
                         const newLayouts = structuredClone(layouts);
                         const newItem = newLayouts[currentBreakpoint].find(
@@ -173,7 +175,7 @@ export default function GridLayout({ isAuthenticated }: { isAuthenticated: boole
                   <X
                     onClick={() => handleDeleteWidget(item.i)}
                     id="remove"
-                    className="ml-auto size-5 cursor-pointer rounded-full bg-destructive p-1 text-xl text-white hover:bg-destructive/90"
+                    className="bg-destructive hover:bg-destructive/90 ml-auto size-5 cursor-pointer rounded-full p-1 text-xl text-white"
                   />
                   <Frame
                     id="fit-widget"
@@ -198,7 +200,7 @@ export default function GridLayout({ isAuthenticated }: { isAuthenticated: boole
                         setLayouts(newLayouts);
                       }
                     }}
-                    className="size-5 cursor-pointer rounded-full bg-primary/50 p-1 text-xl text-white hover:bg-accent/90"
+                    className="bg-primary/50 hover:bg-accent/90 size-5 cursor-pointer rounded-full p-1 text-xl text-white"
                   />
                 </div>
                 <Widget id={item.i} isAuthenticated={isAuthenticated} />

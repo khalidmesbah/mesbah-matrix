@@ -2,6 +2,7 @@ import { JSX } from 'react';
 import AnalogClock from './widgets/analog-clock';
 import Ayah from './widgets/ayah';
 import DigitalClock from './widgets/digital-clock';
+import ImageWidget from './widgets/image';
 import Pomodoro from './widgets/pomodoro';
 import TimeSinceBirth from './widgets/time-passed';
 
@@ -14,7 +15,7 @@ type WidgetT = {
   isAuthenticated: boolean;
 };
 
-export default function Widget({ id, isAuthenticated }: WidgetT) {
+export default function Widget({ id }: WidgetT) {
   const name = id.split('|')[0] as keyof WidgetsT;
   const widgets: WidgetsT = {
     'analog-clock': <AnalogClock />,
@@ -22,6 +23,7 @@ export default function Widget({ id, isAuthenticated }: WidgetT) {
     'time-passed': <TimeSinceBirth id={id} />,
     ayah: <Ayah id={id} />,
     pomodoro: <Pomodoro />,
+    image: <ImageWidget id={id} />,
   };
 
   return <div className="fc size-full">{name in widgets ? widgets[name] : 'widget not found'}</div>;
