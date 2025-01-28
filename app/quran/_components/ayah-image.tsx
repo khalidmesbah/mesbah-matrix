@@ -60,7 +60,7 @@ export function AyahImage({ surah, ayah }: AyahImageProps) {
             src={src}
             width={1000}
             height={1000}
-            placeholder="blur-sm"
+            placeholder="blur"
             blurDataURL="/imgs/ayah-placeholder.jpeg"
             className="rounded-md bg-white p-2"
             alt={`surah: ${surah}, ayah: ${ayah}`}
