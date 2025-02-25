@@ -41,7 +41,7 @@ export default function Tutorial({ children }: { children: React.ReactNode }) {
             <CheckCircle className="h-5 w-5 text-green-500" />
             Step 2: Access Calendar Settings
           </h3>
-          <ul className="list-inside list-disc space-y-2 text-muted-foreground">
+          <ul className="text-muted-foreground list-inside list-disc space-y-2">
             <li>
               Click the <Settings className="inline h-4 w-4" /> Settings icon in the top right
             </li>
@@ -55,7 +55,7 @@ export default function Tutorial({ children }: { children: React.ReactNode }) {
             <CheckCircle className="h-5 w-5 text-green-500" />
             Step 3: Locate the Public URL
           </h3>
-          <ul className="list-inside list-disc space-y-2 text-muted-foreground">
+          <ul className="text-muted-foreground list-inside list-disc space-y-2">
             <li>Scroll down to the "Integrate calendar" section</li>
             <li>Find the "Public URL to this calendar" field</li>
             <li>Copy the URL provided in this field</li>
@@ -72,7 +72,7 @@ export default function Tutorial({ children }: { children: React.ReactNode }) {
           <div className="aspect-video">
             <YouTubeEmbed videoid="fqPXx03Rl2Y" params="controls=0" />
           </div>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             This video tutorial provides a visual guide to help you through the process of obtaining
             and using your Google Calendar's public URL.
           </p>

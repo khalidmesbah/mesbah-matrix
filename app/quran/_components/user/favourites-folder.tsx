@@ -93,7 +93,7 @@ export default function FavouritesFolder() {
                   <DialogClose key={ayah.numberInSurah}>
                     <p
                       onClick={() => setNumberOfAyah(ayah.numberOfAyah)}
-                      className={`rounded-md bg-secondary p-2 pt-4 text-base/8 transition-colors hover:bg-secondary/80 ${AmiriFont.className}`}
+                      className={`bg-secondary hover:bg-secondary/80 rounded-md p-2 pt-4 text-base/8 transition-colors ${AmiriFont.className}`}
                       lang="ar"
                       dir="rtl"
                     >

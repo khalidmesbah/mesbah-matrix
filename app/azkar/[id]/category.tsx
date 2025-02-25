@@ -22,7 +22,7 @@ export default function Category({ id }: { id: string }) {
 
   return (
     <div>
-      <h2 className="mb-2 flex flex-col items-center justify-between gap-2 rounded-md bg-primary p-2 xs:flex-row">
+      <h2 className="bg-primary xs:flex-row mb-2 flex flex-col items-center justify-between gap-2 rounded-md p-2">
         <p>{categories[id].en}</p>
         <p dir="rtl">{(categories as AzkarCategoriesT)[id].ar}</p>
       </h2>

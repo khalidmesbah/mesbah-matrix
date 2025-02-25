@@ -52,7 +52,7 @@ export default function ChangeCalendar({ src }: { src: string }) {
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
-        <Button variant="link" size={'sm'} className="absolute -top-[8px] right-0 text-foreground">
+        <Button variant="link" size={'sm'} className="text-foreground absolute -top-[8px] right-0">
           Change
         </Button>
       </SheetTrigger>
@@ -76,7 +76,7 @@ export default function ChangeCalendar({ src }: { src: string }) {
             />
           </div>
           {validationError && <p className="text-sm text-red-500">{validationError}</p>}
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             Use this URL to access this calendar from a web browser.
           </p>
         </div>

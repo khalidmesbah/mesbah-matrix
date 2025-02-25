@@ -86,7 +86,7 @@ function PractiseReminders() {
             }}
             render={(reminder) => (
               <Card key={reminder.id} className="p-2">
-                <CardContent className="select-none break-all p-0 text-2xl font-semibold">
+                <CardContent className="p-0 text-2xl font-semibold break-all select-none">
                   {reminder.text}
                 </CardContent>
                 <CardFooter className="mt-2 p-0">
@@ -115,7 +115,7 @@ function PractiseReminders() {
 function DailyReminderHeader() {
   const { current, setCurrent } = useDailyRemindersStore((state) => state);
   return (
-    <div className="mb-2 hidden items-center justify-between gap-2 rounded-md bg-secondary p-2 xs:flex-row sm:flex">
+    <div className="bg-secondary xs:flex-row mb-2 hidden items-center justify-between gap-2 rounded-md p-2 sm:flex">
       <h1 className="text-2xl">Daily Reminders</h1>
 
       <div className="flex items-center justify-between gap-2">
@@ -134,10 +134,10 @@ function DailyReminderHeaderWithSheet() {
   const { current, setCurrent } = useDailyRemindersStore((state) => state);
   return (
     <Sheet>
-      <div className="mb-2 flex flex-col items-center justify-between gap-2 rounded-md bg-secondary p-2 xs:flex-row sm:hidden">
+      <div className="bg-secondary xs:flex-row mb-2 flex flex-col items-center justify-between gap-2 rounded-md p-2 sm:hidden">
         <h1 className="text-2xl">Daily Reminders</h1>
         <SheetTrigger asChild>
-          <Button className="w-full xs:w-fit">Manage</Button>
+          <Button className="xs:w-fit w-full">Manage</Button>
         </SheetTrigger>
       </div>
       <SheetContent>
@@ -253,7 +253,7 @@ function BrowseReminders() {
                 <Draggable index={index} draggableId={id} key={id}>
                   {(provided) => (
                     <div
-                      className="my-[2px] flex items-center gap-1 rounded-md border border-white bg-card p-1"
+                      className="bg-card my-[2px] flex items-center gap-1 rounded-md border border-white p-1"
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
                       ref={provided.innerRef}
@@ -262,7 +262,7 @@ function BrowseReminders() {
                         {reminder.done ? <BadgeCheck size={20} /> : <Badge size={20} />}
                       </div>
 
-                      <p className="line-clamp-3 flex-1 break-all font-semibold">{reminder.text}</p>
+                      <p className="line-clamp-3 flex-1 font-semibold break-all">{reminder.text}</p>
 
                       <EditReminder reminder={reminder} />
 
@@ -341,7 +341,7 @@ const EditReminder = ({ reminder }: { reminder: DailyReminderT }) => {
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 bg-card">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="bg-card space-y-6">
             <FormField
               control={form.control}
               name="text"
@@ -374,14 +374,14 @@ const EditReminder = ({ reminder }: { reminder: DailyReminderT }) => {
 
 function FinishedReminders() {
   return (
-    <div className="flex min-h-[50vh] items-center justify-center bg-background">
+    <div className="bg-background flex min-h-[50vh] items-center justify-center">
       <div className="text-center">
-        <h2 className="text-3xl font-bold text-primary">Hooray! You&apos;re all caught up!</h2>
-        <p className="mt-4 text-xl text-foreground">
+        <h2 className="text-primary text-3xl font-bold">Hooray! You&apos;re all caught up!</h2>
+        <p className="text-foreground mt-4 text-xl">
           Take a moment to celebrate your productivity and accomplishments.
         </p>
         <div className="mt-6">
-          <PartyPopperIcon className="mx-auto h-12 w-12 text-primary" />
+          <PartyPopperIcon className="text-primary mx-auto h-12 w-12" />
         </div>
       </div>
     </div>
@@ -390,13 +390,13 @@ function FinishedReminders() {
 
 function NoReminders() {
   return (
-    <div className="flex flex-col items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8">
+    <div className="bg-background flex flex-col items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-md text-center">
-        <CalendarIcon className="mx-auto h-12 w-12 text-primary" />
-        <h2 className="mt-4 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+        <CalendarIcon className="text-primary mx-auto h-12 w-12" />
+        <h2 className="text-foreground mt-4 text-2xl font-bold tracking-tight sm:text-3xl">
           No reminders yet
         </h2>
-        <p className="mt-4 text-muted-foreground">
+        <p className="text-muted-foreground mt-4">
           It looks like you haven&apos;t added any reminders yet. Why not create one and stay on top
           of your tasks?
         </p>

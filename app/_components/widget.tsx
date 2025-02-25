@@ -5,6 +5,7 @@ import DigitalClock from './widgets/digital-clock';
 import ImageWidget from './widgets/image';
 import Pomodoro from './widgets/pomodoro';
 import TimeSinceBirth from './widgets/time-passed';
+import Video from './widgets/video';
 
 type WidgetsT = {
   [key: string]: JSX.Element;
@@ -24,6 +25,7 @@ export default function Widget({ id }: WidgetT) {
     ayah: <Ayah id={id} />,
     pomodoro: <Pomodoro />,
     image: <ImageWidget id={id} />,
+    video: <Video id={id} />,
   };
 
   return <div className="fc size-full">{name in widgets ? widgets[name] : 'widget not found'}</div>;

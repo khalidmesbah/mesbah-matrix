@@ -53,7 +53,7 @@ export default function AddList() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant={'secondary'} className={`m-2 min-w-[250px] max-w-[425px] flex-1 border`}>
+        <Button variant={'secondary'} className={`m-2 max-w-[425px] min-w-[250px] flex-1 border`}>
           Add List
         </Button>
       </DialogTrigger>
@@ -87,7 +87,7 @@ export default function AddList() {
                       <Icon
                         description="Choose a color"
                         icon={<Brush />}
-                        className="pointer-events-none h-min p-1 text-foreground"
+                        className="text-foreground pointer-events-none h-min p-1"
                         variant="link"
                         size="sm"
                       />

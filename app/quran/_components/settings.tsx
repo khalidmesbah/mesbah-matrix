@@ -77,7 +77,7 @@ export default function Settings() {
         <div className="flex flex-col gap-2">
           <Label
             htmlFor="colored-tajweed"
-            className="flex flex-1 items-center justify-between gap-2 rounded-md p-1 transition-colors hover:bg-secondary"
+            className="hover:bg-secondary flex flex-1 items-center justify-between gap-2 rounded-md p-1 transition-colors"
           >
             <Palette /> <p className="flex-1">Colored Tajweed</p>
             <Switch
@@ -90,7 +90,7 @@ export default function Settings() {
           </Label>
 
           {mode === 'once' && (
-            <Label className="flex flex-1 items-center justify-between gap-2 rounded-md p-1 transition-colors hover:bg-secondary">
+            <Label className="hover:bg-secondary flex flex-1 items-center justify-between gap-2 rounded-md p-1 transition-colors">
               <Repeat2 />
               <p className="flex-1">Autoplay</p>
               <Switch
@@ -102,11 +102,11 @@ export default function Settings() {
             </Label>
           )}
 
-          <Label className="flex flex-1 items-center justify-between gap-2 rounded-md p-1 transition-colors hover:bg-secondary">
+          <Label className="hover:bg-secondary flex flex-1 items-center justify-between gap-2 rounded-md p-1 transition-colors">
             <Icon
               description="Recitation"
               icon={<MicVocal />}
-              className="pointer-events-none h-min p-1 text-foreground"
+              className="text-foreground pointer-events-none h-min p-1"
               variant="link"
               size="sm"
             />
@@ -133,12 +133,12 @@ export default function Settings() {
 
           <Label
             htmlFor="tafir"
-            className="flex flex-1 items-center justify-between gap-2 rounded-md p-1 transition-colors hover:bg-secondary"
+            className="hover:bg-secondary flex flex-1 items-center justify-between gap-2 rounded-md p-1 transition-colors"
           >
             <Icon
               description="Tafsir"
               icon={<BookOpen />}
-              className="pointer-events-none h-min p-1 text-foreground"
+              className="text-foreground pointer-events-none h-min p-1"
               variant="link"
               size="sm"
             />
@@ -164,12 +164,12 @@ export default function Settings() {
 
           <Label
             htmlFor="translation"
-            className="flex flex-1 items-center justify-between gap-2 rounded-md p-1 transition-colors hover:bg-secondary"
+            className="hover:bg-secondary flex flex-1 items-center justify-between gap-2 rounded-md p-1 transition-colors"
           >
             <Icon
               description="Translation"
               icon={<Languages />}
-              className="pointer-events-none h-min p-1 text-foreground"
+              className="text-foreground pointer-events-none h-min p-1"
               variant="link"
               size="sm"
             />
@@ -195,12 +195,12 @@ export default function Settings() {
 
           <Label
             htmlFor="transliteration"
-            className="flex flex-1 items-center justify-between gap-2 rounded-md p-1 transition-colors hover:bg-secondary"
+            className="hover:bg-secondary flex flex-1 items-center justify-between gap-2 rounded-md p-1 transition-colors"
           >
             <Icon
               description="Transliteration"
               icon={<Speech />}
-              className="pointer-events-none h-min p-1 text-foreground"
+              className="text-foreground pointer-events-none h-min p-1"
               variant="link"
               size="sm"
             />
@@ -226,7 +226,7 @@ export default function Settings() {
 
           <Label
             htmlFor="rate"
-            className="flex flex-1 items-center justify-between gap-2 rounded-md p-1 transition-colors hover:bg-secondary"
+            className="hover:bg-secondary flex flex-1 items-center justify-between gap-2 rounded-md p-1 transition-colors"
           >
             <Icon
               description="Reset Playback rate"
@@ -257,7 +257,7 @@ export default function Settings() {
 
           <Label
             htmlFor="volume"
-            className="flex flex-1 items-center justify-between gap-2 rounded-md p-1 transition-colors hover:bg-secondary"
+            className="hover:bg-secondary flex flex-1 items-center justify-between gap-2 rounded-md p-1 transition-colors"
           >
             {volume === 0 ? (
               <Icon

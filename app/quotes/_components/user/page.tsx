@@ -45,7 +45,7 @@ export default function UserQuotesPage() {
           </blockquote>
 
           <div className="flex items-center justify-between gap-2">
-            <cite className="text-sm font-medium text-muted-foreground">
+            <cite className="text-muted-foreground text-sm font-medium">
               - {quotes.qotd.author}
             </cite>
             <FavouriteButton quote={quotes.qotd} />
@@ -96,7 +96,7 @@ export default function UserQuotesPage() {
               }}
             >
               <RefreshCcwIcon
-                className={`h-5 w-5 text-muted-foreground ${isRandomQuotesFetching && 'animate-spin'}`}
+                className={`text-muted-foreground h-5 w-5 ${isRandomQuotesFetching && 'animate-spin'}`}
               />
               <span>Fetch New Quotes</span>
             </Button>

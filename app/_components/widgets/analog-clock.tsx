@@ -18,7 +18,7 @@ const AnalogClock = () => {
   const hourRotation = (time.getHours() * 360) / 12 + (time.getMinutes() * 30) / 60;
 
   return (
-    <div className="min-h-30 min-w-30 size-full rounded-full p-2">
+    <div className="size-full min-h-30 min-w-30 rounded-full p-2">
       <svg viewBox="0 0 200 200" className="h-full w-full drop-shadow-xl">
         {/* Outer ring */}
         <circle cx="100" cy="100" r="98" className="fill-background stroke-primary stroke-2" />

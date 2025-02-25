@@ -27,12 +27,12 @@ export default function Zekr({ zekr }: { zekr: ZekrT }) {
         <p
           dir="rtl"
           lang="ar"
-          className={`${zekr.count === zekr.maximumCount ? 'line-through' : ''} ${AmiriFont.className} flex-1 pb-4 pt-2 text-xl/[2.5rem]`}
+          className={`${zekr.count === zekr.maximumCount ? 'line-through' : ''} ${AmiriFont.className} flex-1 pt-2 pb-4 text-xl/[2.5rem]`}
         >
           {zekr.zekr}
         </p>
       </CardContent>
-      <CardFooter className="absolute -bottom-5 left-4 right-4 flex items-center justify-center gap-2 rounded-md bg-border p-1!">
+      <CardFooter className="bg-border absolute right-4 -bottom-5 left-4 flex items-center justify-center gap-2 rounded-md p-1!">
         <ShareButton
           description="Share this Zekr"
           variant="ghost"

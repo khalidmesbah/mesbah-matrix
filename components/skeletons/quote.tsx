@@ -6,8 +6,8 @@ export default function QuoteSkeleton() {
   const quote = randomString(125, 200);
   const author = randomString(7, 15);
   return (
-    <Card className="select-none rounded-md p-2 shadow-md">
-      <Skeleton className="break-words text-xl font-medium text-transparent">
+    <Card className="rounded-md p-2 shadow-md select-none">
+      <Skeleton className="text-xl font-medium break-words text-transparent">
         &quot;{quote}&quot;
       </Skeleton>
       <div className="mt-4 flex items-center justify-between gap-2">

@@ -86,7 +86,7 @@ export default function TasksChart({ analytics }: { analytics: AnalyticsT }) {
         <CardTitle className="flex items-center justify-between gap-2">
           <h2>Recent Completed Tasks</h2>
           <Select value={type} onValueChange={(value) => setType(value as AnalyticsTypeT)}>
-            <SelectTrigger className="h-min w-min rounded-full py-2 pl-3 pr-2 text-xs">
+            <SelectTrigger className="h-min w-min rounded-full py-2 pr-2 pl-3 text-xs">
               <SelectValue placeholder="Select a type" />
             </SelectTrigger>
             <SelectContent className="text-sm!">

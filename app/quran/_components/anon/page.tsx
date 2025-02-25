@@ -162,7 +162,7 @@ export default function AnonQuranPage() {
           <div className="max-h-48">
             <TabsContent value="tafsir">
               <p
-                className={`group rounded-md bg-secondary p-2 text-center text-xl/10 ${AmiriFont.className}`}
+                className={`group bg-secondary rounded-md p-2 text-center text-xl/10 ${AmiriFont.className}`}
                 lang="ar"
                 dir="rtl"
               >
@@ -177,7 +177,7 @@ export default function AnonQuranPage() {
             </TabsContent>
             <TabsContent value="translation">
               <p
-                className="group rounded-md bg-secondary p-2 text-center"
+                className="group bg-secondary rounded-md p-2 text-center"
                 lang={translation?.language}
                 dir={translation?.direction}
               >
@@ -193,7 +193,7 @@ export default function AnonQuranPage() {
 
             <TabsContent value="transliterations">
               <p
-                className="group rounded-md bg-secondary p-2 text-center"
+                className="group bg-secondary rounded-md p-2 text-center"
                 lang={transliteration?.language}
                 dir={transliteration?.direction}
               >

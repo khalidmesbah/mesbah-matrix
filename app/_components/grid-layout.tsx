@@ -80,7 +80,10 @@ export default function GridLayout({ isAuthenticated }: { isAuthenticated: boole
   const onDrop = (layout: Layout[]) => {
     if (!droppingItem || droppingItem.i === '__dropping-elem__') return;
 
-    setLayouts({ [currentBreakpoint]: layout });
+    const newLayout = structuredClone(layout);
+    newLayout[newLayout.length - 1].isDraggable = undefined;
+
+    setLayouts({ [currentBreakpoint]: newLayout });
     setIsLayoutLocked(false);
     setDroppingItem(undefined);
   };

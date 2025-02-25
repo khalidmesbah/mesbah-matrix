@@ -43,9 +43,9 @@ export default function Page() {
         <Button onClick={() => increaseAnalytics('ayahsRead')}>finish read ayah</Button>
       </div>
 
-      <Separator className="my-4 h-1 rounded-full bg-primary" />
+      <Separator className="bg-primary my-4 h-1 rounded-full" />
 
-      <div className="gird-rows-auto grid grid-cols-fit gap-2">
+      <div className="gird-rows-auto grid-cols-fit grid gap-2">
         <TasksChart analytics={analytics} />
         <AyahsChart analytics={analytics} />
         <AzkarChart analytics={analytics} />

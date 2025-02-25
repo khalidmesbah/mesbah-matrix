@@ -28,7 +28,7 @@ export default function FloatingDock() {
   return (
     <div
       className={
-        'fc fixed bottom-4 left-[50%] w-fit translate-x-[-50%] gap-1 rounded-full bg-card p-1'
+        'fc bg-card fixed bottom-4 left-[50%] w-fit translate-x-[-50%] gap-1 rounded-full p-1'
       }
     >
       <WidgetsSlider />

@@ -15,7 +15,7 @@ export default function SettingsPage() {
         <h1 className="text-3xl font-bold">Settings</h1>
         <p className="text-muted-foreground">Customize your preferences.</p>
       </div>
-      <div className="grid grid-cols-fit gap-4">
+      <div className="grid-cols-fit grid gap-4">
         <ModeSelect />
         <ColorSelect />
         <SoundSwitch />

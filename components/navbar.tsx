@@ -48,7 +48,7 @@ export default function Navbar() {
   const { isAuthenticated } = useKindeBrowserClient();
 
   return (
-    <div className="border-r-1 flex h-dvh w-[56px] min-w-[56px] flex-col items-center border-r border-r-primary p-2">
+    <div className="border-r-primary flex h-dvh w-[56px] min-w-[56px] flex-col items-center border-r border-r-1 p-2">
       <Icon
         name={routes[0].name}
         icon={routes[0].icon}
@@ -74,7 +74,7 @@ export default function Navbar() {
         </div>
       </ScrollArea>
 
-      <Separator className="mb-2 mt-auto" />
+      <Separator className="mt-auto mb-2" />
 
       <div className="mb-2">
         {isAuthenticated ? (

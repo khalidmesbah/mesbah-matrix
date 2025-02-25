@@ -55,7 +55,7 @@ export default function PublicUrlInput() {
         </Button>
       </div>
       {validationError && <p className="text-sm text-red-500">{validationError}</p>}
-      <p className="text-sm text-muted-foreground">
+      <p className="text-muted-foreground text-sm">
         Use this URL to access this calendar from a web browser.
       </p>
     </div>

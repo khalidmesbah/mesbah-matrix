@@ -70,7 +70,7 @@ export function ChangeAyah(props: ChangeAyahProps) {
       </HoverCard>
       <Dialog>
         <DialogTrigger asChild>
-          <h1 className="cursor-pointer rounded-md bg-primary/90 p-2 text-lg transition-colors hover:bg-primary">
+          <h1 className="bg-primary/90 hover:bg-primary cursor-pointer rounded-md p-2 text-lg transition-colors">
             {props.ayah.surahEnglishName} ({props.ayah.numberInSurah}/{props.ayah.numberOfAyahs})
           </h1>
         </DialogTrigger>

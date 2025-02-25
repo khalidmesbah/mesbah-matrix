@@ -315,7 +315,7 @@ export default function TaskManager() {
           </DropdownMenu>
         ) : (
           <span className="ml-auto flex items-center">
-            <span className="mr-1 h-2 w-2 rounded-full bg-primary"></span>
+            <span className="bg-primary mr-1 h-2 w-2 rounded-full"></span>
             {getTaskCountForView(list.id)}
           </span>
         )}
@@ -606,12 +606,12 @@ export default function TaskManager() {
   };
 
   return (
-    <div className="flex h-screen bg-background text-foreground">
+    <div className="bg-background text-foreground flex h-screen">
       {/* Sidebar */}
       <div
         className={`${
           isSidebarOpen ? 'w-64' : 'w-0'
-        } flex flex-col overflow-hidden bg-card transition-all duration-300 ease-in-out`}
+        } bg-card flex flex-col overflow-hidden transition-all duration-300 ease-in-out`}
       >
         <nav className="grow space-y-2 p-4">
           <Button
@@ -694,7 +694,7 @@ export default function TaskManager() {
       {/* Main Content */}
       <div className="flex flex-1 flex-col">
         {/* Header */}
-        <header className="flex items-center justify-between border-b border-border p-4">
+        <header className="border-border flex items-center justify-between border-b p-4">
           <div className="flex items-center">
             <Button variant="ghost" size="icon" onClick={toggleSidebar}>
               <Menu className="h-5 w-5" />
@@ -709,11 +709,11 @@ export default function TaskManager() {
         {/* Task List */}
         <ScrollArea className="flex-1">
           <div className="space-y-4 p-4">
-            <div className="flex items-center space-x-2 rounded-md border border-primary bg-background p-2">
-              <Plus className="h-5 w-5 text-muted-foreground" />
+            <div className="border-primary bg-background flex items-center space-x-2 rounded-md border p-2">
+              <Plus className="text-muted-foreground h-5 w-5" />
               <Input
                 placeholder="Add task"
-                className="flex-1 border-none bg-transparent text-foreground placeholder-muted-foreground"
+                className="text-foreground placeholder-muted-foreground flex-1 border-none bg-transparent"
                 value={newTaskTitle}
                 onChange={(e) => setNewTaskTitle(e.target.value)}
                 onKeyDown={(e) => {

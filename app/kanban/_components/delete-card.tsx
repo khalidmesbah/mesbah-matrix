@@ -34,7 +34,7 @@ export default function DeleteCard({ cardId, listId }: DeleteCardProps) {
         }
         description="Delete card"
         variant="link"
-        className="absolute right-1 top-1 hidden size-8 rounded-full border-2 border-background bg-card p-2 transition-colors hover:z-2 hover:border-destructive group-hover:flex"
+        className="border-background bg-card hover:border-destructive absolute top-1 right-1 hidden size-8 rounded-full border-2 p-2 transition-colors group-hover:flex hover:z-2"
       />
 
       <AlertDialogContent>

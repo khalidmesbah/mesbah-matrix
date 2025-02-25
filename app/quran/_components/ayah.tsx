@@ -17,10 +17,10 @@ export default function Ayah({ ayah, font }: AyahProps) {
       <div className="group">
         <p
           className={cn(
-            `rounded-md bg-card px-2 text-center text-2xl/[3rem] ${font === '__className_af25f8' ? AmiriQuranFont.className : AmiriFont.className}`,
+            `bg-card rounded-md px-2 text-center text-2xl/[3rem] ${font === '__className_af25f8' ? AmiriQuranFont.className : AmiriFont.className}`,
             {
-              'pb-4 pt-6': font === '__className_a12e74',
-              'pb-6 pt-4': font === '__className_af25f8',
+              'pt-6 pb-4': font === '__className_a12e74',
+              'pt-4 pb-6': font === '__className_af25f8',
             },
           )}
           dir="rtl"

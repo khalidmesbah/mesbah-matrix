@@ -6,7 +6,7 @@ export default function TopBarSkeleton() {
       <div className="flex items-center gap-2">
         <Skeleton className="h-5 min-h-5 w-5 min-w-5" />
         <Skeleton>
-          <p className="select-none text-sm text-transparent md:text-lg">
+          <p className="text-sm text-transparent select-none md:text-lg">
             You are not authenticated. Please sign in to save your data.
           </p>
         </Skeleton>

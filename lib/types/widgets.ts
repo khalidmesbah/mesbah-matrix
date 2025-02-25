@@ -38,11 +38,16 @@ export type ImageWidgetStateT = {
   url: string;
 };
 
+export type VideoWidgetStateT = {
+  src: string;
+};
+
 export type WidgetT =
   | AyahWidgetT
   | DigitalClockWidgetT
   | TimePassedWidgetT
   | ImageWidgetStateT
+  | VideoWidgetStateT
   | null;
 
 export type WidgetsT = {

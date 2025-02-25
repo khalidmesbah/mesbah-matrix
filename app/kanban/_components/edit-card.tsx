@@ -53,7 +53,7 @@ export default function EditCard({ card }: EditCardProps) {
         icon={<Pencil />}
         description="Edit card"
         variant="link"
-        className="absolute right-7 top-1 hidden size-8 rounded-full border-2 border-background bg-card p-2 transition-colors hover:z-2 hover:border-primary group-hover:flex"
+        className="border-background bg-card hover:border-primary absolute top-1 right-7 hidden size-8 rounded-full border-2 p-2 transition-colors group-hover:flex hover:z-2"
         onClick={() => setOpen(true)}
       />
 

@@ -25,7 +25,7 @@ export function KanbanHeaderWithSheet() {
   const boards = Object.keys(kanban.boards);
   return (
     <Sheet>
-      <div className="mb-2 flex items-center justify-between gap-2 rounded-md bg-secondary p-2 sm:hidden">
+      <div className="bg-secondary mb-2 flex items-center justify-between gap-2 rounded-md p-2 sm:hidden">
         <h1 className="text-2xl">{kanban.selectedBoard}</h1>
         <SheetTrigger asChild>
           <Button className="xs:w-fit">Manage</Button>
@@ -74,7 +74,7 @@ export function KanbanHeader() {
   const { kanban, setSelectedBoard } = useKanbanStore((state) => state);
   const boards = Object.keys(kanban.boards);
   return (
-    <div className="mb-2 hidden items-center justify-between gap-2 rounded-md bg-secondary p-2 sm:flex">
+    <div className="bg-secondary mb-2 hidden items-center justify-between gap-2 rounded-md p-2 sm:flex">
       <div className="flex items-center gap-2">
         <h1>Board:</h1>
         <Select onValueChange={(value) => setSelectedBoard(value)} value={kanban.selectedBoard}>

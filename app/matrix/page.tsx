@@ -220,7 +220,7 @@ function Column({
               </DialogDescription>
             </DialogHeader>
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 bg-card">
+              <form onSubmit={form.handleSubmit(onSubmit)} className="bg-card space-y-6">
                 <FormField
                   control={form.control}
                   name="text"
@@ -278,7 +278,7 @@ function Column({
           <div
             ref={provided.innerRef}
             {...provided.droppableProps}
-            className="w-full overflow-y-auto overflow-x-hidden rounded-md p-[2px]"
+            className="w-full overflow-x-hidden overflow-y-auto rounded-md p-[2px]"
           >
             {tasks.length ? (
               tasks.map((task, index) => (
@@ -291,7 +291,7 @@ function Column({
                 />
               ))
             ) : (
-              <p className="border-1 border-border p-1">No Tasks Yet!</p>
+              <p className="border-border border-1 p-1">No Tasks Yet!</p>
             )}
             {provided.placeholder}
           </div>
@@ -323,7 +323,7 @@ function Task({
     <Draggable draggableId={task.id} index={index}>
       {(provided) => (
         <div className="p-[2px]" {...provided.draggableProps} ref={provided.innerRef}>
-          <div className="flex items-stretch rounded-md bg-secondary">
+          <div className="bg-secondary flex items-stretch rounded-md">
             <div className="relative w-6 px-3">
               <Button
                 variant={'link'}
@@ -481,7 +481,7 @@ function EditTask({
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 bg-card">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="bg-card space-y-6">
             <FormField
               control={form.control}
               name="text"

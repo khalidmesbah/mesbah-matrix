@@ -45,7 +45,7 @@ export default function AnonQuotesPage() {
           </blockquote>
 
           <div className="flex items-center justify-between gap-2">
-            <cite className="text-sm font-medium text-muted-foreground">- {qotd.author}</cite>
+            <cite className="text-muted-foreground text-sm font-medium">- {qotd.author}</cite>
             <FavouriteButton quote={qotd} />
           </div>
         </section>
@@ -92,7 +92,7 @@ export default function AnonQuotesPage() {
               }}
             >
               <RefreshCcwIcon
-                className={`h-5 w-5 text-muted-foreground ${isRandomQuotesFetching && 'animate-spin'}`}
+                className={`text-muted-foreground h-5 w-5 ${isRandomQuotesFetching && 'animate-spin'}`}
               />
               <span>Fetch New Quotes</span>
             </Button>

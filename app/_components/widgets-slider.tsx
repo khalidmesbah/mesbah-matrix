@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/dialog';
 import useWidgetsStore from '@/lib/stores/widgets';
 import { ArcticonsAyah } from '@/public/svgs/arcticons-ayah';
-import { AlarmClockPlus, Clock1, Clock2, Component, Hourglass, Image } from 'lucide-react';
+import { AlarmClockPlus, Clock1, Clock2, Component, Hourglass, Image, Video } from 'lucide-react';
 import { useState } from 'react';
 import 'swiper/css';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -145,6 +145,29 @@ export default function WidgetsSlider() {
                 }}
               >
                 <Image className="size-full stroke-2" />
+              </div>
+
+              <div
+                draggable={true}
+                className="no-swiping bg-card size-20 rounded-full transition-shadow hover:shadow-md"
+                onDragStart={() => {
+                  const uuid = uuidv4();
+                  setDroppingItem({
+                    i: `video|${uuid}`,
+                    w: 10,
+                    h: 20,
+                    minW: 6,
+                    minH: 12,
+                  });
+                  setIsWidgetsModalOpen(false);
+                }}
+                onClick={() => {
+                  const uuid = uuidv4();
+                  addWidget(`video|${uuid}`);
+                  setIsWidgetsModalOpen(false);
+                }}
+              >
+                <Video className="size-full stroke-2" />
               </div>
             </div>
           </SwiperSlide>

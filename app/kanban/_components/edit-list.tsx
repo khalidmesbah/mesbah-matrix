@@ -64,7 +64,7 @@ export default function EditList({ id, title, headerColor }: EditListProps) {
         }
         description="Edit list"
         variant="link"
-        className="absolute right-7 top-1 hidden size-8 rounded-full border-2 border-background bg-card stroke-destructive p-2 transition-colors hover:z-2 hover:border-primary group-hover:flex"
+        className="border-background bg-card stroke-destructive hover:border-primary absolute top-1 right-7 hidden size-8 rounded-full border-2 p-2 transition-colors group-hover:flex hover:z-2"
       />
 
       <DialogContent className="sm:max-w-[425px]">
@@ -96,7 +96,7 @@ export default function EditList({ id, title, headerColor }: EditListProps) {
                       <Icon
                         description="Choose a color"
                         icon={<Brush />}
-                        className="pointer-events-none h-min p-1 text-foreground"
+                        className="text-foreground pointer-events-none h-min p-1"
                         variant="link"
                         size="sm"
                       />

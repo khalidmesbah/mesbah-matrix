@@ -34,20 +34,20 @@ export default function DigitalClock({ id }: { id: string }) {
   });
 
   return (
-    <div className="p-2 text-card-foreground">
+    <div className="text-card-foreground p-2">
       <div className="mb-2 flex items-center justify-between">
-        <Clock className="h-8 w-8 text-primary" />
+        <Clock className="text-primary h-8 w-8" />
         <button
           onClick={() => setIs24Hour(!is24Hour)}
-          className="rounded-full bg-secondary px-3 py-1 text-sm font-medium text-secondary-foreground transition-all hover:scale-105"
+          className="bg-secondary text-secondary-foreground rounded-full px-3 py-1 text-sm font-medium transition-all hover:scale-105"
         >
           {is24Hour ? '12H' : '24H'}
         </button>
       </div>
 
       <div className="text-center">
-        <div className="text-4xl font-bold tracking-wider text-primary">{formatTime()}</div>
-        <div className="text-lg text-muted-foreground">{formattedDate}</div>
+        <div className="text-primary text-4xl font-bold tracking-wider">{formatTime()}</div>
+        <div className="text-muted-foreground text-lg">{formattedDate}</div>
       </div>
     </div>
   );

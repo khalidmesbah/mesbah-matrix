@@ -17,7 +17,7 @@ export default async function AccountPage() {
   if (!user) return <h1>No user</h1>;
 
   return (
-    <div className="flex flex-col items-start gap-2 rounded-lg border-2 border-primary bg-card p-5">
+    <div className="border-primary bg-card flex flex-col items-start gap-2 rounded-lg border-2 p-5">
       <div className="flex gap-2">
         {user.picture && (
           <Image
