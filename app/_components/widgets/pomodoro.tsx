@@ -80,7 +80,7 @@ export default function Pomodoro() {
   ];
 
   return (
-    <div className="rounded-2xl bg-card p-8 text-card-foreground shadow-2xl">
+    <div className="bg-card text-card-foreground rounded-2xl p-8 shadow-2xl">
       {/* Timer Tabs */}
       <div className="mb-6 flex gap-2">
         {tabs.map((tab) => (
@@ -89,7 +89,7 @@ export default function Pomodoro() {
             onClick={() => handleModeChange(tab.id)}
             className={`flex-1 rounded-lg px-4 py-2 text-sm font-medium transition-all ${
               mode === tab.id
-                ? 'scale-105 bg-primary text-primary-foreground'
+                ? 'bg-primary text-primary-foreground scale-105'
                 : 'bg-secondary text-secondary-foreground opacity-75 hover:opacity-100'
             } `}
           >
@@ -100,7 +100,7 @@ export default function Pomodoro() {
 
       {/* Timer Display */}
       <div className="my-8 text-center">
-        <div className="font-mono text-7xl font-bold tracking-wider text-primary">
+        <div className="text-primary font-mono text-7xl font-bold tracking-wider">
           {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
         </div>
       </div>
@@ -109,19 +109,19 @@ export default function Pomodoro() {
       <div className="flex justify-center gap-4">
         <button
           onClick={handleToggle}
-          className="rounded-full bg-primary p-4 text-primary-foreground transition-all hover:scale-105"
+          className="bg-primary text-primary-foreground rounded-full p-4 transition-all hover:scale-105"
         >
           {isRunning ? <Pause size={24} /> : <Play size={24} />}
         </button>
         <button
           onClick={handleReset}
-          className="rounded-full bg-secondary p-4 text-secondary-foreground transition-all hover:scale-105"
+          className="bg-secondary text-secondary-foreground rounded-full p-4 transition-all hover:scale-105"
         >
           <RotateCcw size={24} />
         </button>
         <button
           onClick={() => setShowSettings(true)}
-          className="rounded-full bg-secondary p-4 text-secondary-foreground transition-all hover:scale-105"
+          className="bg-secondary text-secondary-foreground rounded-full p-4 transition-all hover:scale-105"
         >
           <Settings size={24} />
         </button>
@@ -129,13 +129,13 @@ export default function Pomodoro() {
 
       {/* Settings Modal */}
       {showSettings && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="w-96 rounded-lg bg-card p-6 shadow-xl">
-            <h2 className="mb-4 text-xl font-bold text-card-foreground">Timer Settings</h2>
+        <div className="bg-opacity-50 fixed inset-0 flex items-center justify-center bg-black">
+          <div className="bg-card w-96 rounded-lg p-6 shadow-xl">
+            <h2 className="text-card-foreground mb-4 text-xl font-bold">Timer Settings</h2>
             <div className="space-y-4">
               {Object.entries(settings).map(([key, value]) => (
                 <div key={key} className="flex items-center justify-between">
-                  <label className="capitalize text-card-foreground">
+                  <label className="text-card-foreground capitalize">
                     {key.replace(/([A-Z])/g, ' $1').trim()}:
                   </label>
                   <input
@@ -150,7 +150,7 @@ export default function Pomodoro() {
                         [key]: newValue * 60,
                       }));
                     }}
-                    className="w-20 rounded border bg-background px-2 py-1 text-foreground"
+                    className="bg-background text-foreground w-20 rounded-sm border px-2 py-1"
                   />
                 </div>
               ))}
@@ -158,13 +158,13 @@ export default function Pomodoro() {
             <div className="mt-6 flex justify-end gap-2">
               <button
                 onClick={() => setShowSettings(false)}
-                className="rounded bg-secondary px-4 py-2 text-secondary-foreground"
+                className="bg-secondary text-secondary-foreground rounded-sm px-4 py-2"
               >
                 Cancel
               </button>
               <button
                 onClick={() => handleSettingsSave(settings)}
-                className="rounded bg-primary px-4 py-2 text-primary-foreground"
+                className="bg-primary text-primary-foreground rounded-sm px-4 py-2"
               >
                 Save
               </button>

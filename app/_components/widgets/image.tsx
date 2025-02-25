@@ -199,7 +199,7 @@ export default function ImageWidget({ id }: { id: string }) {
         <button
           type="submit"
           disabled={isUploading || !file}
-          className="flex h-10 w-full items-center justify-center rounded-md border border-black bg-black text-sm text-white transition-all hover:bg-white hover:text-black focus:outline-none disabled:cursor-not-allowed disabled:border-gray-200 disabled:bg-gray-100 disabled:text-gray-400"
+          className="flex h-10 w-full items-center justify-center rounded-md border border-black bg-black text-sm text-white transition-all hover:bg-white hover:text-black focus:outline-hidden disabled:cursor-not-allowed disabled:border-gray-200 disabled:bg-gray-100 disabled:text-gray-400"
         >
           <p className="text-sm">Upload</p>
         </button>
@@ -208,7 +208,7 @@ export default function ImageWidget({ id }: { id: string }) {
           type="reset"
           onClick={reset}
           disabled={isUploading || !file}
-          className="flex h-10 w-full items-center justify-center rounded-md border border-gray-200 bg-gray-100 text-sm text-gray-700 transition-all hover:bg-white hover:text-black focus:outline-none disabled:cursor-not-allowed disabled:border-gray-200 disabled:bg-gray-100 disabled:text-gray-400"
+          className="flex h-10 w-full items-center justify-center rounded-md border border-gray-200 bg-gray-100 text-sm text-gray-700 transition-all hover:bg-white hover:text-black focus:outline-hidden disabled:cursor-not-allowed disabled:border-gray-200 disabled:bg-gray-100 disabled:text-gray-400"
         >
           Reset
         </button>

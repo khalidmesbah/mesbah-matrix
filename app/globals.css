@@ -26,14 +26,16 @@
   *::after {
     box-sizing: border-box;
   }
+}
 
-  .fc {
-    @apply flex items-center justify-center;
-  }
+@utility fc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @layer base {
-  /* default theme = green-dark */
+  /* default data-theme = green-dark */
   :root {
     --background: 20 14.3% 4.1%;
     --foreground: 0 0% 95%;
@@ -61,7 +63,7 @@
     --chart-5: 142.1 76.2% 36.3%;
     --radius: 0.5rem;
   }
-  :root[theme='zinc-light'] {
+  :root[data-theme='zinc-light'] {
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
     --card: 0 0% 95%;
@@ -87,7 +89,7 @@
     --chart-4: 240 4% 25%;
     --chart-5: 240 5.9% 90%;
   }
-  :root[theme='zinc-dark'] {
+  :root[data-theme='zinc-dark'] {
     --background: 240 10% 3.9%;
     --foreground: 0 0% 95%;
     --card: 240 10% 5%;
@@ -113,7 +115,7 @@
     --chart-4: 240 4% 55%;
     --chart-5: 240 5.9% 10%;
   }
-  :root[theme='slate-light'] {
+  :root[data-theme='slate-light'] {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 95%;
@@ -139,7 +141,7 @@
     --chart-4: 217.2 32.6% 15%;
     --chart-5: 214.3 31.8% 85%;
   }
-  :root[theme='slate-dark'] {
+  :root[data-theme='slate-dark'] {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
     --card: 222.2 84% 10%;
@@ -165,7 +167,7 @@
     --chart-4: 215.4 16.3% 45%;
     --chart-5: 222.2 47.4% 11.2%;
   }
-  :root[theme='stone-light'] {
+  :root[data-theme='stone-light'] {
     --background: 0 0% 100%;
     --foreground: 20 14.3% 4.1%;
     --card: 0 0% 95%;
@@ -191,7 +193,7 @@
     --chart-4: 12 6.5% 15%;
     --chart-5: 20 5.9% 85%;
   }
-  :root[theme='stone-dark'] {
+  :root[data-theme='stone-dark'] {
     --background: 20 14.3% 4.1%;
     --foreground: 60 9.1% 97.8%;
     --card: 20 14.3% 4.1%;
@@ -217,7 +219,7 @@
     --chart-4: 25 5.3% 50%;
     --chart-5: 24 9.8% 10%;
   }
-  :root[theme='gray-light'] {
+  :root[data-theme='gray-light'] {
     --background: 0 0% 100%;
     --foreground: 224 71.4% 4.1%;
     --card: 0 0% 100%;
@@ -243,7 +245,7 @@
     --chart-4: 215 27.9% 15%;
     --chart-5: 220 13% 85%;
   }
-  :root[theme='gray-dark'] {
+  :root[data-theme='gray-dark'] {
     --background: 224 71.4% 4.1%;
     --foreground: 210 20% 98%;
     --card: 224 71.4% 6%;
@@ -269,7 +271,7 @@
     --chart-4: 220 8.9% 45%;
     --chart-5: 220.9 39.3% 11%;
   }
-  :root[theme='neutral-light'] {
+  :root[data-theme='neutral-light'] {
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
@@ -295,7 +297,7 @@
     --chart-4: 0 0% 15%;
     --chart-5: 0 0% 89.8%;
   }
-  :root[theme='neutral-dark'] {
+  :root[data-theme='neutral-dark'] {
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
     --card: 0 0% 3.9%;
@@ -321,7 +323,7 @@
     --chart-4: 0 0% 50%;
     --chart-5: 0 0% 10%;
   }
-  :root[theme='red-light'] {
+  :root[data-theme='red-light'] {
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
@@ -348,7 +350,7 @@
     --chart-4: 0 76.6% 30%;
     --chart-5: 0 85.7% 97.3%;
   }
-  :root[theme='red-dark'] {
+  :root[data-theme='red-dark'] {
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
     --card: 0 0% 3.9%;
@@ -374,7 +376,7 @@
     --chart-4: 0 84.2% 60.2%;
     --chart-5: 0 72.2% 50.6%;
   }
-  :root[theme='rose-light'] {
+  :root[data-theme='rose-light'] {
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
@@ -400,7 +402,7 @@
     --chart-4: 346.8 83% 34%;
     --chart-5: 355.7 100% 97.3%;
   }
-  :root[theme='rose-dark'] {
+  :root[data-theme='rose-dark'] {
     --background: 20 14.3% 4.1%;
     --foreground: 0 0% 95%;
     --card: 24 9.8% 8%;
@@ -426,7 +428,7 @@
     --chart-4: 346.8 80% 70%;
     --chart-5: 346.8 77.2% 49.8%;
   }
-  :root[theme='orange-light'] {
+  :root[data-theme='orange-light'] {
     --background: 0 0% 100%;
     --foreground: 20 14.3% 4.1%;
     --card: 0 0% 100%;
@@ -452,7 +454,7 @@
     --chart-4: 30 92% 32%;
     --chart-5: 60 9.1% 97.8%;
   }
-  :root[theme='orange-dark'] {
+  :root[data-theme='orange-dark'] {
     --background: 20 14.3% 4.1%;
     --foreground: 60 9.1% 97.8%;
     --card: 20 14.3% 4.1%;
@@ -478,7 +480,7 @@
     --chart-4: 20.5 90.2% 48.2%;
     --chart-5: 24.6 95% 53.1%;
   }
-  :root[theme='green-light'] {
+  :root[data-theme='green-light'] {
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
@@ -504,7 +506,7 @@
     --chart-4: 142.1 70% 25%;
     --chart-5: 355.7 100% 97.3%;
   }
-  :root[theme='green-dark'] {
+  :root[data-theme='green-dark'] {
     --background: 20 14.3% 4.1%;
     --foreground: 0 0% 95%;
     --card: 24 9.8% 8%;
@@ -530,7 +532,7 @@
     --chart-4: 142.1 70.6% 45.3%;
     --chart-5: 142.1 76.2% 36.3%;
   }
-  :root[theme='blue-light'] {
+  :root[data-theme='blue-light'] {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 95%;
@@ -556,7 +558,7 @@
     --chart-4: 225.9 70.7% 50.2%;
     --chart-5: 210 40% 98%;
   }
-  :root[theme='blue-dark'] {
+  :root[data-theme='blue-dark'] {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
     --card: 222.2 84% 4.9%;
@@ -582,7 +584,7 @@
     --chart-4: 217.2 91.2% 69.8%;
     --chart-5: 221.2 83.2% 53.3%;
   }
-  :root[theme='yellow-light'] {
+  :root[data-theme='yellow-light'] {
     --background: 0 0% 100%;
     --foreground: 20 14.3% 4.1%;
     --card: 0 0% 100%;
@@ -608,7 +610,7 @@
     --chart-4: 43.3 96.4% 60%;
     --chart-5: 60 10% 95%;
   }
-  :root[theme='yellow-dark'] {
+  :root[data-theme='yellow-dark'] {
     --background: 20 14.3% 4.1%;
     --foreground: 60 9.1% 97.8%;
     --card: 20 14.3% 4.1%;
@@ -634,7 +636,7 @@
     --chart-4: 47.9 95.8% 53.1%;
     --chart-5: 35.5 91.7% 40%;
   }
-  :root[theme='violet-light'] {
+  :root[data-theme='violet-light'] {
     --background: 0 0% 100%;
     --foreground: 224 71.4% 4.1%;
     --card: 0 0% 100%;
@@ -660,7 +662,7 @@
     --chart-4: 266.3 54.5% 40%;
     --chart-5: 210 20% 98%;
   }
-  :root[theme='violet-dark'] {
+  :root[data-theme='violet-dark'] {
     --background: 224 71.4% 4.1%;
     --foreground: 210 20% 98%;
     --card: 224 71.4% 5%;

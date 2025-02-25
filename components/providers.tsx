@@ -41,6 +41,7 @@ export default function Providers({ children }: { children: ReactNode }) {
       defaultTheme="green-dark"
       themes={themes}
       enableColorScheme
+      disableTransitionOnChange
     >
       <QueryClientProvider client={queryClient}>
         {children}

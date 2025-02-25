@@ -54,7 +54,7 @@ export function List({
 export function InlineCode({ code, className }: { code: string; className?: string }) {
   return (
     <code
-      className={`relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold ${className}`}
+      className={`bg-muted relative rounded-sm px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold ${className}`}
     >
       {code}
     </code>
@@ -62,14 +62,14 @@ export function InlineCode({ code, className }: { code: string; className?: stri
 }
 // A modal dialog that interrupts the user with important content and expects a response.
 export function Lead({ text, className }: { text: string; className?: string }) {
-  return <p className={`text-xl text-muted-foreground ${className}`}>{text}</p>;
+  return <p className={`text-muted-foreground text-xl ${className}`}>{text}</p>;
 }
 export function Large({ text, className }: { text: string; className?: string }) {
   return <div className={`text-lg font-semibold ${className}`}>{text}</div>;
 }
 export function Small({ text, className }: { text: string; className?: string }) {
-  return <small className={`text-sm font-medium leading-none ${className}`}>{text}</small>;
+  return <small className={`text-sm leading-none font-medium ${className}`}>{text}</small>;
 }
 export function Muted({ text, className }: { text: string; className?: string }) {
-  return <p className={`text-sm text-muted-foreground ${className}`}>{text}</p>;
+  return <p className={`text-muted-foreground text-sm ${className}`}>{text}</p>;
 }
