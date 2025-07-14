@@ -1,3 +1,5 @@
+import { Howl } from 'howler';
+import { create } from 'zustand';
 import {
   getRandomAyah,
   MAXIMUM_NUMBER_OF_AYAHS,
@@ -7,10 +9,9 @@ import {
   TRANSLATIONS,
   TRANSLITERATIONS,
 } from '@/public/data/quran';
-import { FavouriteAyahsT, FavouriteAyahT } from '@/types/quran';
-import { Howl } from 'howler';
-import { create } from 'zustand';
+import type { FavouriteAyahsT, FavouriteAyahT } from '@/types/quran';
 import { toggle } from '../utils/quran';
+
 // Ts
 type ModeT = 'loop' | 'continuous' | 'once';
 type FontT = '__className_a12e74' | '__className_af25f8';

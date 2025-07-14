@@ -1,15 +1,15 @@
 import { useCallback } from 'react';
 import {
-  Geometry2d,
-  RecordProps,
-  Rectangle2d,
-  SVGContainer,
-  ShapeUtil,
-  T,
-  TLBaseShape,
-  TLResizeInfo,
+  type Geometry2d,
   getPerfectDashProps,
+  type RecordProps,
+  Rectangle2d,
   resizeBox,
+  ShapeUtil,
+  SVGContainer,
+  T,
+  type TLBaseShape,
+  type TLResizeInfo,
   useValue,
 } from 'tldraw';
 import { moveToSlide, useSlides } from './use-slides';

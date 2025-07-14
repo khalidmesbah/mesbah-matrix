@@ -1,10 +1,10 @@
 'use server';
 
-import { db } from '@/firebase/init';
-import { DailyRemindersT, DailyReminderT } from '@/types/daily';
-import { SharedT } from '@/types/globals';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { db } from '@/firebase/init';
+import type { DailyRemindersT, DailyReminderT } from '@/types/daily';
+import type { SharedT } from '@/types/globals';
 
 const getDailyReminders = async (): Promise<DailyRemindersT | undefined> => {
   try {
@@ -85,7 +85,7 @@ const addDailyReminder = async (newDailyReminder: DailyReminderT): Promise<void>
     if (!user) throw 'there is no user';
 
     const resDailyReminders = await getDoc(doc(db, 'users', user.id, 'data', 'daily-reminders'));
-    let dailyReminders = resDailyReminders.data() as DailyRemindersT;
+    const dailyReminders = resDailyReminders.data() as DailyRemindersT;
 
     const order = [...dailyReminders.order, newDailyReminder.id];
     const reminders = dailyReminders.reminders;
@@ -137,7 +137,7 @@ const toggleDailyReminder = async (newDailyReminder: DailyReminderT): Promise<vo
     if (!user) throw 'there is no user';
 
     const resDailyReminders = await getDoc(doc(db, 'users', user.id, 'data', 'daily-reminders'));
-    let dailyReminders = resDailyReminders.data() as DailyRemindersT;
+    const dailyReminders = resDailyReminders.data() as DailyRemindersT;
 
     const reminders = dailyReminders.reminders;
     reminders[newDailyReminder.id].done = !newDailyReminder.done;

@@ -1,7 +1,7 @@
 'use client';
 
+import { DragDropContext, Droppable, type DropResult } from '@hello-pangea/dnd';
 import useKanbanStore from '@/stores/kanban';
-import { DragDropContext, DropResult, Droppable } from '@hello-pangea/dnd';
 import AddList from '../add-list';
 import { KanbanHeader, KanbanHeaderWithSheet } from '../kanban-header';
 import List from '../list';

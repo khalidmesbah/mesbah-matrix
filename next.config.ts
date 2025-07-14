@@ -8,9 +8,7 @@ const nextConfig: NextConfig = {
     },
   },
   devIndicators: {
-    appIsrStatus: true,
-    buildActivity: true,
-    buildActivityPosition: 'bottom-left',
+    position: 'bottom-left',
   },
   experimental: {
     staleTimes: {

@@ -3,7 +3,7 @@
 import CopyToClipboard from '@/components/copy-to-clipboard';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { AmiriFont, AmiriQuranFont } from '@/lib/fonts/fonts';
-import { AyahT } from '@/lib/types/quran';
+import type { AyahT } from '@/lib/types/quran';
 import { cn } from '@/lib/utils';
 
 type AyahProps = {

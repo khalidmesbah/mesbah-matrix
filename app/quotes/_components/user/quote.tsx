@@ -1,5 +1,5 @@
 import { Card } from '@/components/ui/card';
-import { QuoteT } from '@/lib/types/quote';
+import type { QuoteT } from '@/lib/types/quote';
 import FavouriteButton from './favourite-button';
 
 export default function Quote({ quote }: { quote: QuoteT }) {

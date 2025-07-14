@@ -1,9 +1,9 @@
 'use server';
 
-import { db } from '@/firebase/init';
-import { BoardT, KanbanT } from '@/types/kanban';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { db } from '@/firebase/init';
+import type { BoardT, KanbanT } from '@/types/kanban';
 
 const initialKanban: KanbanT = {
   boards: {
@@ -95,7 +95,9 @@ export const getKanbanAction = async (): Promise<KanbanT | undefined> => {
     if (!kanban) {
       kanban = { boards: {}, selectedBoard: '' };
       kanban = initialKanban;
-      await setDoc(doc(db, 'users', user.id, 'data', 'kanban'), kanban, { merge: true });
+      await setDoc(doc(db, 'users', user.id, 'data', 'kanban'), kanban, {
+        merge: true,
+      });
     }
 
     return kanban;
@@ -112,7 +114,7 @@ export const addBoardAction = async (board: string): Promise<void> => {
     if (!user) throw new Error("there's no user");
 
     const resKanban = await getDoc(doc(db, 'users', user.id, 'data', 'kanban'));
-    let kanban = resKanban.data() as KanbanT;
+    const kanban = resKanban.data() as KanbanT;
 
     kanban.boards[board] = {
       cards: {},
@@ -121,7 +123,9 @@ export const addBoardAction = async (board: string): Promise<void> => {
     };
     kanban.selectedBoard = board;
 
-    await setDoc(doc(db, 'users', user.id, 'data', 'kanban'), kanban, { merge: true });
+    await setDoc(doc(db, 'users', user.id, 'data', 'kanban'), kanban, {
+      merge: true,
+    });
   } catch (error) {
     console.error(error);
   }
@@ -135,10 +139,12 @@ export const setBoardAction = async (newBoard: BoardT): Promise<void> => {
     if (!user) throw new Error("there's no user");
 
     const resKanban = await getDoc(doc(db, 'users', user.id, 'data', 'kanban'));
-    let kanban = resKanban.data() as KanbanT;
+    const kanban = resKanban.data() as KanbanT;
 
     kanban.boards[kanban.selectedBoard] = newBoard;
-    await setDoc(doc(db, 'users', user.id, 'data', 'kanban'), kanban, { merge: true });
+    await setDoc(doc(db, 'users', user.id, 'data', 'kanban'), kanban, {
+      merge: true,
+    });
   } catch (error) {
     console.error(error);
   }
@@ -152,7 +158,7 @@ export const deleteSelectedBoardAction = async (): Promise<void> => {
     if (!user) throw new Error("there's no user");
 
     const resKanban = await getDoc(doc(db, 'users', user.id, 'data', 'kanban'));
-    let kanban = resKanban.data() as KanbanT;
+    const kanban = resKanban.data() as KanbanT;
 
     delete kanban.boards[kanban.selectedBoard];
     const boards = Object.keys(kanban.boards);
@@ -171,11 +177,13 @@ export const setSelectedBoardAction = async (board: string): Promise<void> => {
     if (!user) throw new Error("there's no user");
 
     const resKanban = await getDoc(doc(db, 'users', user.id, 'data', 'kanban'));
-    let kanban = resKanban.data() as KanbanT;
+    const kanban = resKanban.data() as KanbanT;
 
     kanban.selectedBoard = board;
 
-    await setDoc(doc(db, 'users', user.id, 'data', 'kanban'), kanban, { merge: true });
+    await setDoc(doc(db, 'users', user.id, 'data', 'kanban'), kanban, {
+      merge: true,
+    });
   } catch (error) {
     console.error(error);
   }

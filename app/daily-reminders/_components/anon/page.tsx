@@ -1,5 +1,13 @@
 'use client';
 
+import { DragDropContext, Draggable, Droppable, type DropResult } from '@hello-pangea/dnd';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Badge, BadgeCheck, CalendarIcon, Edit, PartyPopperIcon, XSquare } from 'lucide-react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Masonry } from 'react-plock';
+import { toast } from 'sonner';
+import { z } from 'zod';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -36,15 +44,7 @@ import { Textarea } from '@/components/ui/textarea';
 import useMySound from '@/hooks/use-my-sound';
 import { startFireworks } from '@/lib/utils';
 import useDailyRemindersStore from '@/stores/daily-reminders';
-import { DailyReminderT } from '@/types/daily';
-import { DragDropContext, Draggable, DropResult, Droppable } from '@hello-pangea/dnd';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Badge, BadgeCheck, CalendarIcon, Edit, PartyPopperIcon, XSquare } from 'lucide-react';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { Masonry } from 'react-plock';
-import { toast } from 'sonner';
-import { z } from 'zod';
+import type { DailyReminderT } from '@/types/daily';
 
 const FormSchema = z.object({
   text: z.string().min(2, {

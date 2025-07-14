@@ -53,7 +53,7 @@ export function getLast7Months() {
 }
 
 export const getMonthName = (monthNumber: string) => {
-  const index = parseInt(monthNumber, 10) - 1;
+  const index = Number.parseInt(monthNumber, 10) - 1;
   return [
     'January',
     'February',

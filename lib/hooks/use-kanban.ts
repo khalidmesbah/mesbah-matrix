@@ -1,3 +1,4 @@
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   addBoardAction,
   deleteSelectedBoardAction,
@@ -5,14 +6,13 @@ import {
   setBoardAction,
   setSelectedBoardAction,
 } from '@/actions/kanban';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { BoardT, KanbanT } from '../types/kanban';
+import type { BoardT, KanbanT } from '../types/kanban';
 
 export const useKanbanQuery = () =>
   useQuery({
     queryKey: ['kanban'],
     queryFn: () => getKanbanAction(),
-    staleTime: Infinity,
+    staleTime: Number.POSITIVE_INFINITY,
     refetchOnWindowFocus: false,
   });
 

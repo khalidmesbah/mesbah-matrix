@@ -1,10 +1,10 @@
 'use server';
 
-import { db } from '@/firebase/init';
-import { SharedT } from '@/types/globals';
-import { QuoteGlobalsT, QuotesT, QuoteT } from '@/types/quote';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { db } from '@/firebase/init';
+import type { SharedT } from '@/types/globals';
+import type { QuoteGlobalsT, QuotesT, QuoteT } from '@/types/quote';
 
 const getRandomQuotes = async (): Promise<QuoteT[]> => {
   try {

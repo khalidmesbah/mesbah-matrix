@@ -1,11 +1,11 @@
 'use client';
 
-import useWidgetsStore from '@/lib/stores/widgets';
-import { ImageWidgetStateT } from '@/lib/types/widgets';
 import { upload } from '@vercel/blob/client';
 import Image from 'next/image';
-import { useLayoutEffect, useState, type FormEvent } from 'react';
+import { type FormEvent, useLayoutEffect, useState } from 'react';
 import toast from 'react-hot-toast';
+import useWidgetsStore from '@/lib/stores/widgets';
+import type { ImageWidgetStateT } from '@/lib/types/widgets';
 import ProgressBar from './image/progress-bar';
 
 export default function ImageWidget({ id }: { id: string }) {

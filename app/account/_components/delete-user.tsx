@@ -1,5 +1,6 @@
 'use client';
 
+import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,7 +13,6 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button, buttonVariants } from '@/components/ui/button';
-import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 
 export default function DeleteUser({ id }: { id: string }) {
   console.clear();
@@ -20,25 +20,25 @@ export default function DeleteUser({ id }: { id: string }) {
 
   console.log(process.env.NEXT_PUBLIC_KINDE_MANAGEMENT_API, client);
 
-  const deleteUser = async () => {
-    const headers = {
-      Accept: 'application/json',
-      Authorization: `Bearer ${client.accessTokenEncoded}`,
-    };
-
-    const res = await fetch(`${process.env.NEXT_PUBLIC_KINDE_MANAGEMENT_API}/v1/user?id=${id}`, {
-      method: 'DELETE',
-      headers: headers,
-    })
-      .then(function (res) {
-        return res.json();
-      })
-      .then(function (body) {
-        console.log(body);
-      });
-
-    console.log(res);
-  };
+  // const deleteUser = async () => {
+  //   const headers = {
+  //     Accept: 'application/json',
+  //     Authorization: `Bearer ${client.accessTokenEncoded}`,
+  //   };
+  //
+  //   const res = await fetch(`${process.env.NEXT_PUBLIC_KINDE_MANAGEMENT_API}/v1/user?id=${id}`, {
+  //     method: 'DELETE',
+  //     headers: headers,
+  //   })
+  //     .then(function (res) {
+  //       return res.json();
+  //     })
+  //     .then(function (body) {
+  //       console.log(body);
+  //     });
+  //
+  //   console.log(res);
+  // };
 
   return (
     <AlertDialog>

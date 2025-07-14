@@ -1,9 +1,9 @@
 'use client';
 
-import Icon from '@/components/icon';
-import useQuranStore from '@/stores/quran';
 import { Play, StopCircle } from 'lucide-react';
 import { useEffect } from 'react';
+import Icon from '@/components/icon';
+import useQuranStore from '@/stores/quran';
 
 export default function PlayPauseButton() {
   const {

@@ -1,6 +1,6 @@
-import { CurrentDailyReminderT, DailyRemindersT } from '@/lib/types/daily';
 import { v4 as uuidv4 } from 'uuid';
 import { create } from 'zustand';
+import type { CurrentDailyReminderT, DailyRemindersT } from '@/lib/types/daily';
 
 type DailyReminderStore = {
   dailyReminders: DailyRemindersT;

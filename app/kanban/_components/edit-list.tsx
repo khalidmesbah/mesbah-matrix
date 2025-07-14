@@ -1,5 +1,11 @@
 'use client';
 
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Brush, Pencil } from 'lucide-react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
 import Icon from '@/components/icon';
 import { Button } from '@/components/ui/button';
 import {
@@ -15,12 +21,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import useKanbanStore from '@/stores/kanban';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Brush, Pencil } from 'lucide-react';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
-import { z } from 'zod';
 
 type EditListProps = {
   id: string;

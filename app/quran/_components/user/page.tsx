@@ -1,5 +1,8 @@
 'use client';
 
+import { BookOpen, Languages, Speech } from 'lucide-react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
 import CopyToClipboard from '@/components/copy-to-clipboard';
 import ParticlesLoader from '@/components/particles-loader';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -7,16 +10,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useGetAyahQuery } from '@/hooks/use-quran';
 import { AmiriFont } from '@/lib/fonts/fonts';
 import {
+  getNumberOfAyah,
   MAXIMUM_NUMBER_OF_AYAHS,
   MAXIMUM_NUMBER_OF_SURAHS,
   TRANSLATIONS,
   TRANSLITERATIONS,
-  getNumberOfAyah,
 } from '@/public/data/quran';
 import useQuranStore from '@/stores/quran';
-import { BookOpen, Languages, Speech } from 'lucide-react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
 import Ayah from '../ayah';
 import AyahUnavailable from '../ayah-unavailable';
 import { ChangeAyah } from '../change-ayah';
@@ -103,8 +103,8 @@ export default function UserQuranPage() {
 
   useEffect(() => {
     if (ayah) {
-      let surahNumber = ayah.numberOfSurah.toString();
-      let ayahNumber = ayah.numberInSurah.toString();
+      const surahNumber = ayah.numberOfSurah.toString();
+      const ayahNumber = ayah.numberInSurah.toString();
 
       const params = new URLSearchParams({
         surah: surahNumber,

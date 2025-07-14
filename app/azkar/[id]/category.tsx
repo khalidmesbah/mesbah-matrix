@@ -3,7 +3,7 @@
 import useMySound from '@/hooks/use-my-sound';
 import { startFireworks } from '@/lib/utils';
 import useAzkarStore from '@/stores/azkar';
-import { AzkarCategoriesT, ZekrT } from '@/types/azkar';
+import type { AzkarCategoriesT, ZekrT } from '@/types/azkar';
 import Zekr from '../_components/zekr';
 
 export default function Category({ id }: { id: string }) {

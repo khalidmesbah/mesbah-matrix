@@ -1,5 +1,7 @@
 'use client';
 
+import { AlarmClockPlus, Clock1, Clock2, Component, Hourglass, Image, Video } from 'lucide-react';
+import { useState } from 'react';
 import Icon from '@/components/icon';
 import {
   Dialog,
@@ -11,8 +13,6 @@ import {
 } from '@/components/ui/dialog';
 import useWidgetsStore from '@/lib/stores/widgets';
 import { ArcticonsAyah } from '@/public/svgs/arcticons-ayah';
-import { AlarmClockPlus, Clock1, Clock2, Component, Hourglass, Image, Video } from 'lucide-react';
-import { useState } from 'react';
 import 'swiper/css';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { v4 as uuidv4 } from 'uuid';
@@ -52,7 +52,13 @@ export default function WidgetsSlider() {
                 className="no-swiping bg-card size-20 rounded-full transition-shadow hover:shadow-md"
                 onDragStart={() => {
                   const uuid = uuidv4();
-                  setDroppingItem({ i: `ayah|${uuid}`, w: 10, h: 20, minW: 6, minH: 12 });
+                  setDroppingItem({
+                    i: `ayah|${uuid}`,
+                    w: 10,
+                    h: 20,
+                    minW: 6,
+                    minH: 12,
+                  });
                   setIsWidgetsModalOpen(false);
                 }}
                 onClick={() => {
@@ -68,7 +74,13 @@ export default function WidgetsSlider() {
                 className="no-swiping bg-card size-20 rounded-full transition-shadow hover:shadow-md"
                 onDragStart={() => {
                   const uuid = uuidv4();
-                  setDroppingItem({ i: `analog-clock|${uuid}`, w: 10, h: 20, minW: 6, minH: 12 });
+                  setDroppingItem({
+                    i: `analog-clock|${uuid}`,
+                    w: 10,
+                    h: 20,
+                    minW: 6,
+                    minH: 12,
+                  });
                   setIsWidgetsModalOpen(false);
                 }}
                 onClick={() => {
@@ -84,7 +96,13 @@ export default function WidgetsSlider() {
                 className="no-swiping bg-card size-20 rounded-full transition-shadow hover:shadow-md"
                 onDragStart={() => {
                   const uuid = uuidv4();
-                  setDroppingItem({ i: `digital-clock|${uuid}`, w: 10, h: 20, minW: 6, minH: 12 });
+                  setDroppingItem({
+                    i: `digital-clock|${uuid}`,
+                    w: 10,
+                    h: 20,
+                    minW: 6,
+                    minH: 12,
+                  });
                   setIsWidgetsModalOpen(false);
                 }}
                 onClick={() => {
@@ -101,7 +119,13 @@ export default function WidgetsSlider() {
                 className="no-swiping bg-card size-20 rounded-full transition-shadow hover:shadow-md"
                 onDragStart={() => {
                   const uuid = uuidv4();
-                  setDroppingItem({ i: `pomodoro|${uuid}`, w: 10, h: 20, minW: 6, minH: 12 });
+                  setDroppingItem({
+                    i: `pomodoro|${uuid}`,
+                    w: 10,
+                    h: 20,
+                    minW: 6,
+                    minH: 12,
+                  });
                   setIsWidgetsModalOpen(false);
                 }}
                 onClick={() => {
@@ -118,7 +142,13 @@ export default function WidgetsSlider() {
                 className="no-swiping bg-card size-20 rounded-full transition-shadow hover:shadow-md"
                 onDragStart={() => {
                   const uuid = uuidv4();
-                  setDroppingItem({ i: `time-passed|${uuid}`, w: 10, h: 20, minW: 6, minH: 12 });
+                  setDroppingItem({
+                    i: `time-passed|${uuid}`,
+                    w: 10,
+                    h: 20,
+                    minW: 6,
+                    minH: 12,
+                  });
                   setIsWidgetsModalOpen(false);
                 }}
                 onClick={() => {
@@ -135,7 +165,13 @@ export default function WidgetsSlider() {
                 className="no-swiping bg-card size-20 rounded-full transition-shadow hover:shadow-md"
                 onDragStart={() => {
                   const uuid = uuidv4();
-                  setDroppingItem({ i: `image|${uuid}`, w: 10, h: 20, minW: 6, minH: 12 });
+                  setDroppingItem({
+                    i: `image|${uuid}`,
+                    w: 10,
+                    h: 20,
+                    minW: 6,
+                    minH: 12,
+                  });
                   setIsWidgetsModalOpen(false);
                 }}
                 onClick={() => {

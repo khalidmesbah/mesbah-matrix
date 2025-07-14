@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default async function GridPage() {
   const { isAuthenticated: getIsAuthenticated } = getKindeServerSession();
-  const isAuthenticated = await getIsAuthenticated();
+  const isAuthenticated = (await getIsAuthenticated()) || false;
 
   return <GridLayout isAuthenticated={isAuthenticated} />;
 }

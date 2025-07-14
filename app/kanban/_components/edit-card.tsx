@@ -1,5 +1,11 @@
 'use client';
 
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Pencil } from 'lucide-react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
 import Icon from '@/components/icon';
 import { Button } from '@/components/ui/button';
 import {
@@ -12,13 +18,7 @@ import {
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
 import useKanbanStore from '@/stores/kanban';
-import { CardT } from '@/types/kanban';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Pencil } from 'lucide-react';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
-import { z } from 'zod';
+import type { CardT } from '@/types/kanban';
 
 const EditCardFormSchema = z.object({
   text: z.string().min(2, {

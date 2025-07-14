@@ -1,4 +1,4 @@
-import { StateNode, TLCancelEventInfo } from 'tldraw';
+import { StateNode, type TLCancelEventInfo } from 'tldraw';
 
 // Check out the custom tool example for a more detailed explanation of the tool class.
 

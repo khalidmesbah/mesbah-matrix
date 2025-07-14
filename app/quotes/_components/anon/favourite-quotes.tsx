@@ -1,7 +1,7 @@
 'use client';
 
-import useQuotesStore from '@/stores/quotes';
 import { Masonry } from 'react-plock';
+import useQuotesStore from '@/stores/quotes';
 import NoFavouriteQuotes from '../no-favourite-quotes';
 import Quote from './quote';
 

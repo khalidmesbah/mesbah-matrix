@@ -1,8 +1,8 @@
 'use client';
 
-import { useQuotesQuery } from '@/hooks/use-quotes';
-import { QuoteT } from '@/types/quote';
 import { Masonry } from 'react-plock';
+import { useQuotesQuery } from '@/hooks/use-quotes';
+import type { QuoteT } from '@/types/quote';
 import NoFavouriteQuotes from '../no-favourite-quotes';
 import QuoteSkeleton from '../quote-skeleton';
 import Quote from './quote';

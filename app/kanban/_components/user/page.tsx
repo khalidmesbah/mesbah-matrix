@@ -1,13 +1,13 @@
 'use client';
 
+import { DragDropContext, Droppable, type DropResult } from '@hello-pangea/dnd';
+import { useEffect } from 'react';
 import { KanbanHeader, KanbanHeaderWithSheet } from '@/app/kanban/_components/kanban-header';
 import List from '@/app/kanban/_components/list';
 import NoBoards from '@/app/kanban/_components/no-boards';
 import ParticlesLoader from '@/components/particles-loader';
 import { useKanbanQuery } from '@/lib/hooks/use-kanban';
 import useKanbanStore from '@/stores/kanban';
-import { DragDropContext, DropResult, Droppable } from '@hello-pangea/dnd';
-import { useEffect } from 'react';
 import AddList from '../add-list';
 
 export default function UserKanbanPage() {

@@ -1,9 +1,5 @@
 'use client';
 
-import { buttonVariants } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Separator } from '@/components/ui/separator';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 import { LoginLink } from '@kinde-oss/kinde-auth-nextjs/components';
 import {
@@ -12,6 +8,7 @@ import {
   BookHeart,
   CalendarDays,
   ChartNoAxesCombined,
+  Earth,
   Feather,
   Grid2X2,
   Home,
@@ -25,7 +22,11 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import { buttonVariants } from '@/components/ui/button';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Separator } from '@/components/ui/separator';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 const routes = [
   { name: 'Home', link: '/', icon: <Home /> },
@@ -33,6 +34,7 @@ const routes = [
   { name: 'Mesbah Matrix', link: '/matrix', icon: <Grid2X2 /> },
   { name: 'Task Manager', link: '/tasks', icon: <SquareCheckBig /> },
   { name: 'Calendar', link: '/calendar', icon: <CalendarDays /> },
+  { name: 'Portalio', link: '/portalio', icon: <Earth /> },
   { name: 'Focus', link: '/focus', icon: <ScanEye /> },
   { name: 'Daily', link: '/daily', icon: <BellRing /> },
   { name: 'Quotes', link: '/quotes', icon: <Quote /> },

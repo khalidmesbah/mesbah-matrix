@@ -1,5 +1,14 @@
 'use client';
 
+import { DragDropContext, Draggable, Droppable, type DropResult } from '@hello-pangea/dnd';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Badge, BadgeCheck, CalendarIcon, Edit, PartyPopperIcon, XSquare } from 'lucide-react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Masonry } from 'react-plock';
+import { toast } from 'sonner';
+import { v4 as uuidv4 } from 'uuid';
+import { z } from 'zod';
 import CloudLoader from '@/components/cloud-loader';
 import {
   AlertDialog,
@@ -43,16 +52,7 @@ import {
 import useMySound from '@/hooks/use-my-sound';
 import { startFireworks } from '@/lib/utils';
 import useDailyRemindersStore from '@/stores/daily-reminders';
-import { DailyReminderT, DailyRemindersT } from '@/types/daily';
-import { DragDropContext, Draggable, DropResult, Droppable } from '@hello-pangea/dnd';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Badge, BadgeCheck, CalendarIcon, Edit, PartyPopperIcon, XSquare } from 'lucide-react';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { Masonry } from 'react-plock';
-import { toast } from 'sonner';
-import { v4 as uuidv4 } from 'uuid';
-import { z } from 'zod';
+import type { DailyRemindersT, DailyReminderT } from '@/types/daily';
 
 const FormSchema = z.object({
   text: z.string().min(2, {
@@ -82,11 +82,11 @@ export default function UserDailyRemindersPage() {
 }
 
 function PractiseReminders() {
-  let { data } = useDailyRemindersQuery();
+  const { data } = useDailyRemindersQuery();
   const { mutate: toggleDailyReminder } = useToggleDailyReminderMutate();
   const [play] = useMySound('/sounds/winfantasia-6912.mp3');
 
-  let dailyReminders: DailyRemindersT = !data
+  const dailyReminders: DailyRemindersT = !data
     ? { reminders: {}, order: [] }
     : structuredClone(data);
 

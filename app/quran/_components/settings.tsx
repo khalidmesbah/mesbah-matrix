@@ -1,5 +1,19 @@
 'use client';
 
+import {
+  BookOpen,
+  Gauge,
+  Languages,
+  MicVocal,
+  Palette,
+  Repeat2,
+  Settings as SettingsIcon,
+  Speech,
+  Volume,
+  Volume1,
+  Volume2,
+  VolumeX,
+} from 'lucide-react';
 import Icon from '@/components/icon';
 import { Button } from '@/components/ui/button';
 import {
@@ -24,20 +38,6 @@ import { Slider } from '@/components/ui/slider';
 import { Switch } from '@/components/ui/switch';
 import { RECITATIONS, TAFASIR, TRANSLATIONS, TRANSLITERATIONS } from '@/public/data/quran';
 import useQuranStore from '@/stores/quran';
-import {
-  BookOpen,
-  Gauge,
-  Languages,
-  MicVocal,
-  Palette,
-  Repeat2,
-  Settings as SettingsIcon,
-  Speech,
-  Volume,
-  Volume1,
-  Volume2,
-  VolumeX,
-} from 'lucide-react';
 
 export default function Settings() {
   const {

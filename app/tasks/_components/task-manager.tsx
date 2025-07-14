@@ -1,25 +1,5 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
-import { Checkbox } from '@/components/ui/checkbox';
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Input } from '@/components/ui/input';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   ArrowDown,
   Bell,
@@ -46,6 +26,26 @@ import React, { useCallback, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
+import { Checkbox } from '@/components/ui/checkbox';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 interface CustomList {
   id: string;
@@ -111,7 +111,11 @@ const useTaskManagerStore = create<TaskManagerState>()(
       customLists: [
         { id: 'tasks', name: 'Tasks', icon: <List className="h-4 w-4" /> },
         { id: 'buy', name: 'Buy', icon: <ShoppingCart className="h-4 w-4" /> },
-        { id: 'dailyConstants', name: 'Daily Constants', icon: <Zap className="h-4 w-4" /> },
+        {
+          id: 'dailyConstants',
+          name: 'Daily Constants',
+          icon: <Zap className="h-4 w-4" />,
+        },
         { id: 'dreams', name: 'Dreams', icon: <Star className="h-4 w-4" /> },
       ],
       currentView: 'inbox',
@@ -369,7 +373,12 @@ export default function TaskManager() {
         for (let hour = 0; hour < 24; hour++) {
           for (let minute = 0; minute < 60; minute += 30) {
             const time = new Date(2023, 0, 1, hour, minute);
-            options.push(time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+            options.push(
+              time.toLocaleTimeString([], {
+                hour: '2-digit',
+                minute: '2-digit',
+              }),
+            );
           }
         }
         return options;
@@ -708,8 +717,8 @@ export default function TaskManager() {
 
         {/* Task List */}
         <ScrollArea className="flex-1">
-          <div className="space-y-4 p-4">
-            <div className="border-primary bg-background flex items-center space-x-2 rounded-md border p-2">
+          <ul className="space-y-4 p-4">
+            <li className="border-primary bg-background flex list-none items-center space-x-2 rounded-md border p-2">
               <Plus className="text-muted-foreground h-5 w-5" />
               <Input
                 placeholder="Add task"
@@ -731,9 +740,9 @@ export default function TaskManager() {
               <Button variant="ghost" size="icon" className="text-muted-foreground">
                 <ArrowDown className="h-5 w-5" />
               </Button>
-            </div>
+            </li>
             {incompleteTasks.map((task) => (
-              <div key={task.id} className="flex items-center space-x-2">
+              <li key={task.id} className="flex items-center space-x-2">
                 <Checkbox
                   id={`task-${task.id}`}
                   checked={task.completed}
@@ -741,25 +750,27 @@ export default function TaskManager() {
                   onClick={(e) => e.stopPropagation()}
                 />
                 <label className="text-sm">{task.title}</label>
-              </div>
+              </li>
             ))}
             {completedTasks.length > 0 && (
-              <div className="pt-4">
+              <li className="pt-4 list-none">
                 <h3 className="mb-2 text-sm font-semibold">Completed</h3>
-                {completedTasks.map((task) => (
-                  <div key={task.id} className="flex items-center space-x-2">
-                    <Checkbox
-                      id={`completed-${task.id}`}
-                      checked={task.completed}
-                      onCheckedChange={() => toggleTaskCompletion(task.id)}
-                      onClick={(e) => e.stopPropagation()}
-                    />
-                    <label className="text-sm line-through">{task.title}</label>
-                  </div>
-                ))}
-              </div>
+                <ul className="space-y-2">
+                  {completedTasks.map((task) => (
+                    <li key={task.id} className="flex items-center space-x-2">
+                      <Checkbox
+                        id={`completed-${task.id}`}
+                        checked={task.completed}
+                        onCheckedChange={() => toggleTaskCompletion(task.id)}
+                        onClick={(e) => e.stopPropagation()}
+                      />
+                      <label className="text-sm line-through">{task.title}</label>
+                    </li>
+                  ))}
+                </ul>
+              </li>
             )}
-          </div>
+          </ul>
         </ScrollArea>
       </div>
       <Dialog open={isAddListModalOpen} onOpenChange={setAddListModalOpen}>

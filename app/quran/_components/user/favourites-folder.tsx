@@ -1,5 +1,7 @@
 'use client';
 
+import { Folder } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import Icon from '@/components/icon';
 import ParticlesLoader from '@/components/particles-loader';
 import {
@@ -24,9 +26,7 @@ import { useGetQuranQuery } from '@/hooks/use-quran';
 import { AmiriFont } from '@/lib/fonts/fonts';
 import { getNewAyahs, getNewSurahs } from '@/lib/utils/quran';
 import useQuranStore from '@/stores/quran';
-import { FavouriteAyahT } from '@/types/quran';
-import { Folder } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import type { FavouriteAyahT } from '@/types/quran';
 import FailedToFetchFavouriteAyahs from '../failed-to-fetch-favourite-ayahs';
 import FavouriteAyahsNotFound from '../favourite-ayahs-not-found';
 

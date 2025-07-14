@@ -1,5 +1,6 @@
 'use client';
 
+import { Trash } from 'lucide-react';
 import Icon from '@/components/icon';
 import {
   AlertDialog,
@@ -14,7 +15,6 @@ import {
 } from '@/components/ui/alert-dialog';
 import { buttonVariants } from '@/components/ui/button';
 import useKanbanStore from '@/stores/kanban';
-import { Trash } from 'lucide-react';
 
 type DeleteListProps = {
   listId: string;

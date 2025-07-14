@@ -1,7 +1,7 @@
-import AnonKanbanPage from '@/app/kanban/_components/anon/page';
-import UserKanbanPage from '@/app/kanban/_components/user/page';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import type { Metadata } from 'next';
+import AnonKanbanPage from '@/app/kanban/_components/anon/page';
+import UserKanbanPage from '@/app/kanban/_components/user/page';
 
 export const metadata: Metadata = {
   title: 'Kanban Board',

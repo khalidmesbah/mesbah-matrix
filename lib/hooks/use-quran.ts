@@ -1,7 +1,7 @@
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getAyahInfo, getQuran, toggleAyahFavouriteState } from '@/actions/quran';
 import { checkIsNextNumberOfAyahValid, checkIsPrevNumberOfAyahValid } from '@/public/data/quran';
-import { AyahRequestT, FavouriteAyahT, FavouriteAyahsT, QuranT } from '@/types/quran';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import type { AyahRequestT, FavouriteAyahsT, FavouriteAyahT, QuranT } from '@/types/quran';
 
 export const useGetAyahQuery = ({
   numberOfAyah,
@@ -27,7 +27,7 @@ export const useGetAyahQuery = ({
         tafsir,
         transliteration,
       }),
-    staleTime: Infinity,
+    staleTime: Number.POSITIVE_INFINITY,
     refetchOnWindowFocus: false,
   });
   useQuery({
@@ -47,7 +47,7 @@ export const useGetAyahQuery = ({
         tafsir,
         transliteration,
       }),
-    staleTime: Infinity,
+    staleTime: Number.POSITIVE_INFINITY,
     refetchOnWindowFocus: false,
   });
   useQuery({
@@ -67,7 +67,7 @@ export const useGetAyahQuery = ({
         tafsir,
         transliteration,
       }),
-    staleTime: Infinity,
+    staleTime: Number.POSITIVE_INFINITY,
     refetchOnWindowFocus: false,
   });
   useQuery({
@@ -87,7 +87,7 @@ export const useGetAyahQuery = ({
         tafsir,
         transliteration,
       }),
-    staleTime: Infinity,
+    staleTime: Number.POSITIVE_INFINITY,
     refetchOnWindowFocus: false,
   });
   // useQuery({
@@ -133,8 +133,15 @@ export const useGetAyahQuery = ({
 
   return useQuery({
     queryKey: ['ayah', numberOfAyah, recitation, translation, tafsir, transliteration],
-    queryFn: () => getAyahInfo({ numberOfAyah, recitation, translation, tafsir, transliteration }),
-    staleTime: Infinity,
+    queryFn: () =>
+      getAyahInfo({
+        numberOfAyah,
+        recitation,
+        translation,
+        tafsir,
+        transliteration,
+      }),
+    staleTime: Number.POSITIVE_INFINITY,
     refetchOnWindowFocus: false,
   });
 };
@@ -143,7 +150,7 @@ export const useGetQuranQuery = () => {
   return useQuery({
     queryKey: ['quran'],
     queryFn: () => getQuran(),
-    staleTime: Infinity,
+    staleTime: Number.POSITIVE_INFINITY,
     refetchOnWindowFocus: false,
     retry: false,
   });
@@ -160,8 +167,8 @@ export const useToggleFavouriteAyahsMutate = () => {
       const previousQuran = queryClient.getQueryData(['quran']);
 
       queryClient.setQueryData(['quran'], (old: QuranT) => {
-        let quran: QuranT = structuredClone(old);
-        let newFavouriteAyahs: FavouriteAyahsT = quran.favouriteAyahs;
+        const quran: QuranT = structuredClone(old);
+        const newFavouriteAyahs: FavouriteAyahsT = quran.favouriteAyahs;
 
         let newFavouriteAyahsInSurah: FavouriteAyahT[] =
           newFavouriteAyahs[favouriteAyah.surahEnglishName] || [];

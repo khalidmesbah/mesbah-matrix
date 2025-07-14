@@ -1,8 +1,11 @@
 'use client';
 
+import { CalendarClock } from 'lucide-react';
+import { useState } from 'react';
+import { Area, AreaChart, CartesianGrid, ReferenceArea, XAxis, YAxis } from 'recharts';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
-  ChartConfig,
+  type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
@@ -15,7 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { AnalyticsT, AnalyticsTypeT } from '@/lib/types/analytics';
+import type { AnalyticsT, AnalyticsTypeT } from '@/lib/types/analytics';
 import {
   getDayName,
   getLast7Days,
@@ -24,9 +27,6 @@ import {
   getMonthName,
   getOrdinalSuffix,
 } from '@/lib/utils/analytics';
-import { CalendarClock } from 'lucide-react';
-import { useState } from 'react';
-import { Area, AreaChart, CartesianGrid, ReferenceArea, XAxis, YAxis } from 'recharts';
 
 export const description = 'A monotone area chart';
 

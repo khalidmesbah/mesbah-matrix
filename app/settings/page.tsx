@@ -1,8 +1,7 @@
+import type { Metadata } from 'next';
 import ColorSelect from './_components/color-select';
 import ModeSelect from './_components/mode-select';
 import SoundSwitch from './_components/sound-switch';
-
-import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Settings',
   description: 'Configure your preferred settings for a personalized experience.',

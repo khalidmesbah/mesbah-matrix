@@ -1,8 +1,8 @@
 'use client';
 
+import Link from 'next/link';
 import { AmiriFont } from '@/lib/fonts/fonts';
 import useAzkarStore from '@/stores/azkar';
-import Link from 'next/link';
 
 export const dynamic = 'force-static';
 

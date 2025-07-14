@@ -1,4 +1,4 @@
-import { AnalyticsT } from '@/types/analytics';
+import type { AnalyticsT } from '@/types/analytics';
 
 export type ActionResponseT = {
   success: boolean;

@@ -1,5 +1,5 @@
-import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from 'lucide-react';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function FavouriteQuoteSkeleton() {
   return (

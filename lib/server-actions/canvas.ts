@@ -1,9 +1,9 @@
 'use server';
 
-import { db } from '@/firebase/init';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { TLSessionStateSnapshot, TLStoreSnapshot } from 'tldraw';
+import type { TLSessionStateSnapshot, TLStoreSnapshot } from 'tldraw';
+import { db } from '@/firebase/init';
 
 type CanvasType = {
   document: TLStoreSnapshot;

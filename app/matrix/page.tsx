@@ -1,5 +1,22 @@
 'use client';
 
+import { DragDropContext, Draggable, Droppable, type DropResult } from '@hello-pangea/dnd';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  Badge,
+  BadgeCheck,
+  BadgeInfo,
+  BadgePlus,
+  BadgeX,
+  Grip,
+  Pencil,
+  Settings,
+} from 'lucide-react';
+import { type ReactNode, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { v4 as uuidV4 } from 'uuid';
+import { z } from 'zod';
 import { _getMatrix } from '@/actions/the-matrix';
 import ParticlesLoader from '@/components/particles-loader';
 import {
@@ -34,24 +51,12 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '@/component
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/use-toast';
-import useMatrixStore, { ColumnType, MatrixType, TaskType } from '@/stores/the-matrix';
-import { DragDropContext, Draggable, DropResult, Droppable } from '@hello-pangea/dnd';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import {
-  Badge,
-  BadgeCheck,
-  BadgeInfo,
-  BadgePlus,
-  BadgeX,
-  Grip,
-  Pencil,
-  Settings,
-} from 'lucide-react';
-import { ReactNode, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { v4 as uuidV4 } from 'uuid';
-import { z } from 'zod';
+import useMatrixStore, {
+  type ColumnType,
+  type MatrixType,
+  type TaskType,
+} from '@/stores/the-matrix';
+
 // TODO replace column with quadrant
 // FIX: fix the onsubmit function to add user feedback to the project
 
@@ -65,7 +70,7 @@ export default function MatrixPage() {
   const { isLoading, data } = useQuery({
     queryKey: ['the-matrix'],
     queryFn: (): Promise<MatrixType> => _getMatrix(),
-    staleTime: Infinity,
+    staleTime: Number.POSITIVE_INFINITY,
     refetchOnWindowFocus: false,
     retry: false,
     refetchOnMount: true,

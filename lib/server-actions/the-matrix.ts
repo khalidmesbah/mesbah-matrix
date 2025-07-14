@@ -1,10 +1,10 @@
 'use server';
 
-import { db } from '@/firebase/init';
-import { MatrixType } from '@/stores/the-matrix';
-import { ActionResponseT } from '@/types/globals';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { db } from '@/firebase/init';
+import type { MatrixType } from '@/stores/the-matrix';
+import type { ActionResponseT } from '@/types/globals';
 
 const initialMatrix: MatrixType = {
   tasks: {

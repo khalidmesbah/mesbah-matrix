@@ -1,5 +1,6 @@
 'use client';
 
+import { toast } from 'sonner';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,7 +14,6 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import useKanbanStore from '@/stores/kanban';
-import { toast } from 'sonner';
 
 export default function DeleteBoard() {
   const { kanban, deleteSelectedBoard } = useKanbanStore((state) => state);

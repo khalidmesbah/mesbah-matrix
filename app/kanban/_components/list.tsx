@@ -1,10 +1,10 @@
 'use client';
 
+import { Draggable, Droppable } from '@hello-pangea/dnd';
 import AddCard from '@/app/kanban/_components/add-card';
 import Card from '@/app/kanban/_components/card';
 import DeleteList from '@/app/kanban/_components/delete-list';
-import { CardT, ListT } from '@/types/kanban';
-import { Draggable, Droppable } from '@hello-pangea/dnd';
+import type { CardT, ListT } from '@/types/kanban';
 import EditList from './edit-list';
 
 type ListProps = {

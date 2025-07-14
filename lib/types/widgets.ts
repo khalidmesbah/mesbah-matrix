@@ -1,4 +1,4 @@
-import { Layouts } from 'react-grid-layout';
+import type { Layouts } from 'react-grid-layout';
 
 export type BreakpointT = 'xxs' | 'xs' | 'sm' | 'md' | 'lg';
 export type CompactTypeT = 'vertical' | 'horizontal' | null;

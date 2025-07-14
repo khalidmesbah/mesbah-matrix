@@ -1,5 +1,5 @@
 import confetti from 'canvas-confetti';
-import { clsx, type ClassValue } from 'clsx';
+import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
@@ -15,7 +15,7 @@ export const randomString = (min: number, max: number) => {
   const charSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
   let randomString = '';
   for (let i = 0; i < len; i++) {
-    let randomPoz = Math.floor(Math.random() * charSet.length);
+    const randomPoz = Math.floor(Math.random() * charSet.length);
     randomString += charSet.substring(randomPoz, randomPoz + 1);
   }
   return randomString;

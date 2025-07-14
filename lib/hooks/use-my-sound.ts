@@ -1,5 +1,5 @@
-import useSettingsStore from '@/stores/settings';
 import useSound from 'use-sound';
+import useSettingsStore from '@/stores/settings';
 
 export declare type SpriteMap = {
   [key: string]: [number, number];

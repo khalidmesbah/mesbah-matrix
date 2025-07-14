@@ -1,5 +1,5 @@
-import { _setMatrix } from '@/actions/the-matrix';
 import { create } from 'zustand';
+import { _setMatrix } from '@/actions/the-matrix';
 
 export interface TaskType {
   id: string;
@@ -19,7 +19,7 @@ export interface MatrixType {
   columnOrder: string[];
 }
 
-let initialMatrix: MatrixType = {
+const initialMatrix: MatrixType = {
   tasks: {
     'task-1': {
       id: 'task-1',

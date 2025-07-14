@@ -1,7 +1,7 @@
-import { AzkarCategoriesT, AzkarT, ZekrT } from '@/lib/types/azkar';
+import { create } from 'zustand';
+import type { AzkarCategoriesT, AzkarT, ZekrT } from '@/lib/types/azkar';
 import azkar from '@/public/data/azkar.json';
 import categories from '@/public/data/categories.json';
-import { create } from 'zustand';
 
 const wasCompleted = Array.from({ length: 134 }).map(() => false);
 

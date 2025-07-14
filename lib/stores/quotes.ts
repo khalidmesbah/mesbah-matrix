@@ -1,5 +1,5 @@
-import { QuoteT } from '@/types/quote';
 import { create } from 'zustand';
+import type { QuoteT } from '@/types/quote';
 
 interface QuotesStore {
   favouriteQuotes: QuoteT[];

@@ -1,5 +1,8 @@
 'use client';
 
+import { Save, Trash } from 'lucide-react';
+import { useState } from 'react';
+import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -12,9 +15,6 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import useCalendarStore from '@/lib/stores/calendar';
-import { Save, Trash } from 'lucide-react';
-import { useState } from 'react';
-import { z } from 'zod';
 
 const urlSchema = z
   .string()

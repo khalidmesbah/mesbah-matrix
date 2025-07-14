@@ -1,8 +1,8 @@
-import { buttonVariants } from '@/components/ui/button';
 import { LogoutLink } from '@kinde-oss/kinde-auth-nextjs/components';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import type { Metadata } from 'next';
 import Image from 'next/image';
+import { buttonVariants } from '@/components/ui/button';
 import DeleteUser from './_components/delete-user';
 
 export const metadata: Metadata = {

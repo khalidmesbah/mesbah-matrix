@@ -1,5 +1,7 @@
 'use client';
 
+import { Image as ImageIcon } from 'lucide-react';
+import Image from 'next/image';
 import Icon from '@/components/icon';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -12,8 +14,6 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { SURAHS } from '@/public/data/quran';
-import { Image as ImageIcon } from 'lucide-react';
-import Image from 'next/image';
 
 type AyahImageProps = {
   surah: number;

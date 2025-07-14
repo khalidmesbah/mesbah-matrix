@@ -1,5 +1,11 @@
 'use client';
 
+import { zodResolver } from '@hookform/resolvers/zod';
+import { X, YoutubeIcon } from 'lucide-react';
+import { useLayoutEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -12,13 +18,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import useWidgetsStore from '@/lib/stores/widgets';
-import { VideoWidgetStateT } from '@/lib/types/widgets';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { X, YoutubeIcon } from 'lucide-react';
-import { useLayoutEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
-import { z } from 'zod';
+import type { VideoWidgetStateT } from '@/lib/types/widgets';
 
 const FormSchema = z.object({
   src: z.string().url({

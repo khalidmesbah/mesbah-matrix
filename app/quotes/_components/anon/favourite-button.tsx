@@ -1,9 +1,9 @@
 'use client';
 
+import { Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import useQuotesStore from '@/stores/quotes';
-import { QuoteT } from '@/types/quote';
-import { Star } from 'lucide-react';
+import type { QuoteT } from '@/types/quote';
 
 export default function FavouriteButton({ quote }: { quote: QuoteT }) {
   const { favouriteQuotes, toggleFavouriteState } = useQuotesStore();

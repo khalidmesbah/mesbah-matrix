@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { AssetRecordType, Box, TLAssetId, TLShapeId, createShapeId } from 'tldraw';
+import { AssetRecordType, Box, createShapeId, type TLAssetId, type TLShapeId } from 'tldraw';
 
 export interface PdfPage {
   src: string;

@@ -1,5 +1,6 @@
 'use client';
 
+import { Folder } from 'lucide-react';
 import Icon from '@/components/icon';
 import {
   Dialog,
@@ -22,7 +23,6 @@ import {
 import { AmiriFont } from '@/lib/fonts/fonts';
 import useQuranStore from '@/stores/quran';
 import { getNewAyahs, getNewSurahs } from '@/utils/quran';
-import { Folder } from 'lucide-react';
 import FavouriteAyahsNotFound from '../favourite-ayahs-not-found';
 
 export default function FavouritesFolder() {

@@ -1,4 +1,4 @@
-import { FavouriteAyahT, FavouriteAyahsT } from '@/types/quran';
+import type { FavouriteAyahsT, FavouriteAyahT } from '@/types/quran';
 
 export const toggle = (favouriteAyahs: FavouriteAyahsT, favouriteAyah: FavouriteAyahT) => {
   let newFavouriteAyahsInSurah: FavouriteAyahT[] =

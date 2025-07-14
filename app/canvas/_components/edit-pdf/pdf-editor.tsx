@@ -1,19 +1,19 @@
 import { useMemo } from 'react';
 import {
   Box,
-  SVGContainer,
-  TLComponents,
-  TLImageShape,
-  TLShapePartial,
-  Tldraw,
   getIndicesBetween,
   react,
+  SVGContainer,
   sortByIndex,
+  type TLComponents,
+  type TLImageShape,
+  type TLShapePartial,
+  Tldraw,
   track,
   useEditor,
 } from 'tldraw';
 import { ExportPdfButton } from './export-pdf-button';
-import { Pdf } from './pdf-picker';
+import type { Pdf } from './pdf-picker';
 
 // TODO:
 // - prevent changing pages (create page, change page, move shapes to new page)
@@ -154,7 +154,10 @@ const PageOverlayScreen = track(function PageOverlayScreen({ pdf }: { pdf: Pdf }
     .map((page) => {
       if (!viewportPageBounds.collides(page.bounds)) return null;
       const topLeft = editor.pageToViewport(page.bounds);
-      const bottomRight = editor.pageToViewport({ x: page.bounds.maxX, y: page.bounds.maxY });
+      const bottomRight = editor.pageToViewport({
+        x: page.bounds.maxX,
+        y: page.bounds.maxY,
+      });
       return new Box(topLeft.x, topLeft.y, bottomRight.x - topLeft.x, bottomRight.y - topLeft.y);
     })
     .filter((bounds): bounds is Box => bounds !== null);

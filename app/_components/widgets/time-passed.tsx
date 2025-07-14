@@ -1,7 +1,10 @@
 'use client';
 
+import { DialogClose } from '@radix-ui/react-dialog';
+import { format } from 'date-fns';
+import { Calendar as CalendarIcon, Settings } from 'lucide-react';
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-
 import { Calendar } from '@/components/ui/calendar';
 import {
   Dialog,
@@ -20,11 +23,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import useWidgetsStore from '@/lib/stores/widgets';
-import { TimePassedWidgetT } from '@/lib/types/widgets';
-import { DialogClose } from '@radix-ui/react-dialog';
-import { format } from 'date-fns';
-import { Calendar as CalendarIcon, Settings } from 'lucide-react';
-import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import type { TimePassedWidgetT } from '@/lib/types/widgets';
 
 type TimePassed = {
   seconds: number;

@@ -1,8 +1,8 @@
 'use client';
 
+import { Repeat, Repeat1 } from 'lucide-react';
 import Icon from '@/components/icon';
 import useQuranStore from '@/stores/quran';
-import { Repeat, Repeat1 } from 'lucide-react';
 
 export default function Mode() {
   const {

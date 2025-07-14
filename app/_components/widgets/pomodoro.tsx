@@ -144,7 +144,10 @@ export default function Pomodoro() {
                     max="60"
                     value={Math.floor(value / 60)}
                     onChange={(e) => {
-                      const newValue = Math.max(1, Math.min(60, parseInt(e.target.value) || 1));
+                      const newValue = Math.max(
+                        1,
+                        Math.min(60, Number.parseInt(e.target.value) || 1),
+                      );
                       setSettings((prev) => ({
                         ...prev,
                         [key]: newValue * 60,

@@ -1,9 +1,9 @@
 'use server';
 
-import { db } from '@/firebase/init';
-import { DefaultWidgetsStateT, WidgetsT, WidgetT } from '@/types/widgets';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { db } from '@/firebase/init';
+import type { DefaultWidgetsStateT, WidgetsT, WidgetT } from '@/types/widgets';
 
 const defaultWidgetsState: DefaultWidgetsStateT = {
   ayah: {

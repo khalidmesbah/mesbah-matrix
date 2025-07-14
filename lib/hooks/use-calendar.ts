@@ -1,11 +1,11 @@
-import { getPublicURL, setPublicURL } from '@/lib/server-actions/calendar';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { getPublicURL, setPublicURL } from '@/lib/server-actions/calendar';
 
 export const useCalendarQuery = () =>
   useQuery({
     queryKey: ['public-url'],
     queryFn: () => getPublicURL(),
-    staleTime: Infinity,
+    staleTime: Number.POSITIVE_INFINITY,
     refetchOnWindowFocus: false,
   });
 

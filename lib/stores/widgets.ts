@@ -1,13 +1,13 @@
-import {
+import type { Layouts } from 'react-grid-layout';
+import { v4 as uuidv4 } from 'uuid';
+import { create } from 'zustand';
+import type {
   BreakpointT,
   CompactTypeT,
   DroppingItemT,
   WidgetStatesT,
   WidgetT,
 } from '@/lib/types/widgets';
-import { Layouts } from 'react-grid-layout';
-import { v4 as uuidv4 } from 'uuid';
-import { create } from 'zustand';
 
 function generateLayout() {
   return Array.from({ length: 4 }, (_, index) => {

@@ -1,13 +1,13 @@
 'use client';
 
-import { Badge } from '@/components/ui/badge';
-import { Button, buttonVariants } from '@/components/ui/button';
-import { useQotdQuotesQuery, useRandomQuotesQuery } from '@/hooks/use-quotes';
-import useQuotesStore from '@/stores/quotes';
 import { useQueryClient } from '@tanstack/react-query';
 import { RefreshCcwIcon } from 'lucide-react';
 import Link from 'next/link';
 import { Masonry } from 'react-plock';
+import { Badge } from '@/components/ui/badge';
+import { Button, buttonVariants } from '@/components/ui/button';
+import { useQotdQuotesQuery, useRandomQuotesQuery } from '@/hooks/use-quotes';
+import useQuotesStore from '@/stores/quotes';
 import FavouriteQuoteSkeleton from '../favourite-quote-skeleton';
 import NoFavouriteQuotes from '../no-favourite-quotes';
 import NoFetchedQuotes from '../no-fetched-quotes';

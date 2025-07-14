@@ -1,5 +1,8 @@
 'use client';
 
+import { Info } from 'lucide-react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useCallback } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -19,11 +22,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { AyahT } from '@/lib/types/quran';
-import { SURAHS, SURAH_AYAHS, getNumberOfAyah } from '@/public/data/quran';
-import { Info } from 'lucide-react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useCallback } from 'react';
+import type { AyahT } from '@/lib/types/quran';
+import { getNumberOfAyah, SURAH_AYAHS, SURAHS } from '@/public/data/quran';
 
 type ChangeAyahProps = {
   ayah: AyahT;
@@ -36,11 +36,11 @@ export function ChangeAyah(props: ChangeAyahProps) {
   const pathname = usePathname();
 
   const getParams = useCallback((): { ayah: string; surah: string } => {
-    let surah =
+    const surah =
       (searchParams.has('surah')
         ? searchParams.get('surah')
         : props.ayah.numberOfSurah.toString()) || '';
-    let ayah =
+    const ayah =
       (searchParams.has('ayah') ? searchParams.get('ayah') : props.ayah.numberInSurah.toString()) ||
       '';
 

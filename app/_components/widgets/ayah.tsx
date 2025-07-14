@@ -1,5 +1,8 @@
 'use client';
 
+import { DialogClose } from '@radix-ui/react-dialog';
+import { Settings2 } from 'lucide-react';
+import { useLayoutEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -13,11 +16,8 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Textarea } from '@/components/ui/textarea';
 import { AmiriFont, AmiriQuranFont } from '@/lib/fonts/fonts';
 import useWidgetsStore from '@/lib/stores/widgets';
-import { AyahWidgetFontT, AyahWidgetT } from '@/lib/types/widgets';
+import type { AyahWidgetFontT, AyahWidgetT } from '@/lib/types/widgets';
 import { cn } from '@/lib/utils';
-import { DialogClose } from '@radix-ui/react-dialog';
-import { Settings2 } from 'lucide-react';
-import { useLayoutEffect, useState } from 'react';
 
 const DEFAULT_AYAH_DATA: AyahWidgetT = {
   text: 'بِسْمِ اللَّـهِ الرَّحْمَـٰنِ الرَّحِيمِ',

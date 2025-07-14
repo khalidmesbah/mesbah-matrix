@@ -1,10 +1,10 @@
 'use client';
 
-import Icon from '@/components/icon';
-import ShareButton from '@/components/share-button';
-import { AyahT } from '@/types/quran';
 import { ArrowLeft, ArrowRight, LoaderIcon, Shuffle } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
+import Icon from '@/components/icon';
+import ShareButton from '@/components/share-button';
+import type { AyahT } from '@/types/quran';
 import { AyahImage } from '../ayah-image';
 import Mode from '../mode-button';
 import PlayPauseButton from '../play-pause-button';

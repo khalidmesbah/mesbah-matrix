@@ -1,5 +1,6 @@
 'use client';
 
+import { Check, RotateCcw } from 'lucide-react';
 import CopyToClipboard from '@/components/copy-to-clipboard';
 import Icon from '@/components/icon';
 import ShareButton from '@/components/share-button';
@@ -7,8 +8,7 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import useMySound from '@/hooks/use-my-sound';
 import { AmiriFont } from '@/lib/fonts/fonts';
 import useAzkarStore from '@/stores/azkar';
-import { ZekrT } from '@/types/azkar';
-import { Check, RotateCcw } from 'lucide-react';
+import type { ZekrT } from '@/types/azkar';
 
 // FIX: share button
 // TODO: add description button

@@ -1,12 +1,12 @@
+import { v4 as uuidv4 } from 'uuid';
+import { create } from 'zustand';
 import {
   addBoardAction,
   deleteSelectedBoardAction,
   setBoardAction,
   setSelectedBoardAction,
 } from '@/actions/kanban';
-import { BoardT, KanbanT } from '@/lib/types/kanban';
-import { v4 as uuidv4 } from 'uuid';
-import { create } from 'zustand';
+import type { BoardT, KanbanT } from '@/lib/types/kanban';
 
 const initialKanban: KanbanT = {
   boards: {

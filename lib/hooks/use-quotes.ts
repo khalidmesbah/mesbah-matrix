@@ -1,12 +1,12 @@
-import { getQotd, getQuotes, getRandomQuotes, toggleFavouriteState } from '@/actions/quotes';
-import { QuoteT, QuotesT } from '@/types/quote';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { getQotd, getQuotes, getRandomQuotes, toggleFavouriteState } from '@/actions/quotes';
+import type { QuotesT, QuoteT } from '@/types/quote';
 
 export const useRandomQuotesQuery = () =>
   useQuery({
     queryKey: ['random-quotes'],
     queryFn: () => getRandomQuotes(),
-    staleTime: Infinity,
+    staleTime: Number.POSITIVE_INFINITY,
     refetchOnWindowFocus: false,
   });
 
@@ -20,7 +20,7 @@ export const useQotdQuotesQuery = () =>
   useQuery({
     queryKey: ['qotd'],
     queryFn: () => getQotd(),
-    staleTime: Infinity,
+    staleTime: Number.POSITIVE_INFINITY,
     refetchOnWindowFocus: false,
   });
 

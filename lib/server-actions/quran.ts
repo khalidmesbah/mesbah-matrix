@@ -1,10 +1,10 @@
 'use server';
 
-import { db } from '@/firebase/init';
-import { AyahRequestT, AyahT, FavouriteAyahsT, FavouriteAyahT, QuranT } from '@/types/quran';
-import { toggle } from '@/utils/quran';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { db } from '@/firebase/init';
+import type { AyahRequestT, AyahT, FavouriteAyahsT, FavouriteAyahT, QuranT } from '@/types/quran';
+import { toggle } from '@/utils/quran';
 
 export const getAyahInfo = async ({
   numberOfAyah,
@@ -80,7 +80,7 @@ export const toggleAyahFavouriteState = async (favouriteAyah: FavouriteAyahT): P
 
     const resQuran = await getDoc(doc(db, 'users', user.id, 'data', 'quran'));
     const quran = resQuran.data() as QuranT;
-    let favouriteAyahs = quran.favouriteAyahs as FavouriteAyahsT;
+    const favouriteAyahs = quran.favouriteAyahs as FavouriteAyahsT;
 
     toggle(favouriteAyahs, favouriteAyah);
 

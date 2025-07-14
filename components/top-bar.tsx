@@ -1,9 +1,9 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
-import useTopBarStore from '@/stores/top-bar';
 import { LoginLink } from '@kinde-oss/kinde-auth-nextjs';
 import { CircleAlertIcon, XIcon } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import useTopBarStore from '@/stores/top-bar';
 
 export default function TopBar() {
   const { isClosed, setIsClosed } = useTopBarStore((state) => state);

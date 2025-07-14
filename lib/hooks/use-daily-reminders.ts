@@ -1,3 +1,4 @@
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   addDailyReminder,
   getDailyReminders,
@@ -5,14 +6,13 @@ import {
   setDailyReminders,
   toggleDailyReminder,
 } from '@/actions/daily-reminders';
-import { DailyReminderT, DailyRemindersT } from '@/types/daily';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import type { DailyRemindersT, DailyReminderT } from '@/types/daily';
 
 export const useIsNewDayQuery = () =>
   useQuery({
     queryKey: ['is-new-day'],
     queryFn: () => getIsNewDay(),
-    staleTime: Infinity,
+    staleTime: Number.POSITIVE_INFINITY,
     refetchOnWindowFocus: false,
   });
 
@@ -20,7 +20,7 @@ export const useDailyRemindersQuery = () =>
   useQuery({
     queryKey: ['daily-reminders'],
     queryFn: () => getDailyReminders(),
-    staleTime: Infinity,
+    staleTime: Number.POSITIVE_INFINITY,
     refetchOnWindowFocus: false,
   });
 
@@ -58,7 +58,7 @@ export const useAddDailyReminderMutate = () => {
       const previousDailyReminders = queryClient.getQueryData(['daily-reminders']);
 
       queryClient.setQueryData(['daily-reminders'], (old: DailyRemindersT) => {
-        let newDailyReminders = structuredClone(old);
+        const newDailyReminders = structuredClone(old);
         newDailyReminders.order.push(newDailyReminder.id);
         newDailyReminders.reminders[newDailyReminder.id] = newDailyReminder;
         return newDailyReminders;
@@ -85,7 +85,7 @@ export const useToggleDailyReminderMutate = () => {
       const previousDailyReminders = queryClient.getQueryData(['daily-reminders']);
 
       queryClient.setQueryData(['daily-reminders'], (old: DailyRemindersT) => {
-        let newDailyReminders = structuredClone(old);
+        const newDailyReminders = structuredClone(old);
         newDailyReminders.reminders[newDailyReminder.id].done = !newDailyReminder.done;
         return newDailyReminders;
       });

@@ -1,10 +1,10 @@
 'use client';
 
+import { Separator } from '@radix-ui/react-separator';
+import { useQuery } from '@tanstack/react-query';
 import ParticlesLoader from '@/components/particles-loader';
 import { Button } from '@/components/ui/button';
 import { getAnalytics, increaseAnalytics } from '@/lib/server-actions/analytics';
-import { Separator } from '@radix-ui/react-separator';
-import { useQuery } from '@tanstack/react-query';
 import AyahsChart from './_components/ayahs-chart';
 import AzkarChart from './_components/azkar-chart';
 import DailyRemindersChart from './_components/daily-reminders-chart';
@@ -19,7 +19,7 @@ export default function Page() {
   } = useQuery({
     queryKey: ['analytics'],
     queryFn: () => getAnalytics(),
-    staleTime: Infinity,
+    staleTime: Number.POSITIVE_INFINITY,
     refetchOnWindowFocus: false,
   });
 

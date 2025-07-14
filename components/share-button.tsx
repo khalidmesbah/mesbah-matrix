@@ -1,19 +1,3 @@
-import CopyToClipboard from '@/components/copy-to-clipboard';
-import Icon from '@/components/icon';
-import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { VariantT } from '@/types/globals';
 import { ShareIcon } from 'lucide-react';
 import {
   EmailIcon,
@@ -33,6 +17,22 @@ import {
   WhatsappIcon,
   WhatsappShareButton,
 } from 'next-share';
+import CopyToClipboard from '@/components/copy-to-clipboard';
+import Icon from '@/components/icon';
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import type { VariantT } from '@/types/globals';
 
 type ShareButtonProps = {
   url: string;

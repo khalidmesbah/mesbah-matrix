@@ -1,10 +1,10 @@
 'use client';
 
+import { Heart } from 'lucide-react';
 import Icon from '@/components/icon';
 import { cn } from '@/lib/utils';
 import useQuranStore from '@/stores/quran';
-import { AyahT, FavouriteAyahT } from '@/types/quran';
-import { Heart } from 'lucide-react';
+import type { AyahT, FavouriteAyahT } from '@/types/quran';
 
 type AddAyahToFavouritesType = {
   ayah: AyahT;

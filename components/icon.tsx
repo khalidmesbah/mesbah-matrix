@@ -1,7 +1,7 @@
+import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { SizeT, VariantT } from '@/lib/types/globals';
-import { Loader2 } from 'lucide-react';
+import type { SizeT, VariantT } from '@/lib/types/globals';
 
 type IconProps = {
   icon: React.ReactElement;

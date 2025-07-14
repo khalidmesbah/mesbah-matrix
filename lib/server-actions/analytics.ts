@@ -1,11 +1,11 @@
 'use server';
 
-import { db } from '@/firebase/init';
-import { AnalyticsT, AnalyticT, IncreaseAnalyticsT } from '@/types/analytics';
-import { SharedT } from '@/types/globals';
-import { formatDate } from '@/utils/analytics';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { db } from '@/firebase/init';
+import type { AnalyticsT, AnalyticT, IncreaseAnalyticsT } from '@/types/analytics';
+import type { SharedT } from '@/types/globals';
+import { formatDate } from '@/utils/analytics';
 
 export const getAnalytics = async (): Promise<AnalyticsT | undefined> => {
   try {
@@ -21,7 +21,9 @@ export const getAnalytics = async (): Promise<AnalyticsT | undefined> => {
       shared = {
         analytics: [],
       };
-      await setDoc(doc(db, 'users', user.id, 'data', 'shared'), shared, { merge: true });
+      await setDoc(doc(db, 'users', user.id, 'data', 'shared'), shared, {
+        merge: true,
+      });
     }
 
     return shared.analytics;
@@ -42,7 +44,7 @@ export const increaseAnalytics = async (
     // const today = formatDate(new Date());
 
     const resShared = await getDoc(doc(db, 'users', user.id, 'data', 'shared'));
-    let shared = resShared.data() as SharedT;
+    const shared = resShared.data() as SharedT;
 
     const analytics = shared.analytics!;
 

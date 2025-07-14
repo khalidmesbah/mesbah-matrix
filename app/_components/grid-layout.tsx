@@ -4,19 +4,24 @@ import CloudLoader from '@/components/cloud-loader';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { getWidgets } from '@/lib/server-actions/widgets';
 import useWidgetsStore from '@/lib/stores/widgets';
-import { BreakpointT, WidgetsT } from '@/lib/types/widgets';
+import type { BreakpointT, WidgetsT } from '@/lib/types/widgets';
 import { useQuery } from '@tanstack/react-query';
 import { Frame, Lock, LockOpen, Move, X } from 'lucide-react';
-import { useEffect } from 'react';
-import { Layout, Layouts, Responsive, WidthProvider } from 'react-grid-layout';
+import { useEffect, useRef } from 'react';
+import { type Layout, type Layouts, Responsive, WidthProvider } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import FloatingDock from './floating-dock';
 import Widget from './widget';
+import { Button } from '@/components/ui/button';
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
-export default function GridLayout({ isAuthenticated }: { isAuthenticated: boolean }) {
+export default function GridLayout({
+  isAuthenticated,
+}: {
+  isAuthenticated: boolean;
+}) {
   const {
     layouts,
     currentBreakpoint,
@@ -39,7 +44,7 @@ export default function GridLayout({ isAuthenticated }: { isAuthenticated: boole
     queryKey: ['widgets'],
     queryFn: () => getWidgets() as Promise<WidgetsT>,
     enabled: isAuthenticated,
-    staleTime: Infinity,
+    staleTime: Number.POSITIVE_INFINITY,
     refetchOnWindowFocus: false,
   });
   useEffect(() => {
@@ -96,7 +101,7 @@ export default function GridLayout({ isAuthenticated }: { isAuthenticated: boole
     <ScrollArea className="size-full rounded-md">
       <ResponsiveReactGridLayout
         rowHeight={1}
-        maxRows={Infinity}
+        maxRows={Number.POSITIVE_INFINITY}
         width={5000}
         autoSize={true}
         cols={{ lg: 168, md: 160, sm: 152, xs: 144, xxs: 136 }}
@@ -107,7 +112,7 @@ export default function GridLayout({ isAuthenticated }: { isAuthenticated: boole
         measureBeforeMount={false}
         useCSSTransforms={true}
         compactType={compactType}
-        draggableCancel={'#remove, #lock, #lock-open, #fit-widget'}
+        draggableCancel={'#remove, #lock-toggle, #fit-widget'}
         draggableHandle={'#react-grid-item-handle'}
         preventCollision={!compactType}
         onLayoutChange={onLayoutChange}
@@ -139,72 +144,84 @@ export default function GridLayout({ isAuthenticated }: { isAuthenticated: boole
           return (
             <div key={item.i}>
               <ScrollArea
-                className={`fc group bg-card relative size-full rounded-md p-2 shadow-sm`}
+                className={`fc group bg-card relative size-full rounded-md shadow-sm parent`}
               >
                 <div
                   id="react-grid-item-handle"
-                  className={`absolute top-0 right-0 left-0 z-10 flex h-0 w-full ${!isWidgetLocked && 'cursor-move'} bg-card gap-1 overflow-hidden p-0 transition-all duration-200 group-hover:h-7 group-hover:border-b-2 group-hover:p-1`}
+                  className={`absolute top-0 opacity-0 right-0 left-0 z-10 flex
+                  h-0 w-full ${!isWidgetLocked && 'cursor-move'} bg-card gap-1
+                  overflow-hidden transition-all duration-200 group-hover:h-7
+                  border-b-2 p-1 group-hover:opacity-95`}
                 >
                   <Move className={`${isWidgetLocked && 'hidden'} size-5`} />
 
-                  {isWidgetLocked ? (
-                    <Lock
-                      id="lock"
-                      className="bg-primary text-primary-foreground hover:bg-primary/90 absolute left-1/2 size-5 -translate-x-1/2 transform cursor-pointer rounded-full p-1 text-xl shadow-md transition-all duration-300 ease-in-out hover:scale-110"
-                      onClick={() => {
-                        const newLayouts = structuredClone(layouts);
-                        const newItem = newLayouts[currentBreakpoint].find(
-                          (randomItem) => randomItem.i === item.i,
-                        )!;
+                  <Button
+                    className="rounded-full size-5 cursor-pointer absolute
+                    left-1/2 -translate-x-1/2 transform"
+                    size="icon"
+                    title="Lock/Unlock"
+                    id="lock-toggle"
+                    onClick={() => {
+                      const newLayouts = structuredClone(layouts);
+                      const newItem = newLayouts[currentBreakpoint].find(
+                        (randomItem) => randomItem.i === item.i,
+                      );
+
+                      if (!newItem) return;
+
+                      if (isWidgetLocked) {
                         newItem.static = false;
-                        setIsLayoutLocked(false);
-                        setLayouts(newLayouts);
-                      }}
-                    />
-                  ) : (
-                    <LockOpen
-                      id="lock-open"
-                      className="bg-secondary text-secondary-foreground hover:bg-secondary/90 absolute left-1/2 size-5 -translate-x-1/2 transform cursor-pointer rounded-full p-1 text-xl shadow-md transition-all duration-300 ease-in-out hover:scale-110"
-                      onClick={() => {
-                        const newLayouts = structuredClone(layouts);
-                        const newItem = newLayouts[currentBreakpoint].find(
-                          (prvItem) => prvItem.i === item.i,
-                        )!;
+                      } else {
                         newItem.static = true;
-                        setLayouts(newLayouts);
-                      }}
-                    />
-                  )}
-                  <X
+                      }
+
+                      setIsLayoutLocked(false);
+                      setLayouts(newLayouts);
+                    }}
+                  >
+                    {isWidgetLocked ? <Lock /> : <LockOpen />}
+                  </Button>
+
+                  <Button
+                    className="rounded-full size-5 cursor-pointer ml-auto"
+                    disabled={isWidgetLocked}
+                    size={'icon'}
+                    title="Remove Widget"
+                    variant={'destructive'}
                     onClick={() => handleDeleteWidget(item.i)}
                     id="remove"
-                    className="bg-destructive hover:bg-destructive/90 ml-auto size-5 cursor-pointer rounded-full p-1 text-xl text-white"
-                  />
-                  <Frame
-                    id="fit-widget"
+                  >
+                    <X />
+                  </Button>
+                  <Button
+                    className="rounded-full size-5 cursor-pointer"
+                    disabled={isWidgetLocked}
+                    size={'icon'}
+                    title="Fit Widget"
                     onClick={(e) => {
-                      if (isWidgetLocked) return;
-                      const itemEl = e.currentTarget.parentElement?.parentElement;
+                      const itemEl = e.currentTarget;
                       if (itemEl) {
-                        const child = itemEl.children[1].children[0];
+                        const parent = itemEl.closest('.parent') as HTMLDivElement;
+                        const child = parent.querySelector('.child-parent')
+                          ?.children[0] as HTMLDivElement;
 
                         const newLayouts = structuredClone(layouts);
                         const newItem = newLayouts[currentBreakpoint].find(
                           (prvItem) => prvItem.i === item.i,
                         )!;
-                        const newH =
-                          (child.getBoundingClientRect().height * newItem.h) /
-                          child.parentElement?.getBoundingClientRect().height!;
-                        const newW =
-                          (child.getBoundingClientRect().width * newItem.w) /
-                          child.parentElement?.getBoundingClientRect().width!;
-                        newItem.h = Math.max(newH, 12);
-                        newItem.w = Math.max(newW, 6);
+
+                        const newH = ((child.clientHeight + 0) * newItem.h) / parent.clientHeight;
+                        const newW = ((child.clientWidth + 0) * newItem.w) / parent.clientWidth;
+                        newItem.h = Math.max(Math.ceil(newH), 12);
+                        newItem.w = Math.max(Math.ceil(newW), 6);
+
                         setLayouts(newLayouts);
                       }
                     }}
-                    className="bg-primary/50 hover:bg-accent/90 size-5 cursor-pointer rounded-full p-1 text-xl text-white"
-                  />
+                    id="fit-widget"
+                  >
+                    <Frame />
+                  </Button>
                 </div>
                 <Widget id={item.i} isAuthenticated={isAuthenticated} />
                 <ScrollBar orientation="horizontal" />

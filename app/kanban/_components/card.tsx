@@ -1,7 +1,7 @@
 'use client';
 
-import { CardT } from '@/types/kanban';
 import { Draggable } from '@hello-pangea/dnd';
+import type { CardT } from '@/types/kanban';
 import DeleteCard from './delete-card';
 import EditCard from './edit-card';
 

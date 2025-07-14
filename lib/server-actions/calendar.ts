@@ -1,8 +1,8 @@
 'use server';
 
-import { db } from '@/firebase/init';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { db } from '@/firebase/init';
 
 type Calendar = {
   publicURL: string;
