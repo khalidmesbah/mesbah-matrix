@@ -52,11 +52,11 @@ export default function ColorSelect() {
       <CardContent>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="w-full">
-              <div className="flex flex-1 items-center gap-2">
-                <p className="capitalize">{isLoaded ? color : '...'}</p>
+            <Button variant='outline' className='w-full'>
+              <div className='flex flex-1 items-center gap-2'>
+                <p className='capitalize'>{isLoaded ? color : '...'}</p>
               </div>
-              <ChevronDownIcon className="size-5" />
+              <ChevronDownIcon className='size-5' />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
@@ -68,7 +68,7 @@ export default function ColorSelect() {
                     setTheme(`${color}-${mode}`);
                   }}
                   value={color}
-                  className="capitalize"
+                  className='capitalize'
                 >
                   {color}
                 </DropdownMenuRadioItem>

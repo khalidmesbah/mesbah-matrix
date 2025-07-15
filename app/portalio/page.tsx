@@ -176,15 +176,15 @@ export default function PortalioPage() {
   }, [slides]);
 
   return (
-    <div className="h-full">
+    <div className='h-full'>
       {Object.keys(slides).length === 0 ? (
         <NoSlides />
       ) : (
         <Swiper
           spaceBetween={50}
           slidesPerView={1}
-          className="relative flex size-full rounded-md"
-          noSwipingClass="no-swiping"
+          className='relative flex size-full rounded-md'
+          noSwipingClass='no-swiping'
           preventClicks={true}
           preventClicksPropagation={true}
           onSlideChange={(e) => {
@@ -197,13 +197,13 @@ export default function PortalioPage() {
           }}
         >
           {Object.keys(slides).map((slideId) => (
-            <SwiperSlide key={slideId} className="h-full" id={slideId}>
-              <div className="bg-secondary absolute top-1 left-[50%] z-10 flex -translate-x-[50%] gap-2 rounded-full p-1">
+            <SwiperSlide key={slideId} className='h-full' id={slideId}>
+              <div className='bg-secondary absolute top-1 left-[50%] z-10 flex -translate-x-[50%] gap-2 rounded-full p-1'>
                 <Badge variant={'outline'}>{slides[slideId].name}</Badge>
-                <div className="fc gap-1">
+                <div className='fc gap-1'>
                   <Button
                     variant={'default'}
-                    className="aspect-square size-6 cursor-pointer rounded-full p-2"
+                    className='aspect-square size-6 cursor-pointer rounded-full p-2'
                     onClick={() => {
                       setEditSlideDialogOpen(true);
                     }}
@@ -212,7 +212,7 @@ export default function PortalioPage() {
                   </Button>
                   <Button
                     variant={'destructive'}
-                    className="aspect-square size-6 cursor-pointer rounded-full p-2"
+                    className='aspect-square size-6 cursor-pointer rounded-full p-2'
                     onClick={() => {
                       setDeleteSlideDialogOpen(true);
                     }}
@@ -222,7 +222,7 @@ export default function PortalioPage() {
                 </div>
               </div>
 
-              <ScrollArea className="h-full rounded-md">
+              <ScrollArea className='h-full rounded-md'>
                 <ResponsiveReactGridLayout
                   rowHeight={1}
                   maxRows={Number.POSITIVE_INFINITY}
@@ -249,10 +249,13 @@ export default function PortalioPage() {
                   isResizable={false}
                   className={`bg-primary/75 h-full min-h-[calc(100vh-16px)] w-[5000px] rounded-md`}
                   verticalCompact={false}
-                  draggableCancel="no-dragging"
+                  draggableCancel='no-dragging'
                   preventCollision={false}
                   onLayoutChange={(e) => {
-                    e.map((i) => (i.h = i.w = 10));
+                    e.map((item) => {
+                      item.h = 10;
+                      item.w = 10;
+                    });
                   }}
                 >
                   {slides[slideId].layouts[currentBreakpoint].map((item: Layout) => {
@@ -267,6 +270,7 @@ export default function PortalioPage() {
                     }
                     const state = slidesStates[item.i] as WebsiteStateT;
                     return (
+                      // biome-ignore lint/a11y/noStaticElementInteractions: This div is a container for draggable items and its onClick is for internal drag-and-drop logic, not a user-facing interaction.
                       <div
                         className={`${reOrder && 'no-swiping no-dragging'} size-20`}
                         key={item.i}
@@ -275,6 +279,7 @@ export default function PortalioPage() {
                           e.preventDefault();
                           e.stopPropagation();
                         }}
+                        role='presentation'
                       >
                         <Website
                           id={item.i}
@@ -287,7 +292,7 @@ export default function PortalioPage() {
                   })}
                 </ResponsiveReactGridLayout>
 
-                <ScrollBar orientation="horizontal" />
+                <ScrollBar orientation='horizontal' />
               </ScrollArea>
             </SwiperSlide>
           ))}
@@ -311,15 +316,15 @@ export default function PortalioPage() {
           </DialogHeader>
 
           <Form {...addSlideForm}>
-            <form onSubmit={addSlideForm.handleSubmit(onAddSlideSubmit)} className="space-y-4">
+            <form onSubmit={addSlideForm.handleSubmit(onAddSlideSubmit)} className='space-y-4'>
               <FormField
                 control={addSlideForm.control}
-                name="name"
+                name='name'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Slide Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="My Slide" {...field} />
+                      <Input placeholder='My Slide' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -327,7 +332,7 @@ export default function PortalioPage() {
               />
 
               <DialogFooter>
-                <Button type="submit">Add Slide</Button>
+                <Button type='submit'>Add Slide</Button>
               </DialogFooter>
             </form>
           </Form>
@@ -343,15 +348,15 @@ export default function PortalioPage() {
           </DialogHeader>
 
           <Form {...editSlideForm}>
-            <form onSubmit={editSlideForm.handleSubmit(onEditSlideSubmit)} className="space-y-4">
+            <form onSubmit={editSlideForm.handleSubmit(onEditSlideSubmit)} className='space-y-4'>
               <FormField
                 control={editSlideForm.control}
-                name="name"
+                name='name'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Slide Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="My Slide" {...field} />
+                      <Input placeholder='My Slide' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -359,7 +364,7 @@ export default function PortalioPage() {
               />
 
               <DialogFooter>
-                <Button type="submit">Edit Slide</Button>
+                <Button type='submit'>Edit Slide</Button>
               </DialogFooter>
             </form>
           </Form>
@@ -398,15 +403,15 @@ export default function PortalioPage() {
           </DialogHeader>
 
           <Form {...addFolderForm}>
-            <form onSubmit={addFolderForm.handleSubmit(onAddFolderSubmit)} className="space-y-4">
+            <form onSubmit={addFolderForm.handleSubmit(onAddFolderSubmit)} className='space-y-4'>
               <FormField
                 control={addFolderForm.control}
-                name="name"
+                name='name'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Folder Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="My Folder" {...field} />
+                      <Input placeholder='My Folder' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -415,12 +420,12 @@ export default function PortalioPage() {
 
               <FormField
                 control={addFolderForm.control}
-                name="iconUrl"
+                name='iconUrl'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Icon URL (optional)</FormLabel>
                     <FormControl>
-                      <Input placeholder="https://example.com/icon.png" {...field} />
+                      <Input placeholder='https://example.com/icon.png' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -428,7 +433,7 @@ export default function PortalioPage() {
               />
 
               <DialogFooter>
-                <Button type="submit">Create Folder</Button>
+                <Button type='submit'>Create Folder</Button>
               </DialogFooter>
             </form>
           </Form>
@@ -444,15 +449,15 @@ export default function PortalioPage() {
           </DialogHeader>
 
           <Form {...addWebsiteForm}>
-            <form onSubmit={addWebsiteForm.handleSubmit(onAddWebsiteSubmit)} className="space-y-4">
+            <form onSubmit={addWebsiteForm.handleSubmit(onAddWebsiteSubmit)} className='space-y-4'>
               <FormField
                 control={addWebsiteForm.control}
-                name="name"
+                name='name'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Website Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="My Website" {...field} />
+                      <Input placeholder='My Website' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -461,12 +466,12 @@ export default function PortalioPage() {
 
               <FormField
                 control={addWebsiteForm.control}
-                name="iconUrl"
+                name='iconUrl'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Icon URL (optional)</FormLabel>
                     <FormControl>
-                      <Input placeholder="https://example.com/favicon.ico" {...field} />
+                      <Input placeholder='https://example.com/favicon.ico' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -475,12 +480,12 @@ export default function PortalioPage() {
 
               <FormField
                 control={addWebsiteForm.control}
-                name="url"
+                name='url'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Website URL</FormLabel>
                     <FormControl>
-                      <Input placeholder="https://example.com" {...field} />
+                      <Input placeholder='https://example.com' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -488,16 +493,16 @@ export default function PortalioPage() {
               />
 
               <DialogFooter>
-                <Button type="submit">Add Website</Button>
+                <Button type='submit'>Add Website</Button>
               </DialogFooter>
             </form>
           </Form>
         </DialogContent>
       </Dialog>
       {/* The Dropdown Menu */}
-      <div className="fc absolute right-4 bottom-4 z-10 gap-2">
+      <div className='fc absolute right-4 bottom-4 z-10 gap-2'>
         <Toggle
-          aria-label="Toggle reorder"
+          aria-label='Toggle reorder'
           pressed={reOrder}
           onPressedChange={(e) => {
             setReOrder(e);
@@ -509,7 +514,7 @@ export default function PortalioPage() {
         <Button>Save</Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button size="icon">Add</Button>
+            <Button size='icon'>Add</Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem

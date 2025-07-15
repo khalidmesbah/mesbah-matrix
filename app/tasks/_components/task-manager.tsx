@@ -109,14 +109,14 @@ const useTaskManagerStore = create<TaskManagerState>()(
     (set) => ({
       tasks: [],
       customLists: [
-        { id: 'tasks', name: 'Tasks', icon: <List className="h-4 w-4" /> },
-        { id: 'buy', name: 'Buy', icon: <ShoppingCart className="h-4 w-4" /> },
+        { id: 'tasks', name: 'Tasks', icon: <List className='h-4 w-4' /> },
+        { id: 'buy', name: 'Buy', icon: <ShoppingCart className='h-4 w-4' /> },
         {
           id: 'dailyConstants',
           name: 'Daily Constants',
-          icon: <Zap className="h-4 w-4" />,
+          icon: <Zap className='h-4 w-4' />,
         },
-        { id: 'dreams', name: 'Dreams', icon: <Star className="h-4 w-4" /> },
+        { id: 'dreams', name: 'Dreams', icon: <Star className='h-4 w-4' /> },
       ],
       currentView: 'inbox',
       isSidebarOpen: true,
@@ -255,7 +255,7 @@ export default function TaskManager() {
       const newList: CustomList = {
         id: newListName.toLowerCase().replace(/\s+/g, '-'),
         name: newListName,
-        icon: <List className="h-4 w-4" />,
+        icon: <List className='h-4 w-4' />,
       };
       addCustomList(newList);
       setNewListName('');
@@ -293,20 +293,20 @@ export default function TaskManager() {
 
     return (
       <Button
-        variant="ghost"
-        className="relative w-full justify-start"
+        variant='ghost'
+        className='relative w-full justify-start'
         onClick={() => setCurrentView(list.id)}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
         {/* Render the icon if it's a valid React element */}
         {React.isValidElement(list.icon) && list.icon}
-        <div className="ml-2 flex items-center">{list.name}</div>
+        <div className='ml-2 flex items-center'>{list.name}</div>
         {isHovered ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="ml-auto">
-                <MoreHorizontal className="h-4 w-4" />
+              <Button variant='ghost' size='icon' className='ml-auto'>
+                <MoreHorizontal className='h-4 w-4' />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
@@ -318,8 +318,8 @@ export default function TaskManager() {
             </DropdownMenuContent>
           </DropdownMenu>
         ) : (
-          <span className="ml-auto flex items-center">
-            <span className="bg-primary mr-1 h-2 w-2 rounded-full"></span>
+          <span className='ml-auto flex items-center'>
+            <span className='bg-primary mr-1 h-2 w-2 rounded-full'></span>
             {getTaskCountForView(list.id)}
           </span>
         )}
@@ -394,25 +394,25 @@ export default function TaskManager() {
       return (
         <Popover>
           <PopoverTrigger asChild>
-            <Button variant="ghost" className="w-full justify-between">
-              <div className="flex items-center">
-                <Clock className="mr-2 h-4 w-4" />
+            <Button variant='ghost' className='w-full justify-between'>
+              <div className='flex items-center'>
+                <Clock className='mr-2 h-4 w-4' />
                 <span>{selectedTime || 'Set time'}</span>
               </div>
-              <ChevronRight className="h-4 w-4" />
+              <ChevronRight className='h-4 w-4' />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-56" align="start">
-            <ScrollArea className="h-[200px]">
-              <div className="space-y-2">
+          <PopoverContent className='w-56' align='start'>
+            <ScrollArea className='h-[200px]'>
+              <div className='space-y-2'>
                 {timeOptions.map((time) => (
                   <Button
                     key={time}
-                    variant="ghost"
-                    className="w-full justify-start"
+                    variant='ghost'
+                    className='w-full justify-start'
                     onClick={() => handleTimeSelect(time)}
                   >
-                    <Clock className="mr-2 h-4 w-4" />
+                    <Clock className='mr-2 h-4 w-4' />
                     {time}
                   </Button>
                 ))}
@@ -426,155 +426,155 @@ export default function TaskManager() {
     return (
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="ghost" size="icon" className="text-muted-foreground">
-            <CalendarIcon className="h-4 w-4" />
+          <Button variant='ghost' size='icon' className='text-muted-foreground'>
+            <CalendarIcon className='h-4 w-4' />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
-          <Tabs defaultValue="date">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="date">Date</TabsTrigger>
-              <TabsTrigger value="duration">Duration</TabsTrigger>
+        <PopoverContent className='w-auto p-0' align='start'>
+          <Tabs defaultValue='date'>
+            <TabsList className='grid w-full grid-cols-2'>
+              <TabsTrigger value='date'>Date</TabsTrigger>
+              <TabsTrigger value='duration'>Duration</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="date" className="p-0">
-              <div className="flex items-center justify-between p-4">
-                <Button size="icon" variant="ghost" className="flex-1">
-                  <Sun className="h-5 w-5" />
+            <TabsContent value='date' className='p-0'>
+              <div className='flex items-center justify-between p-4'>
+                <Button size='icon' variant='ghost' className='flex-1'>
+                  <Sun className='h-5 w-5' />
                 </Button>
-                <Button size="icon" variant="ghost" className="flex-1">
-                  <Sunset className="h-5 w-5" />
+                <Button size='icon' variant='ghost' className='flex-1'>
+                  <Sunset className='h-5 w-5' />
                 </Button>
-                <Button size="icon" variant="ghost" className="flex-1">
-                  <CalendarIcon className="h-5 w-5" />
+                <Button size='icon' variant='ghost' className='flex-1'>
+                  <CalendarIcon className='h-5 w-5' />
                 </Button>
-                <Button size="icon" variant="ghost" className="flex-1">
-                  <Moon className="h-5 w-5" />
+                <Button size='icon' variant='ghost' className='flex-1'>
+                  <Moon className='h-5 w-5' />
                 </Button>
               </div>
               <Calendar
-                mode="single"
+                mode='single'
                 selected={date}
                 onSelect={handleDateSelect}
-                className="rounded-md border"
+                className='rounded-md border'
               />
-              <div className="border-t p-3">
+              <div className='border-t p-3'>
                 <TimePicker onTimeSelect={handleTimeSelect} />
               </div>
-              <div className="border-t p-3">
+              <div className='border-t p-3'>
                 <Popover>
                   <PopoverTrigger asChild>
-                    <Button variant="ghost" className="w-full justify-between">
-                      <div className="flex items-center">
-                        <Bell className="mr-2 h-4 w-4" />
+                    <Button variant='ghost' className='w-full justify-between'>
+                      <div className='flex items-center'>
+                        <Bell className='mr-2 h-4 w-4' />
                         <span>{reminder || 'Reminder'}</span>
                       </div>
-                      <ChevronRight className="h-4 w-4" />
+                      <ChevronRight className='h-4 w-4' />
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-56">
-                    <div className="space-y-2">
+                  <PopoverContent className='w-56'>
+                    <div className='space-y-2'>
                       <Button
-                        variant="ghost"
-                        className="w-full justify-start"
+                        variant='ghost'
+                        className='w-full justify-start'
                         onClick={() => handleReminderSelect('5 minutes before')}
                       >
-                        <Clock className="mr-2 h-4 w-4" />5 minutes before
+                        <Clock className='mr-2 h-4 w-4' />5 minutes before
                       </Button>
                       <Button
-                        variant="ghost"
-                        className="w-full justify-start"
+                        variant='ghost'
+                        className='w-full justify-start'
                         onClick={() => handleReminderSelect('10 minutes before')}
                       >
-                        <Clock className="mr-2 h-4 w-4" />
+                        <Clock className='mr-2 h-4 w-4' />
                         10 minutes before
                       </Button>
                       <Button
-                        variant="ghost"
-                        className="w-full justify-start"
+                        variant='ghost'
+                        className='w-full justify-start'
                         onClick={() => handleReminderSelect('15 minutes before')}
                       >
-                        <Clock className="mr-2 h-4 w-4" />
+                        <Clock className='mr-2 h-4 w-4' />
                         15 minutes before
                       </Button>
                       <Button
-                        variant="ghost"
-                        className="w-full justify-start"
+                        variant='ghost'
+                        className='w-full justify-start'
                         onClick={() => handleReminderSelect('30 minutes before')}
                       >
-                        <Clock className="mr-2 h-4 w-4" />
+                        <Clock className='mr-2 h-4 w-4' />
                         30 minutes before
                       </Button>
                       <Button
-                        variant="ghost"
-                        className="w-full justify-start"
+                        variant='ghost'
+                        className='w-full justify-start'
                         onClick={() => handleReminderSelect('1 hour before')}
                       >
-                        <Clock className="mr-2 h-4 w-4" />1 hour before
+                        <Clock className='mr-2 h-4 w-4' />1 hour before
                       </Button>
                       <Button
-                        variant="ghost"
-                        className="w-full justify-start"
+                        variant='ghost'
+                        className='w-full justify-start'
                         onClick={() => handleReminderSelect('Custom')}
                       >
-                        <Clock className="mr-2 h-4 w-4" />
+                        <Clock className='mr-2 h-4 w-4' />
                         Custom
                       </Button>
                     </div>
                   </PopoverContent>
                 </Popover>
               </div>
-              <div className="border-t p-3">
+              <div className='border-t p-3'>
                 <Popover>
                   <PopoverTrigger asChild>
-                    <Button variant="ghost" className="w-full justify-between">
-                      <div className="flex items-center">
-                        <Repeat className="mr-2 h-4 w-4" />
+                    <Button variant='ghost' className='w-full justify-between'>
+                      <div className='flex items-center'>
+                        <Repeat className='mr-2 h-4 w-4' />
                         <span>{repeatOption || 'Repeat'}</span>
                       </div>
-                      <ChevronRight className="h-4 w-4" />
+                      <ChevronRight className='h-4 w-4' />
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-56">
-                    <div className="space-y-2">
+                  <PopoverContent className='w-56'>
+                    <div className='space-y-2'>
                       <Button
-                        variant="ghost"
-                        className="w-full justify-start"
+                        variant='ghost'
+                        className='w-full justify-start'
                         onClick={() => handleRepeatSelect('Daily')}
                       >
                         Daily
                       </Button>
                       <Button
-                        variant="ghost"
-                        className="w-full justify-start"
+                        variant='ghost'
+                        className='w-full justify-start'
                         onClick={() => handleRepeatSelect('Weekly')}
                       >
                         Weekly (Sunday)
                       </Button>
                       <Button
-                        variant="ghost"
-                        className="w-full justify-start"
+                        variant='ghost'
+                        className='w-full justify-start'
                         onClick={() => handleRepeatSelect('Monthly')}
                       >
                         Monthly (13th)
                       </Button>
                       <Button
-                        variant="ghost"
-                        className="w-full justify-start"
+                        variant='ghost'
+                        className='w-full justify-start'
                         onClick={() => handleRepeatSelect('Yearly')}
                       >
                         Yearly (Oct 13th)
                       </Button>
                       <Button
-                        variant="ghost"
-                        className="w-full justify-start"
+                        variant='ghost'
+                        className='w-full justify-start'
                         onClick={() => handleRepeatSelect('Every Weekday')}
                       >
                         Every Weekday (Mon - Fri)
                       </Button>
                       <Button
-                        variant="ghost"
-                        className="w-full justify-start"
+                        variant='ghost'
+                        className='w-full justify-start'
                         onClick={() => handleRepeatSelect('Custom')}
                       >
                         Custom
@@ -583,13 +583,13 @@ export default function TaskManager() {
                   </PopoverContent>
                 </Popover>
               </div>
-              <div className="flex justify-between p-3">
-                <Button variant="ghost">Clear</Button>
+              <div className='flex justify-between p-3'>
+                <Button variant='ghost'>Clear</Button>
                 <Button>OK</Button>
               </div>
             </TabsContent>
-            <TabsContent value="duration">
-              <div className="p-3">Duration options to be implemented</div>
+            <TabsContent value='duration'>
+              <div className='p-3'>Duration options to be implemented</div>
             </TabsContent>
           </Tabs>
         </PopoverContent>
@@ -615,51 +615,51 @@ export default function TaskManager() {
   };
 
   return (
-    <div className="bg-background text-foreground flex h-screen">
+    <div className='bg-background text-foreground flex h-screen'>
       {/* Sidebar */}
       <div
         className={`${
           isSidebarOpen ? 'w-64' : 'w-0'
         } bg-card flex flex-col overflow-hidden transition-all duration-300 ease-in-out`}
       >
-        <nav className="grow space-y-2 p-4">
+        <nav className='grow space-y-2 p-4'>
           <Button
-            variant="ghost"
-            className="w-full justify-start"
+            variant='ghost'
+            className='w-full justify-start'
             onClick={() => setCurrentView('today')}
           >
-            <CalendarIcon className="mr-2 h-4 w-4" />
+            <CalendarIcon className='mr-2 h-4 w-4' />
             Today
-            <span className="ml-auto">{getTaskCountForView('today')}</span>
+            <span className='ml-auto'>{getTaskCountForView('today')}</span>
           </Button>
           <Button
-            variant="ghost"
-            className="w-full justify-start"
+            variant='ghost'
+            className='w-full justify-start'
             onClick={() => setCurrentView('next7days')}
           >
-            <CalendarIcon className="mr-2 h-4 w-4" />
+            <CalendarIcon className='mr-2 h-4 w-4' />
             Next 7 Days
-            <span className="ml-auto">{getTaskCountForView('next7days')}</span>
+            <span className='ml-auto'>{getTaskCountForView('next7days')}</span>
           </Button>
           <Button
-            variant="ghost"
-            className="w-full justify-start"
+            variant='ghost'
+            className='w-full justify-start'
             onClick={() => setCurrentView('inbox')}
           >
-            <Inbox className="mr-2 h-4 w-4" />
+            <Inbox className='mr-2 h-4 w-4' />
             Inbox
-            <span className="ml-auto">{getTaskCountForView('inbox')}</span>
+            <span className='ml-auto'>{getTaskCountForView('inbox')}</span>
           </Button>
-          <div className="pt-4">
+          <div className='pt-4'>
             <Button
-              variant="ghost"
-              className="mb-2 w-full justify-start"
+              variant='ghost'
+              className='mb-2 w-full justify-start'
               onClick={() => toggleListsCollapsed()}
             >
               {isListsCollapsed ? (
-                <ChevronRight className="mr-2 h-4 w-4" />
+                <ChevronRight className='mr-2 h-4 w-4' />
               ) : (
-                <ChevronDown className="mr-2 h-4 w-4" />
+                <ChevronDown className='mr-2 h-4 w-4' />
               )}
               LISTS
             </Button>
@@ -669,60 +669,60 @@ export default function TaskManager() {
                   <ListItem key={list.id} list={list} />
                 ))}
                 <Button
-                  variant="ghost"
-                  className="w-full justify-start"
+                  variant='ghost'
+                  className='w-full justify-start'
                   onClick={() => setAddListModalOpen(true)}
                 >
-                  <Plus className="mr-2 h-4 w-4" />
+                  <Plus className='mr-2 h-4 w-4' />
                   Add List
                 </Button>
               </>
             )}
           </div>
         </nav>
-        <div className="mt-auto space-y-2 p-4">
+        <div className='mt-auto space-y-2 p-4'>
           <Button
-            variant="ghost"
-            className="w-full justify-start"
+            variant='ghost'
+            className='w-full justify-start'
             onClick={() => setCurrentView('completed')}
           >
-            <CheckSquare className="mr-2 h-4 w-4" />
+            <CheckSquare className='mr-2 h-4 w-4' />
             Completed
           </Button>
           <Button
-            variant="ghost"
-            className="w-full justify-start"
+            variant='ghost'
+            className='w-full justify-start'
             onClick={() => setCurrentView('trash')}
           >
-            <Trash2 className="mr-2 h-4 w-4" />
+            <Trash2 className='mr-2 h-4 w-4' />
             Trash
           </Button>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="flex flex-1 flex-col">
+      <div className='flex flex-1 flex-col'>
         {/* Header */}
-        <header className="border-border flex items-center justify-between border-b p-4">
-          <div className="flex items-center">
-            <Button variant="ghost" size="icon" onClick={toggleSidebar}>
-              <Menu className="h-5 w-5" />
+        <header className='border-border flex items-center justify-between border-b p-4'>
+          <div className='flex items-center'>
+            <Button variant='ghost' size='icon' onClick={toggleSidebar}>
+              <Menu className='h-5 w-5' />
             </Button>
-            <h1 className="ml-4 text-xl font-semibold">{getCurrentViewName()}</h1>
+            <h1 className='ml-4 text-xl font-semibold'>{getCurrentViewName()}</h1>
           </div>
-          <Button variant="ghost" size="icon">
-            <MoreHorizontal className="h-5 w-5" />
+          <Button variant='ghost' size='icon'>
+            <MoreHorizontal className='h-5 w-5' />
           </Button>
         </header>
 
         {/* Task List */}
-        <ScrollArea className="flex-1">
-          <ul className="space-y-4 p-4">
-            <li className="border-primary bg-background flex list-none items-center space-x-2 rounded-md border p-2">
-              <Plus className="text-muted-foreground h-5 w-5" />
+        <ScrollArea className='flex-1'>
+          <ul className='space-y-4 p-4'>
+            <li className='border-primary bg-background flex list-none items-center space-x-2 rounded-md border p-2'>
+              <Plus className='text-muted-foreground h-5 w-5' />
               <Input
-                placeholder="Add task"
-                className="text-foreground placeholder-muted-foreground flex-1 border-none bg-transparent"
+                placeholder='Add task'
+                className='text-foreground placeholder-muted-foreground flex-1 border-none bg-transparent'
                 value={newTaskTitle}
                 onChange={(e) => setNewTaskTitle(e.target.value)}
                 onKeyDown={(e) => {
@@ -737,34 +737,38 @@ export default function TaskManager() {
                 onRepeatSelect={(repeat) => setNewTaskRepeat(repeat)}
                 onReminderSelect={(reminder) => setNewTaskReminder(reminder)}
               />
-              <Button variant="ghost" size="icon" className="text-muted-foreground">
-                <ArrowDown className="h-5 w-5" />
+              <Button variant='ghost' size='icon' className='text-muted-foreground'>
+                <ArrowDown className='h-5 w-5' />
               </Button>
             </li>
             {incompleteTasks.map((task) => (
-              <li key={task.id} className="flex items-center space-x-2">
-                <Checkbox
-                  id={`task-${task.id}`}
-                  checked={task.completed}
-                  onCheckedChange={() => toggleTaskCompletion(task.id)}
-                  onClick={(e) => e.stopPropagation()}
-                />
-                <label className="text-sm">{task.title}</label>
+              <li key={task.id} className='flex items-center space-x-2'>
+                <label className='flex items-center space-x-2'>
+                  <Checkbox
+                    id={`task-${task.id}`}
+                    checked={task.completed}
+                    onCheckedChange={() => toggleTaskCompletion(task.id)}
+                    onClick={(e) => e.stopPropagation()}
+                  />
+                  <span className='text-sm'>{task.title}</span>
+                </label>
               </li>
             ))}
             {completedTasks.length > 0 && (
-              <li className="pt-4 list-none">
-                <h3 className="mb-2 text-sm font-semibold">Completed</h3>
-                <ul className="space-y-2">
+              <li className='pt-4 list-none'>
+                <h3 className='mb-2 text-sm font-semibold'>Completed</h3>
+                <ul className='space-y-2'>
                   {completedTasks.map((task) => (
-                    <li key={task.id} className="flex items-center space-x-2">
-                      <Checkbox
-                        id={`completed-${task.id}`}
-                        checked={task.completed}
-                        onCheckedChange={() => toggleTaskCompletion(task.id)}
-                        onClick={(e) => e.stopPropagation()}
-                      />
-                      <label className="text-sm line-through">{task.title}</label>
+                    <li key={task.id} className='flex items-center space-x-2'>
+                      <label className='flex items-center space-x-2'>
+                        <Checkbox
+                          id={`completed-${task.id}`}
+                          checked={task.completed}
+                          onCheckedChange={() => toggleTaskCompletion(task.id)}
+                          onClick={(e) => e.stopPropagation()}
+                        />
+                        <span className='text-sm line-through'>{task.title}</span>
+                      </label>
                     </li>
                   ))}
                 </ul>
@@ -779,12 +783,12 @@ export default function TaskManager() {
             <DialogTitle>Add New List</DialogTitle>
           </DialogHeader>
           <Input
-            placeholder="Enter list name"
+            placeholder='Enter list name'
             value={newListName}
             onChange={(e) => setNewListName(e.target.value)}
           />
           <DialogFooter>
-            <Button variant="outline" onClick={() => setAddListModalOpen(false)}>
+            <Button variant='outline' onClick={() => setAddListModalOpen(false)}>
               Cancel
             </Button>
             <Button onClick={handleAddList}>Add</Button>

@@ -33,6 +33,14 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'jv4vfhmlakbx4skb.public.blob.vercel-storage.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'www.google.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'plus.unsplash.com',
+      },
     ],
   },
 };

@@ -121,7 +121,7 @@ function CustomContextMenu(props: TLUiContextMenuProps) {
   const actions = useActions();
   return (
     <DefaultContextMenu {...props}>
-      <TldrawUiMenuGroup id="example">
+      <TldrawUiMenuGroup id='example'>
         <TldrawUiMenuItem {...actions['clear']} />
       </TldrawUiMenuGroup>
       <DefaultContextMenuContent />
@@ -151,11 +151,11 @@ function CustomKeyboardShortcutsDialog(props: TLUiKeyboardShortcutsDialogProps) 
 
   return (
     <DefaultKeyboardShortcutsDialog {...props}>
-      <TldrawUiMenuGroup id="Components" label="Components">
+      <TldrawUiMenuGroup id='Components' label='Components'>
         <TldrawUiMenuItem {...tools['slide']} />
         <TldrawUiMenuItem {...tools['sticker']} />
       </TldrawUiMenuGroup>
-      <TldrawUiMenuGroup id="File" label="File">
+      <TldrawUiMenuGroup id='File' label='File'>
         <TldrawUiMenuItem {...actions['new-file']} />
         <TldrawUiMenuItem {...actions['open-file']} />
         <TldrawUiMenuItem {...actions['save-file']} />
@@ -172,8 +172,8 @@ function CustomMainMenu() {
   return (
     <DefaultMainMenu>
       <TldrawUiMenuSubmenu
-        id="file"
-        label="File"
+        id='file'
+        label='File'
         children={
           <>
             <TldrawUiMenuItem {...actions['new-file']} />
@@ -183,10 +183,10 @@ function CustomMainMenu() {
           </>
         }
       />
-      <TldrawUiMenuGroup id="custom">
+      <TldrawUiMenuGroup id='custom'>
         <TldrawUiMenuItem
-          id="save"
-          label="Save"
+          id='save'
+          label='Save'
           onSelect={async () => {
             const { document, session } = getSnapshot(editor.store);
             const res = await setCanvas({
@@ -201,9 +201,9 @@ function CustomMainMenu() {
           }}
         />
         <TldrawUiMenuItem
-          id="restore"
-          label="Restore last saved"
-          icon="archive-restore"
+          id='restore'
+          label='Restore last saved'
+          icon='archive-restore'
           onSelect={async () => {
             const res = await getCanvas();
             if (!res) return;
@@ -394,13 +394,13 @@ const customComponents: TLComponents = {
   Minimap: null,
 };
 
-export default function Canvas({ isAuthenticated }: { isAuthenticated: boolean }) {
+export default function Canvas() {
   const { resolvedTheme } = useTheme();
 
   return (
     <Tldraw
       inferDarkMode={resolvedTheme?.includes('dark')}
-      persistenceKey="persist"
+      persistenceKey='persist'
       tools={customTools}
       overrides={customUiOverrides}
       shapeUtils={customShapeUtils}

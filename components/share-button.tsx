@@ -48,27 +48,27 @@ export default function ShareButton({ url, title, description, variant }: ShareB
         description={description || 'Share'}
         variant={variant}
         icon={
-          <DialogTrigger asChild className="flex items-center gap-2">
+          <DialogTrigger asChild className='flex items-center gap-2'>
             <ShareIcon />
           </DialogTrigger>
         }
       />
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className='sm:max-w-md'>
         <DialogHeader>
           <DialogTitle>Share link</DialogTitle>
           <DialogDescription>Anyone who has this link will be able to view this.</DialogDescription>
         </DialogHeader>
 
-        <div className="flex items-center space-x-2">
-          <div className="grid flex-1 gap-2">
-            <Label htmlFor="link" className="sr-only">
+        <div className='flex items-center space-x-2'>
+          <div className='grid flex-1 gap-2'>
+            <Label htmlFor='link' className='sr-only'>
               Link
             </Label>
-            <Input id="link" defaultValue={url} readOnly />
+            <Input id='link' defaultValue={url} readOnly />
           </div>
           <CopyToClipboard text={url} />
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className='flex flex-wrap gap-2'>
           <TwitterShareButton url={url} title={title}>
             <TwitterIcon size={32} round />
           </TwitterShareButton>
@@ -79,7 +79,7 @@ export default function ShareButton({ url, title, description, variant }: ShareB
           <RedditShareButton url={url} title={title}>
             <RedditIcon size={32} round />
           </RedditShareButton>
-          <WhatsappShareButton url={url} title={title} separator=" :: ">
+          <WhatsappShareButton url={url} title={title} separator=' :: '>
             <WhatsappIcon size={32} round />
           </WhatsappShareButton>
           <PocketShareButton url={url} title={title}>
@@ -95,9 +95,9 @@ export default function ShareButton({ url, title, description, variant }: ShareB
             <EmailIcon size={32} round />
           </EmailShareButton>
         </div>
-        <DialogFooter className="sm:justify-start">
+        <DialogFooter className='sm:justify-start'>
           <DialogClose asChild>
-            <Button type="button" variant="secondary">
+            <Button type='button' variant='secondary'>
               Close
             </Button>
           </DialogClose>

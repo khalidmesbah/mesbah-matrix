@@ -18,10 +18,12 @@
     "rules": {
       "recommended": true,
       "suspicious": {
-        "noExplicitAny": "off"
+        "noExplicitAny": "off",
+        "noArrayIndexKey": "off"
       },
       "style": {
-        "noUnusedTemplateLiteral": "off"
+        "noUnusedTemplateLiteral": "off",
+        "noNonNullAssertion": "off"
       },
       "correctness": {
         "useExhaustiveDependencies": "off",
@@ -30,7 +32,8 @@
       },
       "a11y": {
         "useKeyWithClickEvents": "off",
-        "useButtonType": "off"
+        "useButtonType": "off",
+        "noLabelWithoutControl": "off"
       },
       "complexity": {
         "useLiteralKeys": "off"
@@ -39,7 +42,7 @@
   },
   "javascript": {
     "formatter": {
-      "jsxQuoteStyle": "double",
+      "jsxQuoteStyle": "single",
       "quoteProperties": "asNeeded",
       "trailingCommas": "all",
       "semicolons": "always",

@@ -49,17 +49,17 @@ export default function ImageWidget({ id }: { id: string }) {
         updateWidgetState(id, { url: blob.url });
 
         toast(
-          (t: { id: string }) => (
-            <div className="relative">
-              <div className="p-2">
-                <p className="font-semibold text-gray-900">File uploaded!</p>
-                <p className="mt-1 text-sm text-gray-500">
+          (_t: { id: string }) => (
+            <div className='relative'>
+              <div className='p-2'>
+                <p className='font-semibold text-gray-900'>File uploaded!</p>
+                <p className='mt-1 text-sm text-gray-500'>
                   Your file has been uploaded to{' '}
                   <a
-                    className="font-medium text-gray-900 underline"
+                    className='font-medium text-gray-900 underline'
                     href={blob.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    target='_blank'
+                    rel='noopener noreferrer'
                   >
                     {blob.url}
                   </a>
@@ -97,20 +97,23 @@ export default function ImageWidget({ id }: { id: string }) {
     setFile(file);
     setPreview(URL.createObjectURL(file));
   }
-  if (imageUrl) return <Image src={imageUrl} alt="preview" fill={true} />;
+  if (imageUrl) return <Image src={imageUrl} alt='preview' fill={true} />;
 
   return (
-    <form className="grid gap-6" onSubmit={handleSubmit}>
+    <form className='grid gap-6' onSubmit={handleSubmit}>
       <div>
-        <div className="mb-4 space-y-1">
-          <h2 className="text-xl font-semibold">Upload an image</h2>
+        <div className='mb-4 space-y-1'>
+          <h2 className='text-xl font-semibold'>Upload an image</h2>
         </div>
         <label
-          htmlFor="image-upload"
-          className="group relative mt-2 flex h-72 cursor-pointer flex-col items-center justify-center rounded-md border border-gray-300 bg-white shadow-sm transition-all hover:bg-gray-50"
+          htmlFor='image-upload'
+          className='group relative mt-2 flex h-72 cursor-pointer flex-col items-center justify-center rounded-md border border-gray-300 bg-white shadow-sm transition-all hover:bg-gray-50'
         >
           <div
-            className="absolute z-[5] h-full w-full rounded-md"
+            className='absolute z-[5] h-full w-full rounded-md'
+            role='button'
+            tabIndex={0}
+            aria-label='File upload drop zone'
             onDragOver={(e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -150,39 +153,38 @@ export default function ImageWidget({ id }: { id: string }) {
               className={`${
                 dragActive ? 'scale-110' : 'scale-100'
               } h-7 w-7 text-gray-500 transition-all duration-75 group-hover:scale-110 group-active:scale-95`}
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+              xmlns='http://www.w3.org/2000/svg'
+              width='24'
+              height='24'
+              viewBox='0 0 24 24'
+              fill='none'
+              stroke='currentColor'
+              strokeWidth='2'
+              strokeLinecap='round'
+              strokeLinejoin='round'
             >
               <title>Upload icon</title>
-              <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242" />
-              <path d="M12 12v9" />
-              <path d="m16 16-4-4-4 4" />
+              <path d='M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242' />
+              <path d='M12 12v9' />
+              <path d='m16 16-4-4-4 4' />
             </svg>
-            <p className="mt-2 text-center text-sm text-gray-500">
+            <p className='mt-2 text-center text-sm text-gray-500'>
               Drag and drop or click to upload.
             </p>
-            <p className="mt-2 text-center text-sm text-gray-500">Max file size: 50MB</p>
-            <span className="sr-only">Photo upload</span>
+            <p className='mt-2 text-center text-sm text-gray-500'>Max file size: 50MB</p>
+            <span className='sr-only'>Photo upload</span>
           </div>
           {preview && (
-            // eslint-disable-next-line @next/next/no-img-element -- We want a simple preview here, no <Image> needed
-            <img src={preview} alt="Preview" className="h-full w-full rounded-md object-cover" />
+            <Image src={preview} alt='Preview' className='h-full w-full rounded-md object-cover' />
           )}
         </label>
-        <div className="mt-1 flex rounded-md shadow-sm">
+        <div className='mt-1 flex rounded-md shadow-sm'>
           <input
-            id="image-upload"
-            name="image"
-            type="file"
-            accept="image/*"
-            className="sr-only"
+            id='image-upload'
+            name='image'
+            type='file'
+            accept='image/*'
+            className='sr-only'
             onChange={(event) => {
               const file = event.currentTarget?.files?.[0];
               if (file) {
@@ -193,22 +195,22 @@ export default function ImageWidget({ id }: { id: string }) {
         </div>
       </div>
 
-      <div className="space-y-2">
+      <div className='space-y-2'>
         {isUploading && <ProgressBar value={progress} />}
 
         <button
-          type="submit"
+          type='submit'
           disabled={isUploading || !file}
-          className="flex h-10 w-full items-center justify-center rounded-md border border-black bg-black text-sm text-white transition-all hover:bg-white hover:text-black focus:outline-hidden disabled:cursor-not-allowed disabled:border-gray-200 disabled:bg-gray-100 disabled:text-gray-400"
+          className='flex h-10 w-full items-center justify-center rounded-md border border-black bg-black text-sm text-white transition-all hover:bg-white hover:text-black focus:outline-hidden disabled:cursor-not-allowed disabled:border-gray-200 disabled:bg-gray-100 disabled:text-gray-400'
         >
-          <p className="text-sm">Upload</p>
+          <p className='text-sm'>Upload</p>
         </button>
 
         <button
-          type="reset"
+          type='reset'
           onClick={reset}
           disabled={isUploading || !file}
-          className="flex h-10 w-full items-center justify-center rounded-md border border-gray-200 bg-gray-100 text-sm text-gray-700 transition-all hover:bg-white hover:text-black focus:outline-hidden disabled:cursor-not-allowed disabled:border-gray-200 disabled:bg-gray-100 disabled:text-gray-400"
+          className='flex h-10 w-full items-center justify-center rounded-md border border-gray-200 bg-gray-100 text-sm text-gray-700 transition-all hover:bg-white hover:text-black focus:outline-hidden disabled:cursor-not-allowed disabled:border-gray-200 disabled:bg-gray-100 disabled:text-gray-400'
         >
           Reset
         </button>

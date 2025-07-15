@@ -9,7 +9,7 @@ export function ExportPdfButton({ pdf }: { pdf: Pdf }) {
 
   return (
     <button
-      className="ExportPdfButton"
+      className='ExportPdfButton'
       onClick={async () => {
         setExportProgress(0);
         try {

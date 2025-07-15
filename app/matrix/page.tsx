@@ -147,7 +147,7 @@ export default function MatrixPage() {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div className="grid h-[calc(100dvh_-_16px)] grid-cols-1 gap-1 sm:grid-cols-2 sm:grid-rows-2">
+      <div className='grid h-[calc(100dvh_-_16px)] grid-cols-1 gap-1 sm:grid-cols-2 sm:grid-rows-2'>
         {matrix.columnOrder.map((columnId) => {
           const column = matrix.columns[columnId];
           const tasks = column.taskIds.map((taskId) => matrix.tasks[taskId]);
@@ -180,8 +180,8 @@ function Column({
     toast({
       title: 'You submitted the following values:',
       description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+        <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
+          <code className='text-white'>{JSON.stringify(data, null, 2)}</code>
         </pre>
       ),
     });
@@ -203,11 +203,11 @@ function Column({
       >
         <Dialog>
           <DialogTrigger asChild>
-            <Button size={'icon'} variant={'link'} className="text-foreground">
+            <Button size={'icon'} variant={'link'} className='text-foreground'>
               <BadgePlus />
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px]">
+          <DialogContent className='sm:max-w-[425px]'>
             <DialogHeader>
               <DialogTitle>
                 {column.title === 'do'
@@ -225,14 +225,14 @@ function Column({
               </DialogDescription>
             </DialogHeader>
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="bg-card space-y-6">
+              <form onSubmit={form.handleSubmit(onSubmit)} className='bg-card space-y-6'>
                 <FormField
                   control={form.control}
-                  name="text"
+                  name='text'
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input placeholder="Type a task" {...field} />
+                        <Input placeholder='Type a task' {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -255,13 +255,13 @@ function Column({
           </DialogContent>
         </Dialog>
 
-        <h2 className="flex flex-1 items-center justify-center font-extrabold uppercase sm:scale-[-1] sm:[writing-mode:vertical-lr]">
+        <h2 className='flex flex-1 items-center justify-center font-extrabold uppercase sm:scale-[-1] sm:[writing-mode:vertical-lr]'>
           {column.title}
         </h2>
 
         <HoverCard>
           <HoverCardTrigger>
-            <div className="flex h-10 w-10 items-center justify-center rounded-full">
+            <div className='flex h-10 w-10 items-center justify-center rounded-full'>
               <BadgeInfo />
             </div>
           </HoverCardTrigger>
@@ -283,7 +283,7 @@ function Column({
           <div
             ref={provided.innerRef}
             {...provided.droppableProps}
-            className="w-full overflow-x-hidden overflow-y-auto rounded-md p-[2px]"
+            className='w-full overflow-x-hidden overflow-y-auto rounded-md p-[2px]'
           >
             {tasks.length ? (
               tasks.map((task, index) => (
@@ -296,7 +296,7 @@ function Column({
                 />
               ))
             ) : (
-              <p className="border-border border-1 p-1">No Tasks Yet!</p>
+              <p className='border-border border-1 p-1'>No Tasks Yet!</p>
             )}
             {provided.placeholder}
           </div>
@@ -327,13 +327,13 @@ function Task({
   return (
     <Draggable draggableId={task.id} index={index}>
       {(provided) => (
-        <div className="p-[2px]" {...provided.draggableProps} ref={provided.innerRef}>
-          <div className="bg-secondary flex items-stretch rounded-md">
-            <div className="relative w-6 px-3">
+        <div className='p-[2px]' {...provided.draggableProps} ref={provided.innerRef}>
+          <div className='bg-secondary flex items-stretch rounded-md'>
+            <div className='relative w-6 px-3'>
               <Button
                 variant={'link'}
-                size="sm"
-                className="absolute inset-0 h-full w-full rounded-none"
+                size='sm'
+                className='absolute inset-0 h-full w-full rounded-none'
                 onClick={() => toggleCheck(task.id)}
               >
                 {task.done ? (
@@ -344,11 +344,11 @@ function Task({
               </Button>
             </div>
 
-            <p className="line-clamp-1 flex w-full items-center p-1">{task.text}</p>
-            <div className="relative">
+            <p className='line-clamp-1 flex w-full items-center p-1'>{task.text}</p>
+            <div className='relative'>
               <TaskSettings task={task} columnId={columnId} setMatrix={setMatrix} />
             </div>
-            <div className="relative">
+            <div className='relative'>
               <Icon icon={<Grip size={20} />} {...provided.dragHandleProps} />
             </div>
           </div>
@@ -370,7 +370,7 @@ function TaskSettings({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="link" className={`h-full w-6! rounded-none bg-none! p-1!`}>
+        <Button variant='link' className={`h-full w-6! rounded-none bg-none! p-1!`}>
           <Icon icon={<Settings size={20} />} />
         </Button>
       </DropdownMenuTrigger>
@@ -405,8 +405,8 @@ function DeleteTask({
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-          <button className="flex w-full! items-center">
-            <BadgeX className="mr-2 h-4 w-4" />
+          <button className='flex w-full! items-center'>
+            <BadgeX className='mr-2 h-4 w-4' />
             <span>Delete</span>
           </button>
         </DropdownMenuItem>
@@ -423,7 +423,7 @@ function DeleteTask({
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
-            color="destructive"
+            color='destructive'
             onClick={() => deleteTask(task.id)}
             className={`${buttonVariants({ variant: 'destructive' })}`}
           >
@@ -460,8 +460,8 @@ function EditTask({
     toast({
       title: 'You submitted the following values:',
       description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+        <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
+          <code className='text-white'>{JSON.stringify(data, null, 2)}</code>
         </pre>
       ),
     });
@@ -471,14 +471,14 @@ function EditTask({
     <Dialog>
       <DialogTrigger asChild>
         <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-          <button className="flex w-full! items-center">
-            <Pencil className="mr-2 h-4 w-4" />
+          <button className='flex w-full! items-center'>
+            <Pencil className='mr-2 h-4 w-4' />
             <span>Edit</span>
           </button>
         </DropdownMenuItem>
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
           <DialogTitle>Edit Task</DialogTitle>
           <DialogDescription>
@@ -486,14 +486,14 @@ function EditTask({
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="bg-card space-y-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className='bg-card space-y-6'>
             <FormField
               control={form.control}
-              name="text"
+              name='text'
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input placeholder="Type a task" {...field} />
+                    <Input placeholder='Type a task' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

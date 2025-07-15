@@ -25,34 +25,34 @@ export function KanbanHeaderWithSheet() {
   const boards = Object.keys(kanban.boards);
   return (
     <Sheet>
-      <div className="bg-secondary mb-2 flex items-center justify-between gap-2 rounded-md p-2 sm:hidden">
-        <h1 className="text-2xl">{kanban.selectedBoard}</h1>
+      <div className='bg-secondary mb-2 flex items-center justify-between gap-2 rounded-md p-2 sm:hidden'>
+        <h1 className='text-2xl'>{kanban.selectedBoard}</h1>
         <SheetTrigger asChild>
-          <Button className="xs:w-fit">Manage</Button>
+          <Button className='xs:w-fit'>Manage</Button>
         </SheetTrigger>
       </div>
       <SheetContent>
         <SheetHeader>
           <SheetTitle>Your Kanban Board</SheetTitle>
-          <SheetDescription className="sr-only">Manage your Kanban Board</SheetDescription>
+          <SheetDescription className='sr-only'>Manage your Kanban Board</SheetDescription>
         </SheetHeader>
-        <div className="flex flex-col gap-2">
-          <h2 className="flex flex-wrap items-center gap-2">
+        <div className='flex flex-col gap-2'>
+          <h2 className='flex flex-wrap items-center gap-2'>
             <span>Board:</span>
             <Select onValueChange={(value) => setSelectedBoard(value)} value={kanban.selectedBoard}>
               <SelectTrigger>
-                <SelectValue placeholder="No Boards" />
+                <SelectValue placeholder='No Boards' />
               </SelectTrigger>
               <SelectContent>
                 {boards.length === 0 ? (
-                  <SelectItem value="No Boards">
-                    <p className="max-w-fit pr-4">No Boards</p>
+                  <SelectItem value='No Boards'>
+                    <p className='max-w-fit pr-4'>No Boards</p>
                   </SelectItem>
                 ) : (
-                  boards.map((b, i) => {
+                  boards.map((b, _i) => {
                     return (
-                      <SelectItem key={i} value={b}>
-                        <p className="max-w-fit pr-4">{b}</p>
+                      <SelectItem key={b} value={b}>
+                        <p className='max-w-fit pr-4'>{b}</p>
                       </SelectItem>
                     );
                   })
@@ -60,7 +60,7 @@ export function KanbanHeaderWithSheet() {
               </SelectContent>
             </Select>
           </h2>
-          <div className="flex flex-col justify-stretch gap-2">
+          <div className='flex flex-col justify-stretch gap-2'>
             {boards.length !== 0 && <DeleteBoard />}
             <AddBoard />
           </div>
@@ -74,23 +74,23 @@ export function KanbanHeader() {
   const { kanban, setSelectedBoard } = useKanbanStore((state) => state);
   const boards = Object.keys(kanban.boards);
   return (
-    <div className="bg-secondary mb-2 hidden items-center justify-between gap-2 rounded-md p-2 sm:flex">
-      <div className="flex items-center gap-2">
+    <div className='bg-secondary mb-2 hidden items-center justify-between gap-2 rounded-md p-2 sm:flex'>
+      <div className='flex items-center gap-2'>
         <h1>Board:</h1>
         <Select onValueChange={(value) => setSelectedBoard(value)} value={kanban.selectedBoard}>
           <SelectTrigger>
-            <SelectValue placeholder="No Boards" />
+            <SelectValue placeholder='No Boards' />
           </SelectTrigger>
           <SelectContent>
             {boards.length === 0 ? (
-              <SelectItem value="No Boards">
-                <p className="max-w-fit pr-4">No Boards</p>
+              <SelectItem value='No Boards'>
+                <p className='max-w-fit pr-4'>No Boards</p>
               </SelectItem>
             ) : (
-              boards.map((b, i) => {
+              boards.map((b, _i) => {
                 return (
-                  <SelectItem key={i} value={b}>
-                    <p className="max-w-fit pr-4">{b}</p>
+                  <SelectItem key={b} value={b}>
+                    <p className='max-w-fit pr-4'>{b}</p>
                   </SelectItem>
                 );
               })
@@ -98,8 +98,8 @@ export function KanbanHeader() {
           </SelectContent>
         </Select>
       </div>
-      <div className="flex gap-2">
-        <div className="flex justify-stretch gap-2">
+      <div className='flex gap-2'>
+        <div className='flex justify-stretch gap-2'>
           {boards.length !== 0 && <DeleteBoard />}
           <AddBoard />
         </div>

@@ -59,27 +59,27 @@ export default function AddBoard() {
       <DialogTrigger asChild>
         <Button variant={'outline'}>Add Board</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
           <DialogTitle>New Board</DialogTitle>
           <DialogDescription>Add A new Board to your kanban</DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+          <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-2'>
             <FormField
               control={form.control}
-              name="text"
+              name='text'
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input placeholder="Name of the board" {...field} />
+                    <Input placeholder='Name of the board' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <DialogFooter>
-              <Button type="submit">Add</Button>
+              <Button type='submit'>Add</Button>
             </DialogFooter>
           </form>
         </Form>

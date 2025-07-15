@@ -9,12 +9,12 @@ export const metadata: Metadata = {
 
 export default function SettingsPage() {
   return (
-    <div className="grid gap-8 p-2">
-      <div className="grid gap-2">
-        <h1 className="text-3xl font-bold">Settings</h1>
-        <p className="text-muted-foreground">Customize your preferences.</p>
+    <div className='grid gap-8 p-2'>
+      <div className='grid gap-2'>
+        <h1 className='text-3xl font-bold'>Settings</h1>
+        <p className='text-muted-foreground'>Customize your preferences.</p>
       </div>
-      <div className="grid-cols-fit grid gap-4">
+      <div className='grid-cols-fit grid gap-4'>
         <ModeSelect />
         <ColorSelect />
         <SoundSwitch />

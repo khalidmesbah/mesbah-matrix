@@ -33,9 +33,9 @@ export function AyahImage({ surah, ayah }: AyahImageProps) {
   return (
     <Dialog>
       <Icon
-        description="Image of the Ayah"
+        description='Image of the Ayah'
         icon={
-          <DialogTrigger asChild className="flex items-center gap-2">
+          <DialogTrigger asChild className='flex items-center gap-2'>
             <ImageIcon />
           </DialogTrigger>
         }
@@ -45,24 +45,24 @@ export function AyahImage({ surah, ayah }: AyahImageProps) {
           <DialogTitle>Image of the Ayah</DialogTitle>
           <DialogDescription />
         </DialogHeader>
-        <div className="flex flex-wrap items-center gap-2 text-xs">
-          <span className="fc flex-wrap gap-1">
+        <div className='flex flex-wrap items-center gap-2 text-xs'>
+          <span className='fc flex-wrap gap-1'>
             <Badge variant={'secondary'}>Surah</Badge>
             {SURAHS[surah - 1].label}
           </span>
-          <span className="fc flex-wrap gap-1">
+          <span className='fc flex-wrap gap-1'>
             <Badge variant={'secondary'}>Ayah</Badge>
             {ayah}
           </span>
         </div>
-        <div className="flex flex-col justify-center gap-2">
+        <div className='flex flex-col justify-center gap-2'>
           <Image
             src={src}
             width={1000}
             height={1000}
-            placeholder="blur"
-            blurDataURL="/imgs/ayah-placeholder.jpeg"
-            className="rounded-md bg-white p-2"
+            placeholder='blur'
+            blurDataURL='/imgs/ayah-placeholder.jpeg'
+            className='rounded-md bg-white p-2'
             alt={`surah: ${surah}, ayah: ${ayah}`}
           />
           <Button onClick={handleDownload}>Download</Button>

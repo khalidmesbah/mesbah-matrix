@@ -30,7 +30,7 @@ export default function AddAyahToFavourites(props: AddAyahToFavouritesType) {
 
   return (
     <Icon
-      description="Heart"
+      description='Heart'
       onClick={() => toggleAyahFavouriteState(favouriteAyah)}
       icon={<Heart className={cn({ 'fill-primary stroke-primary': isFavourite })} />}
     />

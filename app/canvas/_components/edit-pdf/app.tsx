@@ -18,13 +18,13 @@ export default function PdfEditorWrapper() {
   switch (state.phase) {
     case 'pick':
       return (
-        <div className="PdfEditor">
+        <div className='PdfEditor'>
           <PdfPicker onOpenPdf={(pdf) => setState({ phase: 'edit', pdf })} />
         </div>
       );
     case 'edit':
       return (
-        <div className="PdfEditor">
+        <div className='PdfEditor'>
           <PdfEditor pdf={state.pdf} />
         </div>
       );

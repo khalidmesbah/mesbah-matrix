@@ -7,7 +7,9 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Masonry } from 'react-plock';
 import { toast } from 'sonner';
+import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
+import CloudLoader from '@/components/cloud-loader';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -41,10 +43,16 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { Textarea } from '@/components/ui/textarea';
+import {
+  useAddDailyReminderMutate,
+  useDailyRemindersQuery,
+  useSetDailyRemindersMutate,
+  useToggleDailyReminderMutate,
+} from '@/hooks/use-daily-reminders';
 import useMySound from '@/hooks/use-my-sound';
 import { startFireworks } from '@/lib/utils';
 import useDailyRemindersStore from '@/stores/daily-reminders';
-import type { DailyReminderT } from '@/types/daily';
+import type { DailyRemindersT, DailyReminderT } from '@/types/daily';
 
 const FormSchema = z.object({
   text: z.string().min(2, {
@@ -52,23 +60,37 @@ const FormSchema = z.object({
   }),
 });
 
-export default function AnonDailyRemindersPage() {
-  const current = useDailyRemindersStore((state) => state.current);
+export default function UserDailyRemindersPage() {
+  const { isLoading } = useDailyRemindersQuery();
+  const { current } = useDailyRemindersStore((state) => state);
 
   return (
-    <div className="flex flex-col gap-2">
-      <DailyReminderHeaderWithSheet />
+    <div className='flex flex-col gap-2'>
       <DailyReminderHeader />
-      {current === 'browse' ? <BrowseReminders /> : <PractiseReminders />}
+      <DailyReminderHeaderWithSheet />
+      {isLoading ? (
+        <div className='flex h-[calc(100vh-200px)] items-center justify-center'>
+          <CloudLoader />
+        </div>
+      ) : current === 'browse' ? (
+        <BrowseReminders />
+      ) : (
+        <PractiseReminders />
+      )}
     </div>
   );
 }
 
 function PractiseReminders() {
-  const { dailyReminders, setDailyReminders } = useDailyRemindersStore((state) => state);
-  const order = dailyReminders.order.filter((id) => dailyReminders.reminders[id].done === false);
+  const { data } = useDailyRemindersQuery();
+  const { mutate: toggleDailyReminder } = useToggleDailyReminderMutate();
   const [play] = useMySound('/sounds/winfantasia-6912.mp3');
 
+  const dailyReminders: DailyRemindersT = !data
+    ? { reminders: {}, order: [] }
+    : structuredClone(data);
+
+  const order = dailyReminders.order.filter((id) => dailyReminders.reminders[id].done === false);
   return (
     <div>
       {dailyReminders.order.length === 0 ? (
@@ -85,19 +107,18 @@ function PractiseReminders() {
               media: [600, 850, 1024],
             }}
             render={(reminder) => (
-              <Card key={reminder.id} className="p-2">
-                <CardContent className="p-0 text-2xl font-semibold break-all select-none">
+              <Card key={reminder.id} className='p-2'>
+                <CardContent className='p-0 text-2xl font-semibold break-all select-none'>
                   {reminder.text}
                 </CardContent>
-                <CardFooter className="mt-2 p-0">
+                <CardFooter className='mt-2 p-0'>
                   <Button
                     onClick={() => {
                       if (order.length === 1) {
                         startFireworks();
                         play();
                       }
-                      dailyReminders.reminders[reminder.id].done = !reminder.done;
-                      setDailyReminders(dailyReminders);
+                      toggleDailyReminder(reminder);
                     }}
                   >
                     Got it
@@ -114,11 +135,12 @@ function PractiseReminders() {
 
 function DailyReminderHeader() {
   const { current, setCurrent } = useDailyRemindersStore((state) => state);
-  return (
-    <div className="bg-secondary xs:flex-row mb-2 hidden items-center justify-between gap-2 rounded-md p-2 sm:flex">
-      <h1 className="text-2xl">Daily Reminders</h1>
 
-      <div className="flex items-center justify-between gap-2">
+  return (
+    <div className='bg-secondary xs:flex-row mb-2 hidden items-center justify-between gap-2 rounded-md p-2 sm:flex'>
+      <h1 className='text-2xl'>Daily Reminders</h1>
+
+      <div className='flex items-center justify-between gap-2'>
         {current === 'practise' ? (
           <Button onClick={() => setCurrent('browse')}>Browse Reminders</Button>
         ) : (
@@ -134,18 +156,18 @@ function DailyReminderHeaderWithSheet() {
   const { current, setCurrent } = useDailyRemindersStore((state) => state);
   return (
     <Sheet>
-      <div className="bg-secondary xs:flex-row mb-2 flex flex-col items-center justify-between gap-2 rounded-md p-2 sm:hidden">
-        <h1 className="text-2xl">Daily Reminders</h1>
+      <div className='bg-secondary xs:flex-row mb-2 flex flex-col items-center justify-between gap-2 rounded-md p-2 sm:hidden'>
+        <h1 className='text-2xl'>Daily Reminders</h1>
         <SheetTrigger asChild>
-          <Button className="xs:w-fit w-full">Manage</Button>
+          <Button className='xs:w-fit w-full'>Manage</Button>
         </SheetTrigger>
       </div>
       <SheetContent>
         <SheetHeader>
           <SheetTitle>daily reminders</SheetTitle>
-          <SheetDescription className="sr-only">Manage your Kanban Board</SheetDescription>
+          <SheetDescription className='sr-only'>Manage your Kanban Board</SheetDescription>
         </SheetHeader>
-        <div className="my-2 flex flex-col justify-stretch gap-2">
+        <div className='my-2 flex flex-col justify-stretch gap-2'>
           {current === 'practise' ? (
             <Button onClick={() => setCurrent('browse')}>Browse Reminders</Button>
           ) : (
@@ -166,35 +188,37 @@ function AddReminder() {
       text: '',
     },
   });
-  const { addDailyReminder } = useDailyRemindersStore((state) => state);
+  const { mutate: addDailyReminder } = useAddDailyReminderMutate();
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    addDailyReminder(data.text);
+    const newDailyReminder = { id: uuidv4(), text: data.text, done: false };
+    addDailyReminder(newDailyReminder);
     form.reset();
     setIsOpen(false);
     toast.success(`The Reminder \`${data.text}\` has been added successfully`);
   }
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button>Add Reminder</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
           <DialogTitle>Daily Reminder</DialogTitle>
           <DialogDescription>Add a daily reminder.</DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+          <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-2'>
             <FormField
               control={form.control}
-              name="text"
+              name='text'
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
                     <Textarea
-                      placeholder="Tell us a little bit about yourself"
-                      className="resize-none"
+                      placeholder='Tell us a little bit about yourself'
+                      className='resize-none'
                       {...field}
                     />
                   </FormControl>
@@ -203,7 +227,7 @@ function AddReminder() {
               )}
             />
             <DialogFooter>
-              <Button type="submit">Add</Button>
+              <Button type='submit'>Add</Button>
             </DialogFooter>
           </form>
         </Form>
@@ -212,33 +236,72 @@ function AddReminder() {
   );
 }
 
+function FinishedReminders() {
+  return (
+    <div className='bg-background flex min-h-[50vh] items-center justify-center'>
+      <div className='text-center'>
+        <h2 className='text-primary text-3xl font-bold'>Hooray! You&apos;re all caught up!</h2>
+        <p className='text-foreground mt-4 text-xl'>
+          Take a moment to celebrate your productivity and accomplishments.
+        </p>
+        <div className='mt-6'>
+          <PartyPopperIcon className='text-primary mx-auto h-12 w-12' />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function NoReminders() {
+  return (
+    <div className='bg-background flex flex-col items-center justify-center px-4 py-12 sm:px-6 lg:px-8'>
+      <div className='mx-auto max-w-md text-center'>
+        <CalendarIcon className='text-primary mx-auto h-12 w-12' />
+        <h2 className='text-foreground mt-4 text-2xl font-bold tracking-tight sm:text-3xl'>
+          No reminders yet
+        </h2>
+        <p className='text-muted-foreground mt-4'>
+          It looks like you haven&apos;t added any reminders yet. Why not create one and stay on top
+          of your tasks?
+        </p>
+        <div className='mt-6'>
+          <AddReminder />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function BrowseReminders() {
-  const { dailyReminders, setDailyReminders } = useDailyRemindersStore((state) => state);
+  const { data: dailyReminders, isLoading } = useDailyRemindersQuery();
+  const { mutate: setDailyReminders } = useSetDailyRemindersMutate();
+  const { mutate: toggleDailyReminder } = useToggleDailyReminderMutate();
 
   const deleteReminder = (id: string) => {
-    delete dailyReminders.reminders[id];
-    dailyReminders.order = dailyReminders.order.filter((_id) => _id !== id);
-    setDailyReminders(dailyReminders);
+    if (!dailyReminders) return;
+    const newDailyReminders = structuredClone(dailyReminders);
+    delete newDailyReminders.reminders[id];
+    newDailyReminders.order = newDailyReminders.order.filter((_id) => _id !== id);
+    setDailyReminders(newDailyReminders);
   };
 
   const onDragEnd = (result: DropResult) => {
+    if (!dailyReminders) return;
+    const newDailyReminders = structuredClone(dailyReminders);
     const { destination, source, draggableId } = result;
 
     if (!destination) return;
     if (destination.droppableId === source.droppableId && destination.index === source.index)
       return;
 
-    const newOrder = dailyReminders.order;
+    const newOrder = newDailyReminders.order;
     newOrder.splice(source.index, 1);
     newOrder.splice(destination.index, 0, draggableId);
-    dailyReminders.order = newOrder;
-    setDailyReminders(dailyReminders);
+    newDailyReminders.order = newOrder;
+    setDailyReminders(newDailyReminders);
   };
 
-  const toggleCheck = (id: string) => {
-    dailyReminders.reminders[id].done = !dailyReminders.reminders[id].done;
-    setDailyReminders(dailyReminders);
-  };
+  if (isLoading) return <h1>loading from browse reminders</h1>;
 
   if (dailyReminders?.order.length === 0) return <NoReminders />;
 
@@ -246,23 +309,26 @@ function BrowseReminders() {
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId={'reminders'}>
         {(provided) => (
-          <div className="flex flex-col p-1" {...provided.droppableProps} ref={provided.innerRef}>
-            {dailyReminders.order.map((id, index) => {
-              const reminder = dailyReminders.reminders[id];
+          <div className='flex flex-col p-1' {...provided.droppableProps} ref={provided.innerRef}>
+            {dailyReminders?.order.map((id, index) => {
+              const reminder = dailyReminders?.reminders[id];
               return (
                 <Draggable index={index} draggableId={id} key={id}>
                   {(provided) => (
                     <div
-                      className="bg-card my-[2px] flex items-center gap-1 rounded-md border border-white p-1"
+                      className='bg-card my-[2px] flex items-center gap-1 rounded-md border border-white p-1'
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
                       ref={provided.innerRef}
                     >
-                      <div onClick={() => toggleCheck(reminder.id)} className="cursor-pointer">
+                      <button
+                        onClick={() => toggleDailyReminder(reminder)}
+                        className='cursor-pointer'
+                      >
                         {reminder.done ? <BadgeCheck size={20} /> : <Badge size={20} />}
-                      </div>
+                      </button>
 
-                      <p className="line-clamp-3 flex-1 font-semibold break-all">{reminder.text}</p>
+                      <p className='line-clamp-3 flex-1 font-semibold break-all'>{reminder.text}</p>
 
                       <EditReminder reminder={reminder} />
 
@@ -284,7 +350,7 @@ function BrowseReminders() {
                           <AlertDialogFooter>
                             <AlertDialogCancel>Cancel</AlertDialogCancel>
                             <AlertDialogAction
-                              color="destructive"
+                              color='destructive'
                               onClick={() => deleteReminder(id)}
                               className={`${buttonVariants({ variant: 'destructive' })}`}
                             >
@@ -307,11 +373,14 @@ function BrowseReminders() {
 }
 
 const EditReminder = ({ reminder }: { reminder: DailyReminderT }) => {
-  const { dailyReminders, setDailyReminders } = useDailyRemindersStore((state) => state);
+  const { data: dailyReminders } = useDailyRemindersQuery();
+  const { mutate: setDailyReminders } = useSetDailyRemindersMutate();
 
   const editReminder = (id: string, newText: string) => {
-    dailyReminders.reminders[id].text = newText;
-    setDailyReminders(dailyReminders);
+    if (!dailyReminders) return;
+    const newDailyReminders = structuredClone(dailyReminders);
+    newDailyReminders.reminders[id].text = newText;
+    setDailyReminders(newDailyReminders);
   };
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -322,7 +391,7 @@ const EditReminder = ({ reminder }: { reminder: DailyReminderT }) => {
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast.success(JSON.stringify(data));
+    toast.success(`The Reminder \`${data.text}\` has been modified successfully`);
   }
 
   return (
@@ -333,7 +402,7 @@ const EditReminder = ({ reminder }: { reminder: DailyReminderT }) => {
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
           <DialogTitle>Edit Reminder</DialogTitle>
           <DialogDescription>
@@ -341,14 +410,14 @@ const EditReminder = ({ reminder }: { reminder: DailyReminderT }) => {
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="bg-card space-y-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className='bg-card space-y-6'>
             <FormField
               control={form.control}
-              name="text"
+              name='text'
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Textarea placeholder="T a reminder" className="resize-none" {...field} />
+                    <Textarea placeholder='Type a reminder' className='resize-none' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -371,39 +440,3 @@ const EditReminder = ({ reminder }: { reminder: DailyReminderT }) => {
     </Dialog>
   );
 };
-
-function FinishedReminders() {
-  return (
-    <div className="bg-background flex min-h-[50vh] items-center justify-center">
-      <div className="text-center">
-        <h2 className="text-primary text-3xl font-bold">Hooray! You&apos;re all caught up!</h2>
-        <p className="text-foreground mt-4 text-xl">
-          Take a moment to celebrate your productivity and accomplishments.
-        </p>
-        <div className="mt-6">
-          <PartyPopperIcon className="text-primary mx-auto h-12 w-12" />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function NoReminders() {
-  return (
-    <div className="bg-background flex flex-col items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-md text-center">
-        <CalendarIcon className="text-primary mx-auto h-12 w-12" />
-        <h2 className="text-foreground mt-4 text-2xl font-bold tracking-tight sm:text-3xl">
-          No reminders yet
-        </h2>
-        <p className="text-muted-foreground mt-4">
-          It looks like you haven&apos;t added any reminders yet. Why not create one and stay on top
-          of your tasks?
-        </p>
-        <div className="mt-6">
-          <AddReminder />
-        </div>
-      </div>
-    </div>
-  );
-}

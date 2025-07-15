@@ -13,8 +13,8 @@ type AyahProps = {
 
 export default function Ayah({ ayah, font }: AyahProps) {
   return (
-    <ScrollArea className="max-h-52 w-full rounded-md border">
-      <div className="group">
+    <ScrollArea className='max-h-52 w-full rounded-md border'>
+      <div className='group'>
         <p
           className={cn(
             `bg-card rounded-md px-2 text-center text-2xl/[3rem] ${font === '__className_af25f8' ? AmiriQuranFont.className : AmiriFont.className}`,
@@ -23,16 +23,16 @@ export default function Ayah({ ayah, font }: AyahProps) {
               'pt-4 pb-6': font === '__className_af25f8',
             },
           )}
-          dir="rtl"
-          lang="ar"
+          dir='rtl'
+          lang='ar'
         >
           {ayah.text}
         </p>
         <CopyToClipboard
           text={ayah.text}
-          className="absolute bottom-1 left-1 h-7 w-6 p-0 opacity-0 transition-opacity group-hover:opacity-100"
-          variant="outline"
-          size="sm"
+          className='absolute bottom-1 left-1 h-7 w-6 p-0 opacity-0 transition-opacity group-hover:opacity-100'
+          variant='outline'
+          size='sm'
         />
       </div>
     </ScrollArea>

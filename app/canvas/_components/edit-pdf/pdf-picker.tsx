@@ -94,11 +94,11 @@ export function PdfPicker({ onOpenPdf }: { onOpenPdf(pdf: Pdf): void }) {
   }
 
   if (isLoading) {
-    return <div className="PdfPicker">Loading...</div>;
+    return <div className='PdfPicker'>Loading...</div>;
   }
 
   return (
-    <div className="PdfPicker">
+    <div className='PdfPicker'>
       <button onClick={onClickOpenPdf}>Open PDF</button>
     </div>
   );

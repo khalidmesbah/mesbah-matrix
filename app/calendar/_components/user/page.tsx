@@ -15,7 +15,7 @@ export default function Page() {
   const src = data?.publicURL as string;
 
   return (
-    <div className="relative h-full">
+    <div className='relative h-full'>
       {src ? (
         <>
           <Calendar src={src} />

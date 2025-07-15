@@ -47,7 +47,7 @@ export default function Icon({
             className={className}
             disabled={disabled}
           >
-            {loading ? <Loader2 className="animate-spin" /> : icon}
+            {loading ? <Loader2 className='animate-spin' /> : icon}
           </Button>
         </TooltipTrigger>
         <TooltipContent>{description}</TooltipContent>

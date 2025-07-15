@@ -6,7 +6,7 @@ const OFFSET = 12;
 export class StickerTool extends StateNode {
   static override id = 'sticker' as const;
 
-  override onCancel(info: TLCancelEventInfo): void {
+  override onCancel(_info: TLCancelEventInfo): void {
     this.editor.setCurrentTool('select');
   }
 

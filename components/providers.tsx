@@ -36,8 +36,8 @@ export default function Providers({ children }: { children: ReactNode }) {
 
   return (
     <ThemeProvider
-      attribute="data-theme"
-      defaultTheme="green-dark"
+      attribute='data-theme'
+      defaultTheme='green-dark'
       themes={themes}
       enableColorScheme
     >

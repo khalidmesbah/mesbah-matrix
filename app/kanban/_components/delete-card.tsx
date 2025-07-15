@@ -29,12 +29,12 @@ export default function DeleteCard({ cardId, listId }: DeleteCardProps) {
       <Icon
         icon={
           <AlertDialogTrigger asChild>
-            <Trash className="stroke-destructive" />
+            <Trash className='stroke-destructive' />
           </AlertDialogTrigger>
         }
-        description="Delete card"
-        variant="link"
-        className="border-background bg-card hover:border-destructive absolute top-1 right-1 hidden size-8 rounded-full border-2 p-2 transition-colors group-hover:flex hover:z-2"
+        description='Delete card'
+        variant='link'
+        className='border-background bg-card hover:border-destructive absolute top-1 right-1 hidden size-8 rounded-full border-2 p-2 transition-colors group-hover:flex hover:z-2'
       />
 
       <AlertDialogContent>
@@ -48,7 +48,7 @@ export default function DeleteCard({ cardId, listId }: DeleteCardProps) {
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
-            color="destructive"
+            color='destructive'
             onClick={() => deleteCard(listId, cardId)}
             className={`${buttonVariants({ variant: 'destructive' })}`}
           >

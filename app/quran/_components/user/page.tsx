@@ -111,7 +111,7 @@ export default function UserQuranPage() {
         ayah: ayahNumber,
       }).toString();
 
-      router.replace(pathname + '?' + params);
+      router.replace(`${pathname}?${params}`);
 
       audio.stop();
       audio.unload();
@@ -139,70 +139,70 @@ export default function UserQuranPage() {
   if (isError) return <AyahUnavailable />;
 
   return (
-    <div className="flex flex-1 flex-col items-center justify-center gap-2">
+    <div className='fc size-full flex-1 flex-col gap-2'>
       <ChangeAyah setNumberOfAyah={setNumberOfAyah} ayah={ayah} />
       <Ayah font={font} ayah={ayah} />
 
-      <Tabs defaultValue="tafsir" className="">
-        <TabsList className="w-full">
-          <TabsTrigger value="tafsir" className="fc gap-2">
+      <Tabs defaultValue='tafsir' className=''>
+        <TabsList className='w-full'>
+          <TabsTrigger value='tafsir' className='fc gap-2'>
             <BookOpen />
-            <p className="hidden sm:block">Tafsir</p>
+            <p className='hidden sm:block'>Tafsir</p>
           </TabsTrigger>
-          <TabsTrigger value="translation" className="fc gap-2">
+          <TabsTrigger value='translation' className='fc gap-2'>
             <Languages />
-            <p className="hidden sm:block">Translation</p>
+            <p className='hidden sm:block'>Translation</p>
           </TabsTrigger>
-          <TabsTrigger value="transliterations" className="fc gap-2">
+          <TabsTrigger value='transliterations' className='fc gap-2'>
             <Speech />
-            <p className="hidden sm:block">Transliteration</p>
+            <p className='hidden sm:block'>Transliteration</p>
           </TabsTrigger>
         </TabsList>
-        <ScrollArea className="max-h-48">
-          <div className="max-h-48">
-            <TabsContent value="tafsir">
+        <ScrollArea className='max-h-48'>
+          <div className='max-h-48'>
+            <TabsContent value='tafsir'>
               <p
                 className={`group bg-secondary rounded-md p-2 text-center text-xl/10 ${AmiriFont.className}`}
-                lang="ar"
-                dir="rtl"
+                lang='ar'
+                dir='rtl'
               >
                 {ayah.tafsir}
                 <CopyToClipboard
                   text={ayah.tafsir}
-                  className="absolute bottom-1 left-1 h-7 w-6 p-0 opacity-0 transition-opacity group-hover:opacity-100"
-                  variant="outline"
-                  size="sm"
+                  className='absolute bottom-1 left-1 h-7 w-6 p-0 opacity-0 transition-opacity group-hover:opacity-100'
+                  variant='outline'
+                  size='sm'
                 />
               </p>
             </TabsContent>
-            <TabsContent value="translation">
+            <TabsContent value='translation'>
               <p
-                className="group bg-secondary rounded-md p-2 text-center"
+                className='group bg-secondary rounded-md p-2 text-center'
                 lang={translation?.language}
                 dir={translation?.direction}
               >
                 {ayah.translation}
                 <CopyToClipboard
                   text={ayah.translation}
-                  className="absolute bottom-1 left-1 h-7 w-6 p-0 opacity-0 transition-opacity group-hover:opacity-100"
-                  variant="outline"
-                  size="sm"
+                  className='absolute bottom-1 left-1 h-7 w-6 p-0 opacity-0 transition-opacity group-hover:opacity-100'
+                  variant='outline'
+                  size='sm'
                 />
               </p>
             </TabsContent>
 
-            <TabsContent value="transliterations">
+            <TabsContent value='transliterations'>
               <p
-                className="group bg-secondary rounded-md p-2 text-center"
+                className='group bg-secondary rounded-md p-2 text-center'
                 lang={transliteration?.language}
                 dir={transliteration?.direction}
               >
                 {ayah.transliteration}
                 <CopyToClipboard
                   text={ayah.transliteration}
-                  className="absolute bottom-1 left-1 h-7 w-6 p-0 opacity-0 transition-opacity group-hover:opacity-100"
-                  variant="outline"
-                  size="sm"
+                  className='absolute bottom-1 left-1 h-7 w-6 p-0 opacity-0 transition-opacity group-hover:opacity-100'
+                  variant='outline'
+                  size='sm'
                 />
               </p>
             </TabsContent>

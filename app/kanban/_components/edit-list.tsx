@@ -37,7 +37,7 @@ const EditListFormSchema = z.object({
   }),
 });
 
-export default function EditList({ id, title, headerColor }: EditListProps) {
+export default function EditList({ id, title }: EditListProps) {
   const { editList } = useKanbanStore((state) => state);
   const [open, setOpen] = useState(false);
 
@@ -62,25 +62,25 @@ export default function EditList({ id, title, headerColor }: EditListProps) {
             <Pencil />
           </DialogTrigger>
         }
-        description="Edit list"
-        variant="link"
-        className="border-background bg-card stroke-destructive hover:border-primary absolute top-1 right-7 hidden size-8 rounded-full border-2 p-2 transition-colors group-hover:flex hover:z-2"
+        description='Edit list'
+        variant='link'
+        className='border-background bg-card stroke-destructive hover:border-primary absolute top-1 right-7 hidden size-8 rounded-full border-2 p-2 transition-colors group-hover:flex hover:z-2'
       />
 
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
           <DialogTitle>Edit List</DialogTitle>
-          <DialogDescription className="sr-only">Edit a List.</DialogDescription>
+          <DialogDescription className='sr-only'>Edit a List.</DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+          <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-2'>
             <FormField
               control={form.control}
-              name="title"
+              name='title'
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Textarea placeholder="Type the title of the list" {...field} />
+                    <Textarea placeholder='Type the title of the list' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -88,27 +88,27 @@ export default function EditList({ id, title, headerColor }: EditListProps) {
             />
             <FormField
               control={form.control}
-              name="color"
+              name='color'
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Label htmlFor="color" className="fc gap-2">
+                    <Label htmlFor='color' className='fc gap-2'>
                       <Icon
-                        description="Choose a color"
+                        description='Choose a color'
                         icon={<Brush />}
-                        className="text-foreground pointer-events-none h-min p-1"
-                        variant="link"
-                        size="sm"
+                        className='text-foreground pointer-events-none h-min p-1'
+                        variant='link'
+                        size='sm'
                       />
                       <p>Color: </p>
-                      <Input type="color" id="color" {...field} />
+                      <Input type='color' id='color' {...field} />
                     </Label>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit">Edit</Button>
+            <Button type='submit'>Edit</Button>
           </form>
         </Form>
       </DialogContent>

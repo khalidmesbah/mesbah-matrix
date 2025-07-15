@@ -58,20 +58,20 @@ export default function AddList() {
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
           <DialogTitle>Add List</DialogTitle>
-          <DialogDescription className="sr-only">Add a new List.</DialogDescription>
+          <DialogDescription className='sr-only'>Add a new List.</DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+          <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-2'>
             <FormField
               control={form.control}
-              name="title"
+              name='title'
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Textarea placeholder="Type the title of the list" {...field} />
+                    <Textarea placeholder='Type the title of the list' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -79,27 +79,27 @@ export default function AddList() {
             />
             <FormField
               control={form.control}
-              name="color"
+              name='color'
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Label htmlFor="color" className="fc gap-2">
+                    <Label htmlFor='color' className='fc gap-2'>
                       <Icon
-                        description="Choose a color"
+                        description='Choose a color'
                         icon={<Brush />}
-                        className="text-foreground pointer-events-none h-min p-1"
-                        variant="link"
-                        size="sm"
+                        className='text-foreground pointer-events-none h-min p-1'
+                        variant='link'
+                        size='sm'
                       />
                       <p>Color: </p>
-                      <Input type="color" id="color" {...field} />
+                      <Input type='color' id='color' {...field} />
                     </Label>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit">Add</Button>
+            <Button type='submit'>Add</Button>
           </form>
         </Form>
       </DialogContent>

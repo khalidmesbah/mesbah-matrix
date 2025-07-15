@@ -50,7 +50,7 @@ export default function Navbar() {
   const { isAuthenticated } = useKindeBrowserClient();
 
   return (
-    <div className="border-r-primary flex h-dvh w-[56px] min-w-[56px] flex-col items-center border-r border-r-1 p-2">
+    <div className='border-r-primary flex h-full w-[56px] min-w-[56px] max-w-[56px] flex-col items-center border-r p-2 bg-green-900'>
       <Icon
         name={routes[0].name}
         icon={routes[0].icon}
@@ -58,14 +58,14 @@ export default function Navbar() {
         isActive={pathname === routes[0].link}
       />
 
-      <Separator className="mt-2" />
+      <Separator className='mt-2' />
 
-      <ScrollArea className="">
-        <div className="flex flex-col gap-2 p-2">
-          {routes.slice(1, routes.length - 1).map(({ name, icon, link }, i) => {
+      <ScrollArea className=''>
+        <div className='flex flex-col gap-2 p-2'>
+          {routes.slice(1, routes.length - 1).map(({ name, icon, link }, _i) => {
             return (
               <Icon
-                key={i}
+                key={_i}
                 name={name}
                 icon={icon}
                 link={link}
@@ -76,9 +76,9 @@ export default function Navbar() {
         </div>
       </ScrollArea>
 
-      <Separator className="mt-auto mb-2" />
+      <Separator className='mt-auto mb-2' />
 
-      <div className="mb-2">
+      <div className='mb-2'>
         {isAuthenticated ? (
           <Icon
             name={'Account'}
@@ -97,10 +97,10 @@ export default function Navbar() {
                     size: 'icon',
                   })}
                 >
-                  <LogIn className="size-6!" />
+                  <LogIn className='size-6!' />
                 </LoginLink>
               </TooltipTrigger>
-              <TooltipContent side="right">
+              <TooltipContent side='right'>
                 <p>Sign In</p>
               </TooltipContent>
             </Tooltip>
@@ -137,7 +137,7 @@ function Icon({ link, name, icon, isActive }: IconProps) {
             children={icon}
           />
         </TooltipTrigger>
-        <TooltipContent side="right">
+        <TooltipContent side='right'>
           <p>{name}</p>
         </TooltipContent>
       </Tooltip>

@@ -31,7 +31,7 @@ export default function AddAyahToFavourites(props: AddAyahToFavouritesType) {
 
   return (
     <Icon
-      description="Heart"
+      description='Heart'
       onClick={() => toggleAyahFavouriteState(favouriteAyah)}
       loading={isPending}
       disabled={isPending}

@@ -48,49 +48,49 @@ export default function Ayah({ id }: { id: string }) {
             'pt-4 pb-6': data.font === '__className_af25f8',
           },
         )}
-        dir="rtl"
-        lang="ar"
+        dir='rtl'
+        lang='ar'
       >
         {data.text}
       </p>
-      <div className="absolute bottom-1 left-1 flex gap-2 opacity-0 transition-opacity group-hover:opacity-100">
+      <div className='absolute bottom-1 left-1 flex gap-2 opacity-0 transition-opacity group-hover:opacity-100'>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button variant="outline" size="sm" className="h-7 w-7 p-0">
-              <Settings2 className="h-4 w-4" />
+            <Button variant='outline' size='sm' className='h-7 w-7 p-0'>
+              <Settings2 className='h-4 w-4' />
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-md">
+          <DialogContent className='sm:max-w-md'>
             <DialogHeader>
               <DialogTitle>Edit Text and Font</DialogTitle>
             </DialogHeader>
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="text">Arabic Text</Label>
+            <div className='space-y-4'>
+              <div className='space-y-2'>
+                <Label htmlFor='text'>Arabic Text</Label>
                 <Textarea
-                  id="text"
-                  dir="rtl"
+                  id='text'
+                  dir='rtl'
                   value={text}
                   onChange={(e) => setText(e.target.value)}
-                  className="h-32"
+                  className='h-32'
                 />
               </div>
-              <div className="space-y-2">
+              <div className='space-y-2'>
                 <Label>Font Style</Label>
                 <RadioGroup
                   value={font}
                   onValueChange={(value) => setFont(value as AyahWidgetFontT)}
-                  className="flex flex-col space-y-1"
+                  className='flex flex-col space-y-1'
                 >
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="__className_af25f8" id="quran" />
-                    <Label htmlFor="quran" className="font-normal">
+                  <div className='flex items-center space-x-2'>
+                    <RadioGroupItem value='__className_af25f8' id='quran' />
+                    <Label htmlFor='quran' className='font-normal'>
                       Amiri Quran
                     </Label>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="__className_a12e74" id="regular" />
-                    <Label htmlFor="regular" className="font-normal">
+                  <div className='flex items-center space-x-2'>
+                    <RadioGroupItem value='__className_a12e74' id='regular' />
+                    <Label htmlFor='regular' className='font-normal'>
                       Amiri Regular
                     </Label>
                   </div>

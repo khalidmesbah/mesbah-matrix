@@ -20,9 +20,9 @@ export default function Card({ card, index, listId }: CardProps) {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           ref={provided.innerRef}
-          className="py-1"
+          className='py-1'
         >
-          <div className="group bg-card relative flex h-fit max-h-[400px] w-full resize-none items-center justify-between gap-2 overflow-auto rounded-md border p-2">
+          <div className='group bg-card relative flex h-fit max-h-[400px] w-full resize-none items-center justify-between gap-2 overflow-auto rounded-md border p-2'>
             <p>{card.content}</p>
             <EditCard card={card} />
             <DeleteCard cardId={card.id} listId={listId} />

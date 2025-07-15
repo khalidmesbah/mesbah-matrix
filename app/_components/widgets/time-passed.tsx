@@ -105,10 +105,10 @@ export default function TimeSinceBirth({ id }: { id: string }) {
   };
 
   return (
-    <div className="relative flex flex-col gap-2 rounded-md">
+    <div className='relative flex flex-col gap-2 rounded-md'>
       <Dialog>
-        <DialogTrigger asChild className="absolute top-2 right-2">
-          <Button variant="ghost" size="icon">
+        <DialogTrigger asChild className='absolute top-2 right-2'>
+          <Button variant='ghost' size='icon'>
             <Settings />
           </Button>
         </DialogTrigger>
@@ -116,17 +116,17 @@ export default function TimeSinceBirth({ id }: { id: string }) {
           <DialogHeader>
             <DialogTitle>Settings</DialogTitle>
           </DialogHeader>
-          <div className="flex flex-col gap-4">
+          <div className='flex flex-col gap-4'>
             <Popover>
               <PopoverTrigger asChild>
                 <Button variant={'outline'}>
-                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  <CalendarIcon className='mr-2 h-4 w-4' />
                   {date ? format(date, 'PPP') : <span>Pick a date</span>}
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-auto p-0">
+              <PopoverContent className='w-auto p-0'>
                 <Calendar
-                  captionLayout="dropdown"
+                  captionLayout='dropdown'
                   labels={{
                     labelYearDropdown: () => 'Year ',
                     labelMonthDropdown: () => 'Month ',
@@ -135,7 +135,7 @@ export default function TimeSinceBirth({ id }: { id: string }) {
                     caption_label: 'hidden',
                   }}
                   selected={date}
-                  mode="single"
+                  mode='single'
                   footer={false}
                   onDayClick={(day) => {
                     setDate(day);
@@ -145,28 +145,28 @@ export default function TimeSinceBirth({ id }: { id: string }) {
             </Popover>
 
             <Select onValueChange={setSelectedUnit} value={selectedUnit}>
-              <SelectTrigger className="w-full rounded-lg border border-gray-300 p-3 focus:ring-2 focus:ring-blue-500 focus:outline-hidden">
-                <SelectValue placeholder="Select time unit" />
+              <SelectTrigger className='w-full rounded-lg border border-gray-300 p-3 focus:ring-2 focus:ring-blue-500 focus:outline-hidden'>
+                <SelectValue placeholder='Select time unit' />
               </SelectTrigger>
-              <SelectContent className="rounded-lg border border-gray-200 shadow-lg">
-                <SelectItem value="seconds">Seconds</SelectItem>
-                <SelectItem value="minutes">Minutes</SelectItem>
-                <SelectItem value="hours">Hours</SelectItem>
-                <SelectItem value="days">Days</SelectItem>
-                <SelectItem value="weeks">Weeks</SelectItem>
-                <SelectItem value="months">Months</SelectItem>
-                <SelectItem value="years">Years</SelectItem>
-                <SelectItem value="winters">Winters</SelectItem>
-                <SelectItem value="springs">Springs</SelectItem>
-                <SelectItem value="summers">Summers</SelectItem>
-                <SelectItem value="falls">Falls</SelectItem>
+              <SelectContent className='rounded-lg border border-gray-200 shadow-lg'>
+                <SelectItem value='seconds'>Seconds</SelectItem>
+                <SelectItem value='minutes'>Minutes</SelectItem>
+                <SelectItem value='hours'>Hours</SelectItem>
+                <SelectItem value='days'>Days</SelectItem>
+                <SelectItem value='weeks'>Weeks</SelectItem>
+                <SelectItem value='months'>Months</SelectItem>
+                <SelectItem value='years'>Years</SelectItem>
+                <SelectItem value='winters'>Winters</SelectItem>
+                <SelectItem value='springs'>Springs</SelectItem>
+                <SelectItem value='summers'>Summers</SelectItem>
+                <SelectItem value='falls'>Falls</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <DialogFooter>
             <DialogClose asChild>
               <Button
-                variant="outline"
+                variant='outline'
                 onClick={() => updateWidgetState(id, { selectedUnit, date: `${date}` })}
               >
                 save
@@ -176,9 +176,9 @@ export default function TimeSinceBirth({ id }: { id: string }) {
         </DialogContent>
       </Dialog>
 
-      <div className="bg-accent text-primary rounded-lg p-2 text-center text-lg font-bold">
-        <h2 className="font-bolder text-4xl">{getTimeValue()}</h2>
-        <span className="text-primary/90">
+      <div className='bg-accent text-primary rounded-lg p-2 text-center text-lg font-bold'>
+        <h2 className='font-bolder text-4xl'>{getTimeValue()}</h2>
+        <span className='text-primary/90'>
           {selectedUnit.slice(0, 1).toUpperCase() + selectedUnit.slice(1)} Have Passed
         </span>
       </div>

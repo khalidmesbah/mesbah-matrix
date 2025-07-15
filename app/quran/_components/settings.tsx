@@ -65,23 +65,23 @@ export default function Settings() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <div className="flex items-center justify-center gap-2">
-          <Icon description="Settings" icon={<SettingsIcon />} />
+        <div className='flex items-center justify-center gap-2'>
+          <Icon description='Settings' icon={<SettingsIcon />} />
         </div>
       </DialogTrigger>
-      <DialogContent className="max-h-[80vh] overflow-y-auto">
+      <DialogContent className='max-h-[80vh] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Settings</DialogTitle>
           <DialogDescription>Configure your settings</DialogDescription>
         </DialogHeader>
-        <div className="flex flex-col gap-2">
+        <div className='flex flex-col gap-2'>
           <Label
-            htmlFor="colored-tajweed"
-            className="hover:bg-secondary flex flex-1 items-center justify-between gap-2 rounded-md p-1 transition-colors"
+            htmlFor='colored-tajweed'
+            className='hover:bg-secondary flex flex-1 items-center justify-between gap-2 rounded-md p-1 transition-colors'
           >
-            <Palette /> <p className="flex-1">Colored Tajweed</p>
+            <Palette /> <p className='flex-1'>Colored Tajweed</p>
             <Switch
-              id="colored-tajweed"
+              id='colored-tajweed'
               checked={font === '__className_af25f8'}
               onCheckedChange={(e) => {
                 setFont(e ? '__className_af25f8' : '__className_a12e74');
@@ -90,9 +90,9 @@ export default function Settings() {
           </Label>
 
           {mode === 'once' && (
-            <Label className="hover:bg-secondary flex flex-1 items-center justify-between gap-2 rounded-md p-1 transition-colors">
+            <Label className='hover:bg-secondary flex flex-1 items-center justify-between gap-2 rounded-md p-1 transition-colors'>
               <Repeat2 />
-              <p className="flex-1">Autoplay</p>
+              <p className='flex-1'>Autoplay</p>
               <Switch
                 checked={autoplay}
                 onCheckedChange={(e) => {
@@ -102,15 +102,15 @@ export default function Settings() {
             </Label>
           )}
 
-          <Label className="hover:bg-secondary flex flex-1 items-center justify-between gap-2 rounded-md p-1 transition-colors">
+          <Label className='hover:bg-secondary flex flex-1 items-center justify-between gap-2 rounded-md p-1 transition-colors'>
             <Icon
-              description="Recitation"
+              description='Recitation'
               icon={<MicVocal />}
-              className="text-foreground pointer-events-none h-min p-1"
-              variant="link"
-              size="sm"
+              className='text-foreground pointer-events-none h-min p-1'
+              variant='link'
+              size='sm'
             />
-            <p className="flex-1">Recitation</p>
+            <p className='flex-1'>Recitation</p>
           </Label>
 
           <Select
@@ -120,7 +120,7 @@ export default function Settings() {
             }}
           >
             <SelectTrigger>
-              <SelectValue placeholder="Select a recitation" />
+              <SelectValue placeholder='Select a recitation' />
             </SelectTrigger>
             <SelectContent>
               {RECITATIONS.map((recitation) => (
@@ -132,17 +132,17 @@ export default function Settings() {
           </Select>
 
           <Label
-            htmlFor="tafir"
-            className="hover:bg-secondary flex flex-1 items-center justify-between gap-2 rounded-md p-1 transition-colors"
+            htmlFor='tafir'
+            className='hover:bg-secondary flex flex-1 items-center justify-between gap-2 rounded-md p-1 transition-colors'
           >
             <Icon
-              description="Tafsir"
+              description='Tafsir'
               icon={<BookOpen />}
-              className="text-foreground pointer-events-none h-min p-1"
-              variant="link"
-              size="sm"
+              className='text-foreground pointer-events-none h-min p-1'
+              variant='link'
+              size='sm'
             />
-            <p className="flex-1">Tafsir</p>
+            <p className='flex-1'>Tafsir</p>
           </Label>
           <Select
             value={tafsir}
@@ -151,7 +151,7 @@ export default function Settings() {
             }}
           >
             <SelectTrigger>
-              <SelectValue placeholder="Select an Tafsir" />
+              <SelectValue placeholder='Select an Tafsir' />
             </SelectTrigger>
             <SelectContent>
               {TAFASIR.map((tafsir) => (
@@ -163,17 +163,17 @@ export default function Settings() {
           </Select>
 
           <Label
-            htmlFor="translation"
-            className="hover:bg-secondary flex flex-1 items-center justify-between gap-2 rounded-md p-1 transition-colors"
+            htmlFor='translation'
+            className='hover:bg-secondary flex flex-1 items-center justify-between gap-2 rounded-md p-1 transition-colors'
           >
             <Icon
-              description="Translation"
+              description='Translation'
               icon={<Languages />}
-              className="text-foreground pointer-events-none h-min p-1"
-              variant="link"
-              size="sm"
+              className='text-foreground pointer-events-none h-min p-1'
+              variant='link'
+              size='sm'
             />
-            <p className="flex-1">Translation</p>
+            <p className='flex-1'>Translation</p>
           </Label>
           <Select
             value={translation}
@@ -182,7 +182,7 @@ export default function Settings() {
             }}
           >
             <SelectTrigger>
-              <SelectValue placeholder="Select a Translation" />
+              <SelectValue placeholder='Select a Translation' />
             </SelectTrigger>
             <SelectContent>
               {TRANSLATIONS.map((translation) => (
@@ -194,17 +194,17 @@ export default function Settings() {
           </Select>
 
           <Label
-            htmlFor="transliteration"
-            className="hover:bg-secondary flex flex-1 items-center justify-between gap-2 rounded-md p-1 transition-colors"
+            htmlFor='transliteration'
+            className='hover:bg-secondary flex flex-1 items-center justify-between gap-2 rounded-md p-1 transition-colors'
           >
             <Icon
-              description="Transliteration"
+              description='Transliteration'
               icon={<Speech />}
-              className="text-foreground pointer-events-none h-min p-1"
-              variant="link"
-              size="sm"
+              className='text-foreground pointer-events-none h-min p-1'
+              variant='link'
+              size='sm'
             />
-            <p className="flex-1">Transliteration</p>
+            <p className='flex-1'>Transliteration</p>
           </Label>
           <Select
             value={transliteration}
@@ -213,7 +213,7 @@ export default function Settings() {
             }}
           >
             <SelectTrigger>
-              <SelectValue placeholder="Select a Transliteration" />
+              <SelectValue placeholder='Select a Transliteration' />
             </SelectTrigger>
             <SelectContent>
               {TRANSLITERATIONS.map((transliteration) => (
@@ -225,26 +225,26 @@ export default function Settings() {
           </Select>
 
           <Label
-            htmlFor="rate"
-            className="hover:bg-secondary flex flex-1 items-center justify-between gap-2 rounded-md p-1 transition-colors"
+            htmlFor='rate'
+            className='hover:bg-secondary flex flex-1 items-center justify-between gap-2 rounded-md p-1 transition-colors'
           >
             <Icon
-              description="Reset Playback rate"
+              description='Reset Playback rate'
               onClick={() => {
                 setRate(1);
                 audio.rate(1);
               }}
               icon={<Gauge />}
-              className="h-min p-1"
-              variant="ghost"
-              size="sm"
+              className='h-min p-1'
+              variant='ghost'
+              size='sm'
             />
-            <p className="flex-1">Playback rate</p>
+            <p className='flex-1'>Playback rate</p>
             <span>{rate}</span>
           </Label>
 
           <Slider
-            id="rate"
+            id='rate'
             value={[rate]}
             max={4}
             step={0.1}
@@ -256,64 +256,64 @@ export default function Settings() {
           />
 
           <Label
-            htmlFor="volume"
-            className="hover:bg-secondary flex flex-1 items-center justify-between gap-2 rounded-md p-1 transition-colors"
+            htmlFor='volume'
+            className='hover:bg-secondary flex flex-1 items-center justify-between gap-2 rounded-md p-1 transition-colors'
           >
             {volume === 0 ? (
               <Icon
-                description="Mute"
+                description='Mute'
                 onClick={() => {
                   setVolume(0.33);
                   audio.volume(0.33);
                 }}
                 icon={<VolumeX />}
-                className="h-min p-1"
-                variant="ghost"
-                size="sm"
+                className='h-min p-1'
+                variant='ghost'
+                size='sm'
               />
             ) : volume <= 0.33 ? (
               <Icon
-                description="Low volume"
+                description='Low volume'
                 onClick={() => {
                   setVolume(0.66);
                   audio.volume(0.66);
                 }}
                 icon={<Volume />}
-                className="h-min p-1"
-                variant="ghost"
-                size="sm"
+                className='h-min p-1'
+                variant='ghost'
+                size='sm'
               />
             ) : volume <= 0.66 ? (
               <Icon
-                description="Medium volume"
+                description='Medium volume'
                 onClick={() => {
                   setVolume(1);
                   audio.volume(1);
                 }}
                 icon={<Volume1 />}
-                className="h-min p-1"
-                variant="ghost"
-                size="sm"
+                className='h-min p-1'
+                variant='ghost'
+                size='sm'
               />
             ) : (
               <Icon
-                description="High volume"
+                description='High volume'
                 onClick={() => {
                   setVolume(0);
                   audio.volume(0);
                 }}
                 icon={<Volume2 />}
-                className="h-min p-1"
-                variant="ghost"
-                size="sm"
+                className='h-min p-1'
+                variant='ghost'
+                size='sm'
               />
             )}
-            <p className="flex-1">Volume</p>
+            <p className='flex-1'>Volume</p>
             <span>{volume}</span>
           </Label>
 
           <Slider
-            id="volume"
+            id='volume'
             value={[volume]}
             max={1}
             step={0.1}
@@ -324,9 +324,9 @@ export default function Settings() {
             }}
           />
         </div>
-        <DialogFooter className="sm:justify-start">
+        <DialogFooter className='sm:justify-start'>
           <DialogClose asChild>
-            <Button type="button" variant="secondary">
+            <Button type='button' variant='secondary'>
               Close
             </Button>
           </DialogClose>

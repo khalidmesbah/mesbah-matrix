@@ -1,27 +1,23 @@
 'use client';
 
+import { useQuery } from '@tanstack/react-query';
+import { Frame, Lock, LockOpen, Move, X } from 'lucide-react';
+import { useEffect } from 'react';
+import { type Layout, type Layouts, Responsive, WidthProvider } from 'react-grid-layout';
 import CloudLoader from '@/components/cloud-loader';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { getWidgets } from '@/lib/server-actions/widgets';
 import useWidgetsStore from '@/lib/stores/widgets';
 import type { BreakpointT, WidgetsT } from '@/lib/types/widgets';
-import { useQuery } from '@tanstack/react-query';
-import { Frame, Lock, LockOpen, Move, X } from 'lucide-react';
-import { useEffect, useRef } from 'react';
-import { type Layout, type Layouts, Responsive, WidthProvider } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
+import { Button } from '@/components/ui/button';
 import FloatingDock from './floating-dock';
 import Widget from './widget';
-import { Button } from '@/components/ui/button';
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
-export default function GridLayout({
-  isAuthenticated,
-}: {
-  isAuthenticated: boolean;
-}) {
+export default function GridLayout({ isAuthenticated }: { isAuthenticated: boolean }) {
   const {
     layouts,
     currentBreakpoint,
@@ -98,7 +94,7 @@ export default function GridLayout({
   };
 
   return (
-    <ScrollArea className="size-full rounded-md">
+    <>
       <ResponsiveReactGridLayout
         rowHeight={1}
         maxRows={Number.POSITIVE_INFINITY}
@@ -126,14 +122,15 @@ export default function GridLayout({
         isDraggable={!isLayoutLocked}
         isResizable={!isLayoutLocked}
         isDroppable={true}
-        className={`bg-primary/75 h-full min-h-[calc(100vh-16px)] w-[5000px] rounded-md`}
+        className={`bg-primary/75 h-full! w-[5000px] rounded-md overflow-x-hidden`}
         verticalCompact={undefined}
         resizeHandle={
-          <div className="react-resizable-handle absolute right-0 bottom-0 size-3! cursor-se-resize bg-none! p-0! after:hidden!">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="5 5 24 24">
-              <g fill="none" stroke="hsl(var(--primary))" strokeWidth={2}>
-                <path d="M10 20h10V10"></path>
-                <path d="M12 17h5v-5"></path>
+          <div className='react-resizable-handle absolute right-0 bottom-0 size-3! cursor-se-resize bg-none! p-0! after:hidden!'>
+            <svg xmlns='http://www.w3.org/2000/svg' viewBox='5 5 24 24'>
+              <title>Resize Handle</title>
+              <g fill='none' stroke='hsl(var(--primary))' strokeWidth={2}>
+                <path d='M10 20h10V10'></path>
+                <path d='M12 17h5v-5'></path>
               </g>
             </svg>
           </div>
@@ -147,7 +144,7 @@ export default function GridLayout({
                 className={`fc group bg-card relative size-full rounded-md shadow-sm parent`}
               >
                 <div
-                  id="react-grid-item-handle"
+                  id='react-grid-item-handle'
                   className={`absolute top-0 opacity-0 right-0 left-0 z-10 flex
                   h-0 w-full ${!isWidgetLocked && 'cursor-move'} bg-card gap-1
                   overflow-hidden transition-all duration-200 group-hover:h-7
@@ -156,11 +153,11 @@ export default function GridLayout({
                   <Move className={`${isWidgetLocked && 'hidden'} size-5`} />
 
                   <Button
-                    className="rounded-full size-5 cursor-pointer absolute
-                    left-1/2 -translate-x-1/2 transform"
-                    size="icon"
-                    title="Lock/Unlock"
-                    id="lock-toggle"
+                    className='rounded-full size-5 cursor-pointer absolute
+                    left-1/2 -translate-x-1/2 transform'
+                    size='icon'
+                    title='Lock/Unlock'
+                    id='lock-toggle'
                     onClick={() => {
                       const newLayouts = structuredClone(layouts);
                       const newItem = newLayouts[currentBreakpoint].find(
@@ -183,21 +180,21 @@ export default function GridLayout({
                   </Button>
 
                   <Button
-                    className="rounded-full size-5 cursor-pointer ml-auto"
+                    className='rounded-full size-5 cursor-pointer ml-auto'
                     disabled={isWidgetLocked}
                     size={'icon'}
-                    title="Remove Widget"
+                    title='Remove Widget'
                     variant={'destructive'}
                     onClick={() => handleDeleteWidget(item.i)}
-                    id="remove"
+                    id='remove'
                   >
                     <X />
                   </Button>
                   <Button
-                    className="rounded-full size-5 cursor-pointer"
+                    className='rounded-full size-5 cursor-pointer'
                     disabled={isWidgetLocked}
                     size={'icon'}
-                    title="Fit Widget"
+                    title='Fit Widget'
                     onClick={(e) => {
                       const itemEl = e.currentTarget;
                       if (itemEl) {
@@ -218,20 +215,20 @@ export default function GridLayout({
                         setLayouts(newLayouts);
                       }
                     }}
-                    id="fit-widget"
+                    id='fit-widget'
                   >
                     <Frame />
                   </Button>
                 </div>
                 <Widget id={item.i} isAuthenticated={isAuthenticated} />
-                <ScrollBar orientation="horizontal" />
+                <ScrollBar orientation='horizontal' />
               </ScrollArea>
             </div>
           );
         })}
       </ResponsiveReactGridLayout>
       <FloatingDock />
-      <ScrollBar orientation="horizontal" />
-    </ScrollArea>
+      <ScrollBar orientation='horizontal' />
+    </>
   );
 }

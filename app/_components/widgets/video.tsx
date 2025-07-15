@@ -38,7 +38,7 @@ export default function Video({ id }: { id: string }) {
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
+  function onSubmit(_data: z.infer<typeof FormSchema>) {
     setIsLoading(true);
     setTimeout(() => {
       updateWidgetState(id, { src: form.watch('src') });
@@ -65,53 +65,53 @@ export default function Video({ id }: { id: string }) {
   };
 
   return (
-    <div className="mx-auto w-full max-w-2xl">
+    <div className='mx-auto w-full max-w-2xl'>
       {!widgetState?.src ? (
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
             <FormField
               control={form.control}
-              name="src"
+              name='src'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-medium text-gray-700">Video URL</FormLabel>
-                  <div className="relative">
-                    <YoutubeIcon className="absolute top-3 left-3 text-gray-400" />
+                  <FormLabel className='font-medium text-gray-700'>Video URL</FormLabel>
+                  <div className='relative'>
+                    <YoutubeIcon className='absolute top-3 left-3 text-gray-400' />
                     <FormControl>
                       <Input
                         {...field}
-                        placeholder="https://www.youtube.com/watch?v=..."
-                        className="border-gray-300 py-6 pl-10 transition-all duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                        placeholder='https://www.youtube.com/watch?v=...'
+                        className='border-gray-300 py-6 pl-10 transition-all duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200'
                       />
                     </FormControl>
                   </div>
-                  <FormDescription className="text-sm text-gray-500">
+                  <FormDescription className='text-sm text-gray-500'>
                     Paste a YouTube video link (supports youtube.com and youtu.be URLs)
                   </FormDescription>
-                  <FormMessage className="text-red-500" />
+                  <FormMessage className='text-red-500' />
                 </FormItem>
               )}
             />
-            <Button type="submit" variant="default" className="w-full" disabled={isLoading}>
+            <Button type='submit' variant='default' className='w-full' disabled={isLoading}>
               {isLoading ? 'Adding...' : 'Add Video'}
             </Button>
           </form>
         </Form>
       ) : (
-        <div className="group relative overflow-hidden rounded-lg shadow-lg">
+        <div className='group relative overflow-hidden rounded-lg shadow-lg'>
           <iframe
             src={`https://www.youtube.com/embed/${getYoutubeId(widgetState.src)}`}
-            title="YouTube video player"
+            title='YouTube video player'
             allowFullScreen
-            className="aspect-video w-full"
-            loading="lazy"
+            className='aspect-video w-full'
+            loading='lazy'
           />
           <Button
             onClick={resetVideo}
-            className="bg-opacity-60 hover:bg-opacity-80 absolute top-5 right-1 hidden h-6 w-6 rounded-full bg-black p-0 group-hover:flex"
-            title="Remove video"
+            className='bg-opacity-60 hover:bg-opacity-80 absolute top-5 right-1 hidden h-6 w-6 rounded-full bg-black p-0 group-hover:flex'
+            title='Remove video'
           >
-            <X size={10} className="text-white" />
+            <X size={10} className='text-white' />
           </Button>
         </div>
       )}

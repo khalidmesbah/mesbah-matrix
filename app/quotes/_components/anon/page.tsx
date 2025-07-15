@@ -31,29 +31,29 @@ export default function AnonQuotesPage() {
   const queryClient = useQueryClient();
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className='flex flex-col gap-6'>
       {isQotdLoading ? (
         <FavouriteQuoteSkeleton />
       ) : !qotd || isErrorOnQotd ? (
         <NoQuoteOfTheDay />
       ) : (
-        <section className="flex flex-col items-center gap-4 text-center">
+        <section className='flex flex-col items-center gap-4 text-center'>
           <Badge>Quote of the Day</Badge>
 
-          <blockquote className="max-w-3xl text-2xl font-semibold sm:text-3xl md:text-4xl lg:text-5xl">
+          <blockquote className='max-w-3xl text-2xl font-semibold sm:text-3xl md:text-4xl lg:text-5xl'>
             &quot;{qotd.content}&quot;
           </blockquote>
 
-          <div className="flex items-center justify-between gap-2">
-            <cite className="text-muted-foreground text-sm font-medium">- {qotd.author}</cite>
+          <div className='flex items-center justify-between gap-2'>
+            <cite className='text-muted-foreground text-sm font-medium'>- {qotd.author}</cite>
             <FavouriteButton quote={qotd} />
           </div>
         </section>
       )}
       <section>
-        <h2 className="mb-3 flex flex-wrap items-center justify-start gap-2 text-xl font-semibold sm:text-2xl md:text-3xl lg:text-4xl">
+        <h2 className='mb-3 flex flex-wrap items-center justify-start gap-2 text-xl font-semibold sm:text-2xl md:text-3xl lg:text-4xl'>
           Favourite Quotes
-          <div className="flex flex-1 justify-end">
+          <div className='flex flex-1 justify-end'>
             <Link
               className={`${buttonVariants({ variant: 'outline', size: 'sm' })}`}
               href={'/quotes/favourite'}
@@ -77,14 +77,14 @@ export default function AnonQuotesPage() {
         )}
       </section>
       <section>
-        <h2 className="mb-3 flex flex-wrap items-center justify-start gap-2 text-xl font-semibold sm:text-2xl md:text-3xl lg:text-4xl">
+        <h2 className='mb-3 flex flex-wrap items-center justify-start gap-2 text-xl font-semibold sm:text-2xl md:text-3xl lg:text-4xl'>
           Random Quotes
-          <div className="flex flex-1 justify-end">
+          <div className='flex flex-1 justify-end'>
             <Button
-              variant="outline"
+              variant='outline'
               size={'sm'}
               disabled={isRandomQuotesFetching}
-              className="flex items-center justify-center gap-2 rounded-md px-2"
+              className='flex items-center justify-center gap-2 rounded-md px-2'
               onClick={() => {
                 queryClient.invalidateQueries({
                   queryKey: ['random-quotes'],

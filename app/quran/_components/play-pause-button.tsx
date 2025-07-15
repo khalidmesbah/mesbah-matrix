@@ -50,9 +50,9 @@ export default function PlayPauseButton() {
   return (
     <>
       {isSoundPlaying ? (
-        <Icon description="Pause" onClick={pause} icon={<StopCircle />} />
+        <Icon description='Pause' onClick={pause} icon={<StopCircle />} />
       ) : (
-        <Icon description="Play" onClick={play} icon={<Play />} />
+        <Icon description='Play' onClick={play} icon={<Play />} />
       )}
     </>
   );

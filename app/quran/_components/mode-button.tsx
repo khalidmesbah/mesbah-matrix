@@ -13,15 +13,15 @@ export default function Mode() {
     <div>
       {mode === 'once' ? (
         <Icon
-          description="Repeat once mode"
+          description='Repeat once mode'
           onClick={() => setMode('continuous')}
           icon={<Repeat />}
-          className="opacity-50"
+          className='opacity-50'
         />
       ) : mode === 'continuous' ? (
-        <Icon description="Continuous mode" onClick={() => setMode('loop')} icon={<Repeat />} />
+        <Icon description='Continuous mode' onClick={() => setMode('loop')} icon={<Repeat />} />
       ) : (
-        <Icon description="Repeat mode" onClick={() => setMode('once')} icon={<Repeat1 />} />
+        <Icon description='Repeat mode' onClick={() => setMode('once')} icon={<Repeat1 />} />
       )}
     </div>
   );

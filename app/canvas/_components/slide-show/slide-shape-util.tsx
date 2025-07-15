@@ -86,7 +86,7 @@ export class SlideShapeUtil extends ShapeUtil<SlideShape> {
 
     return (
       <>
-        <div onPointerDown={handleLabelPointerDown} className="slide-shape-label">
+        <div onPointerDown={handleLabelPointerDown} className='slide-shape-label'>
           {`Slide ${index + 1}`}
         </div>
         <SVGContainer>
@@ -96,9 +96,9 @@ export class SlideShapeUtil extends ShapeUtil<SlideShape> {
               strokeWidth: 'calc(1px * var(--tl-scale))',
               opacity: 0.25,
             }}
-            pointerEvents="none"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+            pointerEvents='none'
+            strokeLinecap='round'
+            strokeLinejoin='round'
           >
             {bounds.sides.map((side, i) => {
               const { strokeDasharray, strokeDashoffset } = getPerfectDashProps(
@@ -112,7 +112,7 @@ export class SlideShapeUtil extends ShapeUtil<SlideShape> {
 
               return (
                 <line
-                  key={i}
+                  key={`side-${i}`}
                   x1={side[0].x}
                   y1={side[0].y}
                   x2={side[1].x}

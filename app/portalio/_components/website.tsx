@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Pencil, Trash } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import {
@@ -105,11 +106,11 @@ export function Website({ id, url, name, iconUrl }: WebsiteProps) {
   });
 
   return (
-    <div className="size-full">
-      <div className="fc bg-background absolute top-1/2 -right-9 -translate-y-1/2 flex-col gap-2 rounded-full p-1">
+    <div className='size-full'>
+      <div className='fc bg-background absolute top-1/2 -right-9 -translate-y-1/2 flex-col gap-2 rounded-full p-1'>
         <Button
           variant={'default'}
-          className="aspect-square size-6 cursor-pointer rounded-full p-2"
+          className='aspect-square size-6 cursor-pointer rounded-full p-2'
           onClick={() => {
             setEditWebsiteDialogOpen(true);
           }}
@@ -118,7 +119,7 @@ export function Website({ id, url, name, iconUrl }: WebsiteProps) {
         </Button>
         <Button
           variant={'destructive'}
-          className="aspect-square size-6 cursor-pointer rounded-full p-2"
+          className='aspect-square size-6 cursor-pointer rounded-full p-2'
           onClick={() => {
             setDeleteWebsiteDialogOpen(true);
           }}
@@ -130,12 +131,19 @@ export function Website({ id, url, name, iconUrl }: WebsiteProps) {
       <Link
         href={url}
         className={`${reOrder && 'pointer-events-none'} bg-primary flex size-full flex-col items-center justify-center rounded-md text-white transition-transform hover:scale-110`}
-        target="_blank"
-        rel="noopener noreferrer"
+        target='_blank'
+        rel='noopener noreferrer'
         aria-label={`Visit our ${name} page`}
       >
-        <img src={iconUrl} title={name} className="size-10" />
-        <span className="w-full truncate overflow-hidden p-1 text-center text-sm text-gray-200">
+        <Image
+          src={iconUrl}
+          alt={name || 'Website icon'}
+          title={name}
+          className='size-10'
+          width={40}
+          height={40}
+        />
+        <span className='w-full truncate overflow-hidden p-1 text-center text-sm text-gray-200'>
           {name}
         </span>
       </Link>
@@ -152,17 +160,17 @@ export function Website({ id, url, name, iconUrl }: WebsiteProps) {
           <Form {...editWebsiteForm}>
             <form
               onSubmit={editWebsiteForm.handleSubmit(onEditWebsiteSubmit)}
-              className="space-y-4"
+              className='space-y-4'
             >
               <FormField
                 control={editWebsiteForm.control}
-                name="name"
+                name='name'
                 disabled={autoFillName}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Website Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="My Website" {...field} />
+                      <Input placeholder='My Website' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -171,20 +179,20 @@ export function Website({ id, url, name, iconUrl }: WebsiteProps) {
 
               <FormField
                 control={editWebsiteForm.control}
-                name="iconUrl"
+                name='iconUrl'
                 disabled={autoFillIconUrl}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Icon URL (optional)</FormLabel>
                     <FormControl>
-                      <Input placeholder="https://example.com/icon.png" {...field} />
+                      <Input placeholder='https://example.com/icon.png' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
-              <div className="flex w-full max-w-sm items-center space-x-2">
+              <div className='flex w-full max-w-sm items-center space-x-2'>
                 <Toggle
                   pressed={autoFillIconUrl}
                   onPressedChange={(e) => {
@@ -205,12 +213,12 @@ export function Website({ id, url, name, iconUrl }: WebsiteProps) {
 
               <FormField
                 control={editWebsiteForm.control}
-                name="url"
+                name='url'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Website URL</FormLabel>
                     <FormControl>
-                      <Input placeholder="https://example.com" {...field} />
+                      <Input placeholder='https://example.com' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -218,7 +226,7 @@ export function Website({ id, url, name, iconUrl }: WebsiteProps) {
               />
 
               <DialogFooter>
-                <Button type="submit">Edit Website</Button>
+                <Button type='submit'>Edit Website</Button>
               </DialogFooter>
             </form>
           </Form>

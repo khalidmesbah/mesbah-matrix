@@ -1,13 +1,11 @@
 'use client';
 
-import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 import { Clock } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-export default function DigitalClock({ id }: { id: string }) {
+export default function DigitalClock() {
   const [time, setTime] = useState(new Date());
   const [is24Hour, setIs24Hour] = useState(false);
-  const { isAuthenticated } = useKindeBrowserClient();
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -34,20 +32,20 @@ export default function DigitalClock({ id }: { id: string }) {
   });
 
   return (
-    <div className="text-card-foreground p-2">
-      <div className="mb-2 flex items-center justify-between">
-        <Clock className="text-primary h-8 w-8" />
+    <div className='text-card-foreground p-2'>
+      <div className='mb-2 flex items-center justify-between'>
+        <Clock className='text-primary h-8 w-8' />
         <button
           onClick={() => setIs24Hour(!is24Hour)}
-          className="bg-secondary text-secondary-foreground rounded-full px-3 py-1 text-sm font-medium transition-all hover:scale-105"
+          className='bg-secondary text-secondary-foreground rounded-full px-3 py-1 text-sm font-medium transition-all hover:scale-105'
         >
           {is24Hour ? '12H' : '24H'}
         </button>
       </div>
 
-      <div className="text-center">
-        <div className="text-primary text-4xl font-bold tracking-wider">{formatTime()}</div>
-        <div className="text-muted-foreground text-lg">{formattedDate}</div>
+      <div className='text-center'>
+        <div className='text-primary text-4xl font-bold tracking-wider'>{formatTime()}</div>
+        <div className='text-muted-foreground text-lg'>{formattedDate}</div>
       </div>
     </div>
   );

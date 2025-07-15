@@ -34,7 +34,7 @@ export default function DeleteBoard() {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction asChild variant="destructive">
+          <AlertDialogAction asChild color='destructive'>
             <Button
               onClick={() => {
                 deleteSelectedBoard();

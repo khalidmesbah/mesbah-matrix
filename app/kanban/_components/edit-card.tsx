@@ -51,35 +51,35 @@ export default function EditCard({ card }: EditCardProps) {
     <Dialog open={open} onOpenChange={setOpen}>
       <Icon
         icon={<Pencil />}
-        description="Edit card"
-        variant="link"
-        className="border-background bg-card hover:border-primary absolute top-1 right-7 hidden size-8 rounded-full border-2 p-2 transition-colors group-hover:flex hover:z-2"
+        description='Edit card'
+        variant='link'
+        className='border-background bg-card hover:border-primary absolute top-1 right-7 hidden size-8 rounded-full border-2 p-2 transition-colors group-hover:flex hover:z-2'
         onClick={() => setOpen(true)}
       />
 
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
           <DialogTitle>Edit Card</DialogTitle>
-          <DialogDescription className="sr-only">
+          <DialogDescription className='sr-only'>
             Make changes to your card here. Click save when you're done.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+          <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-2'>
             <FormField
               control={form.control}
-              name="text"
+              name='text'
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Textarea placeholder="Type a card" {...field} />
+                    <Textarea placeholder='Type a card' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            <Button type="submit">Edit</Button>
+            <Button type='submit'>Edit</Button>
           </form>
         </Form>
       </DialogContent>

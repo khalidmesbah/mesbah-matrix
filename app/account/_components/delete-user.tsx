@@ -16,6 +16,7 @@ import { Button, buttonVariants } from '@/components/ui/button';
 
 export default function DeleteUser({ id }: { id: string }) {
   console.clear();
+  console.log(id);
   const client = useKindeBrowserClient();
 
   console.log(process.env.NEXT_PUBLIC_KINDE_MANAGEMENT_API, client);
@@ -43,7 +44,7 @@ export default function DeleteUser({ id }: { id: string }) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="ghost">Delete account</Button>
+        <Button variant='ghost'>Delete account</Button>
       </AlertDialogTrigger>
 
       <AlertDialogContent>
@@ -56,7 +57,7 @@ export default function DeleteUser({ id }: { id: string }) {
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
-            color="destructive"
+            color='destructive'
             disabled={true}
             className={`${buttonVariants({ variant: 'destructive' })}`}
           >

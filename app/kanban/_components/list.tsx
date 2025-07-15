@@ -23,7 +23,7 @@ export default function List({ list: { headerColor, id, title }, cards, index }:
           className={`max-w-[425px] min-w-[250px] flex-1 px-[2px]`}
         >
           <div
-            className="bg-background flex h-fit max-h-full flex-col rounded-md border-2 p-2"
+            className='bg-background flex h-fit max-h-full flex-col rounded-md border-2 p-2'
             style={{ borderColor: headerColor }}
           >
             <div
@@ -40,11 +40,11 @@ export default function List({ list: { headerColor, id, title }, cards, index }:
               <EditList title={title} headerColor={headerColor} id={id} />
             </div>
 
-            <Droppable droppableId={id} type="card">
+            <Droppable droppableId={id} type='card'>
               {(provided) => (
-                <div {...provided.droppableProps} ref={provided.innerRef} className="overflow-auto">
+                <div {...provided.droppableProps} ref={provided.innerRef} className='overflow-auto'>
                   {cards.length === 0 ? (
-                    <p className="bg-card rounded-md p-2 text-center">No Cards yet.</p>
+                    <p className='bg-card rounded-md p-2 text-center'>No Cards yet.</p>
                   ) : (
                     cards.map((card, index) => {
                       return (

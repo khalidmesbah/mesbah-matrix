@@ -1,4 +1,3 @@
-import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import type { Metadata } from 'next';
 import Canvas from './_components/canvas';
 
@@ -9,8 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default async function CanvasPage() {
-  const { isAuthenticated: getIsAuthenticated } = getKindeServerSession();
-  const isAuthenticated = await getIsAuthenticated();
-
-  return <Canvas isAuthenticated={isAuthenticated} />;
+  return <Canvas />;
 }

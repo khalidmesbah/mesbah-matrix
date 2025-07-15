@@ -9,14 +9,14 @@ export const SlidesPanel = track(() => {
 
   if (slides.length === 0) return null;
   return (
-    <div className="slides-panel scroll-light" onPointerDown={(e) => stopEventPropagation(e)}>
+    <div className='slides-panel scroll-light' onPointerDown={(e) => stopEventPropagation(e)}>
       {slides.map((slide, i) => {
         const isSelected = selectedShapes.includes(slide);
         return (
           <TldrawUiButton
-            key={'slides-panel-button:' + slide.id}
-            type="normal"
-            className="slides-panel-button"
+            key={`slides-panel-button:${slide.id}`}
+            type='normal'
+            className='slides-panel-button'
             onClick={() => moveToSlide(editor, slide)}
             style={{
               background: currentSlide?.id === slide.id ? 'var(--color-background)' : 'transparent',

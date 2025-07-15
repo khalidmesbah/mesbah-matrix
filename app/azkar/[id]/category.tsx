@@ -22,13 +22,13 @@ export default function Category({ id }: { id: string }) {
 
   return (
     <div>
-      <h2 className="bg-primary xs:flex-row mb-2 flex flex-col items-center justify-between gap-2 rounded-md p-2">
+      <h2 className='bg-primary xs:flex-row mb-2 flex flex-col items-center justify-between gap-2 rounded-md p-2'>
         <p>{categories[id].en}</p>
-        <p dir="rtl">{(categories as AzkarCategoriesT)[id].ar}</p>
+        <p dir='rtl'>{(categories as AzkarCategoriesT)[id].ar}</p>
       </h2>
-      <div className="mx-auto flex max-w-[500px] flex-col items-stretch gap-8">
-        {azkar[id].map((zekr: ZekrT, i) => {
-          return <Zekr zekr={zekr} key={i} />;
+      <div className='mx-auto flex max-w-[500px] flex-col items-stretch gap-8'>
+        {azkar[id].map((zekr: ZekrT, _i) => {
+          return <Zekr zekr={zekr} key={zekr.Id} />;
         })}
       </div>
     </div>

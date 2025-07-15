@@ -14,10 +14,10 @@ export default function SoundSwitch() {
         <CardDescription>Turn on or off the sounds.</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="flex items-center justify-between">
-          <span className="text-sm font-medium">Sounds</span>
+        <div className='flex items-center justify-between'>
+          <span className='text-sm font-medium'>Sounds</span>
           <Switch
-            aria-label="Toggle sounds"
+            aria-label='Toggle sounds'
             checked={isSoundAllowed}
             onCheckedChange={(isChecked) => setIsSoundAllowed(isChecked)}
           />

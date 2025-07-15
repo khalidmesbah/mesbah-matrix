@@ -48,29 +48,29 @@ export function ChangeAyah(props: ChangeAyahProps) {
   }, [props.ayah.numberInSurah, props.ayah.numberOfSurah, searchParams]);
 
   return (
-    <div className="fc gap-2">
+    <div className='fc gap-2'>
       <HoverCard openDelay={100}>
         <HoverCardTrigger>
           <Info />
         </HoverCardTrigger>
-        <HoverCardContent className="flex flex-col gap-1 p-2">
+        <HoverCardContent className='flex flex-col gap-1 p-2'>
           <span>
-            <Badge variant="outline">Juz</Badge> {props.ayah.juz}
+            <Badge variant='outline'>Juz</Badge> {props.ayah.juz}
           </span>
           <span>
-            <Badge variant="outline">Hizb</Badge> {props.ayah.hizbQuarter}
+            <Badge variant='outline'>Hizb</Badge> {props.ayah.hizbQuarter}
           </span>
           <span>
-            <Badge variant="outline">Page</Badge> {props.ayah.page}
+            <Badge variant='outline'>Page</Badge> {props.ayah.page}
           </span>
           <span>
-            <Badge variant="outline">Revelation Type</Badge> {props.ayah.revelationType}
+            <Badge variant='outline'>Revelation Type</Badge> {props.ayah.revelationType}
           </span>
         </HoverCardContent>
       </HoverCard>
       <Dialog>
         <DialogTrigger asChild>
-          <h1 className="bg-primary/90 hover:bg-primary cursor-pointer rounded-md p-2 text-lg transition-colors">
+          <h1 className='bg-primary/90 hover:bg-primary cursor-pointer rounded-md p-2 text-lg transition-colors'>
             {props.ayah.surahEnglishName} ({props.ayah.numberInSurah}/{props.ayah.numberOfAyahs})
           </h1>
         </DialogTrigger>
@@ -79,7 +79,7 @@ export function ChangeAyah(props: ChangeAyahProps) {
             <DialogTitle>Change Ayah</DialogTitle>
             <DialogDescription>Select the desired Ayah</DialogDescription>
           </DialogHeader>
-          <div className="flex flex-col gap-2">
+          <div className='flex flex-wrap gap-2'>
             <Select
               value={getParams().surah}
               onValueChange={(newSurah) => {
@@ -87,11 +87,11 @@ export function ChangeAyah(props: ChangeAyahProps) {
                   surah: newSurah,
                   ayah: '1',
                 }).toString();
-                router.replace(pathname + '?' + params);
+                router.replace(`${pathname}?${params}`);
               }}
             >
               <SelectTrigger>
-                <SelectValue placeholder="Select a Surah" />
+                <SelectValue placeholder='Select a Surah' />
               </SelectTrigger>
               <SelectContent>
                 {SURAHS.map((surah) => (
@@ -108,16 +108,16 @@ export function ChangeAyah(props: ChangeAyahProps) {
                   surah: getParams().surah,
                   ayah: newAyah,
                 }).toString();
-                router.replace(pathname + '?' + params);
+                router.replace(`${pathname}?${params}`);
               }}
             >
               <SelectTrigger>
-                <SelectValue placeholder="Select an Ayah" />
+                <SelectValue placeholder='Select an Ayah' />
               </SelectTrigger>
               <SelectContent>
-                {Array.from({ length: SURAH_AYAHS[+getParams().surah] }).map((_, ayah) => (
-                  <SelectItem key={ayah + 1} value={`${ayah + 1}`}>
-                    {ayah + 1}
+                {Array.from({ length: SURAH_AYAHS[+getParams().surah] }).map((_, _ayah) => (
+                  <SelectItem key={_ayah + 1} value={`${_ayah + 1}`}>
+                    {_ayah + 1}
                   </SelectItem>
                 ))}
               </SelectContent>

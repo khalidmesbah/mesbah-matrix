@@ -33,7 +33,7 @@ export default function FavouritesFolder() {
   return (
     <Dialog>
       <Icon
-        description="Folder"
+        description='Folder'
         icon={
           <DialogTrigger asChild>
             <Folder />
@@ -51,17 +51,17 @@ export default function FavouritesFolder() {
         {surahs.length === 0 ? (
           <FavouriteAyahsNotFound />
         ) : (
-          <div className="flex flex-col gap-4">
-            <Label htmlFor="surah" className="fc gap-2">
-              <p className="text-base">Surah:</p>
+          <div className='flex flex-col gap-4'>
+            <Label htmlFor='surah' className='fc gap-2'>
+              <p className='text-base'>Surah:</p>
               <Select
                 value={Object.keys(favouriteAyahs).includes(surah) ? surah : ''}
                 onValueChange={setSurah}
               >
-                <SelectTrigger id="surah">
-                  <SelectValue placeholder="Select a Surah" />
+                <SelectTrigger id='surah'>
+                  <SelectValue placeholder='Select a Surah' />
                 </SelectTrigger>
-                <SelectContent position="popper">
+                <SelectContent position='popper'>
                   {surahs.map((surah: { englishName: string; numberOfSurah: number }) => (
                     <SelectItem value={surah.englishName} key={surah.englishName}>
                       {surah.numberOfSurah} - {surah.englishName}
@@ -70,15 +70,15 @@ export default function FavouritesFolder() {
                 </SelectContent>
               </Select>
             </Label>
-            <ScrollArea className="max-h-60 rounded-md">
-              <div className="flex max-h-60 flex-col gap-2">
+            <ScrollArea className='max-h-60 rounded-md'>
+              <div className='flex max-h-60 flex-col gap-2'>
                 {ayahs.map((ayah) => (
                   <DialogClose key={ayah.numberInSurah}>
                     <p
                       onClick={() => setNumberOfAyah(ayah.numberOfAyah)}
                       className={`bg-secondary hover:bg-secondary/80 rounded-md p-2 pt-4 text-base/8 transition-colors ${AmiriFont.className}`}
-                      lang="ar"
-                      dir="rtl"
+                      lang='ar'
+                      dir='rtl'
                     >
                       {ayah.text}
                     </p>

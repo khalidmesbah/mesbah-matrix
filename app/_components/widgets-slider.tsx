@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/a11y/noStaticElementInteractions: why not? */
 'use client';
 
 import { AlarmClockPlus, Clock1, Clock2, Component, Hourglass, Image, Video } from 'lucide-react';
@@ -27,9 +28,9 @@ export default function WidgetsSlider() {
         <Icon
           key={'widgets'}
           icon={<Component />}
-          size="icon"
+          size='icon'
           description={'Widgets'}
-          className="size-10! rounded-full [&>svg]:size-5!"
+          className='size-10! rounded-full [&>svg]:size-5!'
         />
       </DialogTrigger>
       <DialogContent>
@@ -42,14 +43,14 @@ export default function WidgetsSlider() {
         <Swiper
           spaceBetween={50}
           slidesPerView={1}
-          className="min-h-80 w-full"
-          noSwipingClass="no-swiping"
+          className='min-h-80 w-full'
+          noSwipingClass='no-swiping'
         >
-          <SwiperSlide className="p-2">
-            <div className="flex flex-wrap gap-2">
+          <SwiperSlide className='p-2'>
+            <div className='flex flex-wrap gap-2'>
               <div
                 draggable={true}
-                className="no-swiping bg-card size-20 rounded-full transition-shadow hover:shadow-md"
+                className='no-swiping bg-card size-20 rounded-full transition-shadow hover:shadow-md'
                 onDragStart={() => {
                   const uuid = uuidv4();
                   setDroppingItem({
@@ -67,11 +68,11 @@ export default function WidgetsSlider() {
                   setIsWidgetsModalOpen(false);
                 }}
               >
-                <ArcticonsAyah className="size-full stroke-2" />
+                <ArcticonsAyah className='size-full stroke-2' />
               </div>
               <div
                 draggable={true}
-                className="no-swiping bg-card size-20 rounded-full transition-shadow hover:shadow-md"
+                className='no-swiping bg-card size-20 rounded-full transition-shadow hover:shadow-md'
                 onDragStart={() => {
                   const uuid = uuidv4();
                   setDroppingItem({
@@ -89,11 +90,11 @@ export default function WidgetsSlider() {
                   setIsWidgetsModalOpen(false);
                 }}
               >
-                <Clock1 className="size-full stroke-2" />
+                <Clock1 className='size-full stroke-2' />
               </div>
               <div
                 draggable={true}
-                className="no-swiping bg-card size-20 rounded-full transition-shadow hover:shadow-md"
+                className='no-swiping bg-card size-20 rounded-full transition-shadow hover:shadow-md'
                 onDragStart={() => {
                   const uuid = uuidv4();
                   setDroppingItem({
@@ -111,12 +112,12 @@ export default function WidgetsSlider() {
                   setIsWidgetsModalOpen(false);
                 }}
               >
-                <Clock2 className="size-full stroke-2" />
+                <Clock2 className='size-full stroke-2' />
               </div>
 
               <div
                 draggable={true}
-                className="no-swiping bg-card size-20 rounded-full transition-shadow hover:shadow-md"
+                className='no-swiping bg-card size-20 rounded-full transition-shadow hover:shadow-md'
                 onDragStart={() => {
                   const uuid = uuidv4();
                   setDroppingItem({
@@ -134,12 +135,12 @@ export default function WidgetsSlider() {
                   setIsWidgetsModalOpen(false);
                 }}
               >
-                <AlarmClockPlus className="size-full stroke-2" />
+                <AlarmClockPlus className='size-full stroke-2' />
               </div>
 
               <div
                 draggable={true}
-                className="no-swiping bg-card size-20 rounded-full transition-shadow hover:shadow-md"
+                className='no-swiping bg-card size-20 rounded-full transition-shadow hover:shadow-md'
                 onDragStart={() => {
                   const uuid = uuidv4();
                   setDroppingItem({
@@ -157,12 +158,12 @@ export default function WidgetsSlider() {
                   setIsWidgetsModalOpen(false);
                 }}
               >
-                <Hourglass className="size-full stroke-2" />
+                <Hourglass className='size-full stroke-2' />
               </div>
 
               <div
                 draggable={true}
-                className="no-swiping bg-card size-20 rounded-full transition-shadow hover:shadow-md"
+                className='no-swiping bg-card size-20 rounded-full transition-shadow hover:shadow-md'
                 onDragStart={() => {
                   const uuid = uuidv4();
                   setDroppingItem({
@@ -180,12 +181,12 @@ export default function WidgetsSlider() {
                   setIsWidgetsModalOpen(false);
                 }}
               >
-                <Image className="size-full stroke-2" />
+                <Image className='size-full stroke-2' />
               </div>
 
               <div
                 draggable={true}
-                className="no-swiping bg-card size-20 rounded-full transition-shadow hover:shadow-md"
+                className='no-swiping bg-card size-20 rounded-full transition-shadow hover:shadow-md'
                 onDragStart={() => {
                   const uuid = uuidv4();
                   setDroppingItem({
@@ -203,7 +204,7 @@ export default function WidgetsSlider() {
                   setIsWidgetsModalOpen(false);
                 }}
               >
-                <Video className="size-full stroke-2" />
+                <Video className='size-full stroke-2' />
               </div>
             </div>
           </SwiperSlide>

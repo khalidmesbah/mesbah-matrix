@@ -50,31 +50,31 @@ export default function AddCard({ listId, headerColor }: AddCardProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant={'secondary'} style={{ borderColor: headerColor }} className="mt-2 border">
+        <Button variant={'secondary'} style={{ borderColor: headerColor }} className='mt-2 border'>
           Add Card
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="max-w-[425px]">
+      <DialogContent className='max-w-[425px]'>
         <DialogHeader>
           <DialogTitle>Add Card</DialogTitle>
-          <DialogDescription className="sr-only">Add a Card to your list.</DialogDescription>
+          <DialogDescription className='sr-only'>Add a Card to your list.</DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+          <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-2'>
             <FormField
               control={form.control}
-              name="text"
+              name='text'
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Textarea placeholder="Type a card" {...field} />
+                    <Textarea placeholder='Type a card' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit">Add</Button>
+            <Button type='submit'>Add</Button>
           </form>
         </Form>
       </DialogContent>

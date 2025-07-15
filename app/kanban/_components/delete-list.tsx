@@ -28,12 +28,12 @@ export default function DeleteList({ listId }: DeleteListProps) {
       <Icon
         icon={
           <AlertDialogTrigger asChild>
-            <Trash className="stroke-inherit" />
+            <Trash className='stroke-inherit' />
           </AlertDialogTrigger>
         }
-        description="Delete List"
-        variant="link"
-        className="border-background bg-card stroke-destructive hover:border-destructive absolute top-1 right-1 hidden size-8 rounded-full border-2 p-2 transition-colors group-hover:flex hover:z-2"
+        description='Delete List'
+        variant='link'
+        className='border-background bg-card stroke-destructive hover:border-destructive absolute top-1 right-1 hidden size-8 rounded-full border-2 p-2 transition-colors group-hover:flex hover:z-2'
       />
 
       <AlertDialogContent>
@@ -47,7 +47,7 @@ export default function DeleteList({ listId }: DeleteListProps) {
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
-            color="destructive"
+            color='destructive'
             onClick={() => deleteList(listId)}
             className={`${buttonVariants({ variant: 'destructive' })}`}
           >

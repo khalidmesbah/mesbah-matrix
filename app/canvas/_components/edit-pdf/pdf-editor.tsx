@@ -33,7 +33,6 @@ export function PdfEditor({ pdf }: { pdf: Pdf }) {
   return (
     <Tldraw
       onMount={(editor) => {
-        editor.updateInstanceState({ isDebugMode: false });
         editor.createAssets(
           pdf.pages.map((page) => ({
             id: page.assetId,
@@ -154,10 +153,7 @@ const PageOverlayScreen = track(function PageOverlayScreen({ pdf }: { pdf: Pdf }
     .map((page) => {
       if (!viewportPageBounds.collides(page.bounds)) return null;
       const topLeft = editor.pageToViewport(page.bounds);
-      const bottomRight = editor.pageToViewport({
-        x: page.bounds.maxX,
-        y: page.bounds.maxY,
-      });
+      const bottomRight = editor.pageToViewport({ x: page.bounds.maxX, y: page.bounds.maxY });
       return new Box(topLeft.x, topLeft.y, bottomRight.x - topLeft.x, bottomRight.y - topLeft.y);
     })
     .filter((bounds): bounds is Box => bounds !== null);
@@ -170,16 +166,16 @@ const PageOverlayScreen = track(function PageOverlayScreen({ pdf }: { pdf: Pdf }
 
   return (
     <>
-      <SVGContainer className="PageOverlayScreen-screen">
+      <SVGContainer className='PageOverlayScreen-screen'>
         <path
           d={`${viewportPath} ${relevantPageBounds.map(pathForPageBounds).join(' ')}`}
-          fillRule="evenodd"
+          fillRule='evenodd'
         />
       </SVGContainer>
       {relevantPageBounds.map((bounds, i) => (
         <div
           key={i}
-          className="PageOverlayScreen-outline"
+          className='PageOverlayScreen-outline'
           style={{
             width: bounds.w,
             height: bounds.h,

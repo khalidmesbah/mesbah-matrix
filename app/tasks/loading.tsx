@@ -1,13 +1,13 @@
 export default function Loading() {
   return (
-    <div className="flex h-full w-full items-center justify-center">
-      <div className="loader-container">
-        <div className="loader-slice" />
-        <div className="loader-slice" />
-        <div className="loader-slice" />
-        <div className="loader-slice" />
-        <div className="loader-slice" />
-        <div className="loader-slice" />
+    <div className='fc h-dvh'>
+      <div className='loader-container'>
+        <div className='loader-slice' />
+        <div className='loader-slice' />
+        <div className='loader-slice' />
+        <div className='loader-slice' />
+        <div className='loader-slice' />
+        <div className='loader-slice' />
       </div>
     </div>
   );

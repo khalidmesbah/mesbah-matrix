@@ -100,7 +100,7 @@ export default function UserKanbanPage() {
   };
   // TODO: merge the kanban header with the sheet header
   return (
-    <div className="flex h-screen max-h-screen flex-col overflow-hidden">
+    <div className='flex h-[calc(100dvh-16px)] flex-col overflow-hidden'>
       <KanbanHeaderWithSheet />
       <KanbanHeader />
       {isLoading ? (
@@ -109,12 +109,12 @@ export default function UserKanbanPage() {
         <NoBoards />
       ) : (
         <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId={kanban.selectedBoard} direction="horizontal" type="list">
+          <Droppable droppableId={kanban.selectedBoard} direction='horizontal' type='list'>
             {(provided) => (
               <div
                 {...provided.droppableProps}
                 ref={provided.innerRef}
-                className="flex flex-1 overflow-auto"
+                className='flex flex-1 overflow-auto'
               >
                 {kanban.boards[kanban.selectedBoard].listsOrder.map((listId, index) => {
                   const list = kanban.boards[kanban.selectedBoard].lists[listId];
