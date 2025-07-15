@@ -1,9 +1,0 @@
-onlyBuiltDependencies:
-  - '@firebase/util'
-  - '@parcel/watcher'
-  - '@tailwindcss/oxide'
-  - '@vercel/speed-insights'
-  - core-js
-  - protobufjs
-  - sharp
-  - unrs-resolver
