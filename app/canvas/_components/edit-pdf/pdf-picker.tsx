@@ -1,3 +1,4 @@
+import { RenderParameters } from 'pdfjs-dist/types/src/display/api';
 import { useState } from 'react';
 import { AssetRecordType, Box, createShapeId, type TLAssetId, type TLShapeId } from 'tldraw';
 
@@ -42,9 +43,10 @@ export function PdfPicker({ onOpenPdf }: { onOpenPdf(pdf: Pdf): void }) {
       const viewport = page.getViewport({ scale: scale * visualScale });
       canvas.width = viewport.width;
       canvas.height = viewport.height;
-      const renderContext = {
+      const renderContext: RenderParameters = {
         canvasContext: context,
         viewport,
+        canvas,
       };
       await page.render(renderContext).promise;
 
