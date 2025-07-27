@@ -14,6 +14,8 @@ const nextConfig: NextConfig = {
     staleTimes: {
       dynamic: 60,
     },
+    globalNotFound: true,
+    clientSegmentCache: true,
   },
   images: {
     remotePatterns: [
